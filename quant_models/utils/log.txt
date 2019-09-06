@@ -1,0 +1,4 @@
+[2018-12-23 20:44:17,129] [__main__] [INFO] ['sample_usage' ((), {}) 1.00 sec] [decorators.py:19]
+[2018-12-23 21:50:51,532] [__main__] [ERROR] [parallel run with error:'int' object is not subscriptable] [decorators.py:68]
+[2018-12-23 21:50:51,532] [__main__] [ERROR] [parallel run with error:'int' object is not subscriptable] [decorators.py:68]
+[2019-09-04 14:44:27,773] [__main__] [INFO] [for testing] [logger.py:55]
