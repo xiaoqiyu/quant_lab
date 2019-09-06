@@ -1,0 +1,26 @@
+# -*- coding: utf-8 -*-
+# @time      : 2018/12/26 9:10
+# @author    : yuxiaoqi@cmschina.com.cn
+# @file      : uqer_client.py
+
+import uqer
+from uqer import DataAPI
+from quant_models.utils.date_utils import datetime_delta
+
+c = uqer.Client(token="cae4e8fdd64a6cb9c68e9014ab04fdd823da6c41a77417ce6c8dbdf31db35541")
+
+
+# print(c.data.list())
+# c.data.upload(filepath="E:\pycharm\\algo_trading\quant_models\quant_models\conf\\feature_mapping.json")
+
+# print(c.trading.list())
+def get_news(start_date='', end_date=''):
+    i_date = start_date
+    while i_date < end_date:
+        print('processing date:{0}'.format(i_date))
+        ret = DataAPI.NewsInfoByTimeGet(newsBeginDate=i_date, newsEndDate=i_date)
+        ret.to_csv("E:\pycharm\\algo_trading\quant_models\quant_models\data\originals\\{0}.csv".format(i_date))
+        i_date = datetime_delta(dt=i_date, format='%Y%m%d', days=1)
+
+
+get_news('20180123', '20181225')
