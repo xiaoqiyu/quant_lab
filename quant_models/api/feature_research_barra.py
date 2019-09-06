@@ -30,10 +30,17 @@ from quant_models.utils.logger import Logger
 from quant_models.utils.helper import get_config
 from quant_models.utils.helper import get_source_root
 
-
 logger = Logger(log_level='DEBUG', handler='ch').get_log()
 config = get_config()
 feature_model_name = 'random_forest'
+
+
+def _get_source_features():
+    source_features = config['source_features']
+    ret = {}
+    for k, v in source_features.items():
+        ret.update({k: v.split(',')})
+    return ret
 
 
 def feature_preprocessing(arr=None, fill_none=False, weights=None):
@@ -106,6 +113,7 @@ def get_indust_vectors(security_ids=[]):
 
 
 def get_indust_exposures(start_date=None, end_date=None, stock_returns=None):
+    logger.info("Start processing the industry exposure for start_date:{0}, end_date:{1} ".format(start_date, end_date))
     df_indust = get_indust_mkt(start_date=start_date, end_date=end_date)
     indust_codes = list(set(df_indust['IndustryCode']))
     indust_rows = []
@@ -120,11 +128,14 @@ def get_indust_exposures(start_date=None, end_date=None, stock_returns=None):
     for sec_id, return_dict in stock_returns.items():
         return_rows = list(zip(list(return_dict.keys()), list(return_dict.values())))
         return_rows = sorted(return_rows, key=lambda x: x[0])
-        y = [item[1] for item in return_rows]
+        y = [item[1] for item in return_rows][:-1]
         assert x.shape[0] == len(y)
         m.train_model(x, y)
         coef, intercept = m.output_model()
         exposure_rows.append(coef)
+    logger.info(
+        "Complete processing the industry exposure for start_date:{0}, end_date:{1} with return rows:{2} ".format(
+            start_date, end_date, len(exposure_rows)))
     return exposure_rows
 
 
@@ -142,20 +153,23 @@ def _get_in_out_dates(start_date=None, end_date=None, security_id=None):
 
 
 def factor_return_regression(country_factors, indus_factors, deriv_factors, returns):
+    logger.info("Start final regression for all factors")
     m = Ml_Reg_Model('linear')
     m.build_model()
     x = np.hstack((country_factors, indus_factors, deriv_factors))
     m.train_model(x, returns)
     coef, intercept = m.output_model()
+    logger.info("Complete final regression for all factors with coef:{0} and intercept:{1}".format(coef, intercept))
     return coef
 
 
 def get_factor_returns(start_date='20181101', end_date='20181131', data_source=0,
-                       feature_types=[], train_feature=True, saved_feature=True, bc=None,
+                       feature_types=[], saved_feature=True, bc=None,
                        top_ratio=0.25, bottom_ratio=0.2):
     root = get_source_root()
-    feature_mapping = get_source_feature_mappings(train_feature=train_feature, feature_types=feature_types,
-                                                  top_ratio=top_ratio, bottom_ratio=bottom_ratio)
+    feature_mapping = _get_source_features() or get_source_feature_mappings(souce=True, feature_types=feature_types,
+                                                                            top_ratio=top_ratio,
+                                                                            bottom_ratio=bottom_ratio)
     date_periods = _get_in_out_dates(start_date=start_date, end_date=end_date, security_id='000300.XSHG') or [
         [start_date, end_date]]
     next_date = datetime_delta(dt=end_date, format='%Y%m%d', days=1)
@@ -171,11 +185,12 @@ def get_factor_returns(start_date='20181101', end_date='20181131', data_source=0
         else:
             security_ids = get_security_codes()
         ret_features = get_equity_daily_features(security_ids=security_ids, features=feature_mapping,
-                                                start_date=_start_date,
-                                                end_date=_end_date, source=data_source)
+                                                 start_date=_start_date,
+                                                 end_date=_end_date, source=data_source)
         ret_returns = get_equity_returns(security_ids=security_ids, start_date=_start_date, end_date=next_date)
         ret_mv = get_market_value(security_ids=security_ids, start_date=_start_date, end_date=next_date)
         none_factor_dict = defaultdict()
+        # FIXME use the future industry return, should be updated to trace back the history data by windows
         industry_exposure_factors = get_indust_exposures(start_date=_start_date, end_date=_end_date,
                                                          stock_returns=ret_returns)
         _industry_exposure_df = pd.DataFrame(industry_exposure_factors)
@@ -212,8 +227,10 @@ def get_factor_returns(start_date='20181101', end_date='20181131', data_source=0
 
 
 if __name__ == '__main__':
-    ret = get_factor_returns(start_date='20180103', end_date='20190706', data_source=0, feature_types=[],
-                             train_feature=False, saved_feature=True, bc='000300.XSHG')
+    ret = get_factor_returns(start_date='20190801', end_date='20190805', data_source=0, feature_types=[],
+                             bc='000300.XSHG')
     pprint.pprint(ret)
     # ret = get_indust_exposures(start_date='20190103', end_date='20190706')
+    # pprint.pprint(ret)
+    # ret = _get_source_features()
     # pprint.pprint(ret)

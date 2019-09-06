@@ -204,7 +204,9 @@ def get_equity_daily_features(security_ids=[], features={'ma': ['ACD6', 'ACD20']
     retrieve_feature_names = list(set(retrieve_feature_names))
     root = get_source_root()
     feature_mapping = load_json_file(os.path.join(os.path.realpath(root), 'conf', 'feature_mapping.json'))
-    source_features = list(feature_mapping.values())
+    source_features = []
+    for item in list(feature_mapping.values()):
+        source_features.extend(item)
     cal_features = list(set(retrieve_feature_names) - set(source_features))
     _df = g_db_fetcher.get_data_fetcher_obj(source)
     excluded = ['CREATE_TIME', 'UPDATE_TIME', 'TMSTAMP', 'ID', 'SECURITY_ID_INT', 'SECURITY_ID', 'TRADE_DATE',

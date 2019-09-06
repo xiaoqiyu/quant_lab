@@ -74,6 +74,11 @@ mincached = 0
 maxcached = 2
 port = 1433
 
+[source_features]
+growth = TOTALASSETGROWRATE
+vs = PE,PB,PS
+volume = OBV
+return = ALPHA20,BETA20,VARIANCE20
 
 
 

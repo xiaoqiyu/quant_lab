@@ -24,9 +24,10 @@ class OracleHelper(object):
         cursor = conn.cursor()
         cursor.execute(sql)
         results = cursor.fetchall()
-        desc = cursor.description
+        _desc = cursor.description
         cursor.close()
         conn.close()
+        desc = [item[0] for item in _desc]
         return results, desc
 
     def execute_sql(self, sql):
