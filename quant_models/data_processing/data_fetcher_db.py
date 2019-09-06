@@ -6,6 +6,7 @@
 
 import pyodbc
 import pandas as pd
+from collections import defaultdict
 from quant_models.utils.oracle_helper import OracleHelper
 from quant_models.utils.logger import Logger
 
@@ -163,6 +164,47 @@ class DataFetcherDB(object):
             sql_str = "{0} AND TRADE_DATE < TO_DATE({1}, 'yyyymmdd')".format(sql_str, end_date)
         logger.debug('Execute query: {0}'.format(sql_str))
         return self._dyobj.execute_query(sql_str)
+
+    def get_mkt_mins(self, startdate='', enddate='', sec_codes=[], filter='',
+                        orderby='', groupby='', table_name='CUST.EQUITY_PRICEMIN'):
+        '''
+        Fetch the minute level data from tonglian in oracle
+        Return the rows of values: ['DATADATE', 'TICKER', 'EXCHANGECD', 'SHORTNM', 'SECOFFSET', 'BARTIME', 'CLOSEPRICE',
+         'OPENPRICE', 'HIGHPRICE', 'LOWPRICE', 'VOLUME', 'VALUE', 'VWAP']
+         e.g. [(20180605, 600237, 'XSHG', '铜峰电子', 11640, '11:14', 4.46, 4.47, 4.47, 4.46, 68600, 306094.0, 4.462000000000001)]
+        :param startdate: int
+        :param enddate: int
+        :param sec_codes: tuple of str
+        :param filter:
+        :param orderby:
+        :param groupby:
+        :return: rows, col_names; rows: list of tuple from the results; col_names: list of strings of the colume name of
+                the table
+        '''
+        if not self.db_obj:
+            logger.error("Fail in get_market_mins for empty db_obj")
+        rows, col_names = self.get_dates_statics(startdate, enddate)
+        all_trading_dates = [item[1].strftime('%Y%m%d') for item in rows if item[3] == 1]
+        grouped_dates = defaultdict(list)
+
+        for d in all_trading_dates:
+            yymm = d[:6]
+            rows, columns = [], []
+            grouped_dates[yymm].append(int(d))
+        total_len = len(grouped_dates)
+        cnt = 0
+        logger.info("Start query data in get_market_mins for query_date:{0}".format(len(grouped_dates)))
+        for k, v in grouped_dates.items():
+            cnt += 1
+            logger.debug("query the {0} th table {1} out of {2}".format(cnt, k, total_len))
+            v = sorted(v)
+            sqlstr = self._get_sql_query(v[0], v[-1], sec_codes, filter, orderby,
+                                         groupby, table_name)
+            tmp_rows, desc = self.db_obj.execute_query(sqlstr)
+            columns = [item[0] for item in desc]
+            rows.extend(tmp_rows)
+        logger.info("Done query data in get_market_mins for query_date:{0}".format(len(grouped_dates)))
+        return rows, columns
 
     def get_report_contents(self):
         pass

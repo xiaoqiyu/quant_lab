@@ -12,6 +12,7 @@ import matplotlib.pyplot as plt
 import datetime as dt
 
 from quant_models.strategies.ml_stock_selection import __config__
+from quant_models.strategies.s_buy_and_hold import __config__
 from quant_models.utils.logger import Logger
 from quant_models.utils.decorators import timeit
 from quant_models.utils.helper import get_source_root
@@ -38,5 +39,5 @@ def run_strategy(strategy_file_path="hedge_rq.py"):
 
 
 if __name__ == '__main__':
-    run_strategy("ml_stock_selection.py")
+    run_strategy("s_buy_and_hold.py")
     # result_analysis()

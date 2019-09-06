@@ -11,7 +11,7 @@ from collections import defaultdict
 import time
 import os
 import pandas as pd
-from quant_models.data_processing.features_calculation import get_stock_daily_features
+from quant_models.data_processing.features_calculation import get_equity_daily_features
 from quant_models.data_processing.features_calculation import get_equity_returns
 from quant_models.data_processing.features_calculation import get_idx_returns
 from quant_models.data_processing.features_calculation import get_source_feature_mappings

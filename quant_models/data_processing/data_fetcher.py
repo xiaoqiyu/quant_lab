@@ -3,14 +3,6 @@
 # @author    : rpyxqi@gmail.com
 # @file      : data_fetcher.py
 
-import tushare as ts
-import cx_Oracle
-import traceback
-from datetime import datetime
-import uqer
-from uqer import DataAPI
-import pandas as pd
-from abc import abstractmethod
 
 from quant_models.utils.decorators import parallel_pool
 from quant_models.utils.io_utils import write_json_file

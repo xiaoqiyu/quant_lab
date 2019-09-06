@@ -17,7 +17,7 @@ from quant_models.utils.logger import Logger
 from quant_models.utils.io_utils import load_json_file
 from quant_models.utils.date_utils import datetime_delta
 from quant_models.utils.date_utils import get_month_start_end_date
-from quant_models.data_processing.features_calculation import get_stock_daily_features
+from quant_models.data_processing.features_calculation import get_equity_daily_features
 from quant_models.data_processing.features_calculation import get_announcement_profitability_features
 from quant_models.data_processing.features_calculation import get_halt_security_ids
 from quant_models.data_processing.features_calculation import get_idx_cons_dy
