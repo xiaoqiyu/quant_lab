@@ -1,0 +1,11 @@
+[backtesting]
+frequency=m
+bc=000300.XSHG
+start_date = 20180103
+end_date = 20190103
+
+
+
+
+
+
