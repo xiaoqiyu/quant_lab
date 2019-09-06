@@ -83,9 +83,10 @@ def win_and_std(arr=None, weights=[]):
     return arr if std == 0 else [(item - w_mean) / std for item in arr]
 
 
+# FIXME add the industry update information
 def get_indust_vectors(security_ids=[]):
     '''
-    use the bi-encode first, will update to time series regression later
+    use the binary encode for the industry vector, however, did not add the update info yet
     :param security_ids:
     :return:
     '''
@@ -122,6 +123,7 @@ def get_indust_exposures(start_date=None, end_date=None, stock_returns=None):
     x = pd.DataFrame(indust_rows).transpose()
     del df_indust
     exposure_rows = []
+    # FIXME add restrictions for the regression
     m = Ml_Reg_Model('linear')
     m.build_model()
 
@@ -184,7 +186,7 @@ def get_factor_returns(start_date='20181101', end_date='20181131', data_source=0
             security_ids = get_idx_cons_jy(bc, _start_date, _end_date)
         else:
             security_ids = get_security_codes()
-        #FIXME HACK FOR TESTING
+        # FIXME HACK FOR TESTING
         security_ids = security_ids[:5]
         ret_features = get_equity_daily_features(security_ids=security_ids, features=feature_mapping,
                                                  start_date=_start_date,
@@ -196,7 +198,7 @@ def get_factor_returns(start_date='20181101', end_date='20181131', data_source=0
         industry_exposure_factors = get_indust_exposures(start_date=_start_date, end_date=_end_date,
                                                          stock_returns=ret_returns)
         _industry_exposure_df = pd.DataFrame(industry_exposure_factors)
-        _industry_exposure_df.to_csv('{0}_{1}_{2}'.format(_start_date, _end_date, bc))
+        _industry_exposure_df.to_csv('{0}_{1}_{2}.csv'.format(_start_date, _end_date, bc))
         for date, val in ret_features.items():
             daily_factors = []
             daily_return = []
