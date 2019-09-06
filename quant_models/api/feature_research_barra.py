@@ -184,6 +184,8 @@ def get_factor_returns(start_date='20181101', end_date='20181131', data_source=0
             security_ids = get_idx_cons_jy(bc, _start_date, _end_date)
         else:
             security_ids = get_security_codes()
+        #FIXME HACK FOR TESTING
+        security_ids = security_ids[:5]
         ret_features = get_equity_daily_features(security_ids=security_ids, features=feature_mapping,
                                                  start_date=_start_date,
                                                  end_date=_end_date, source=data_source)
