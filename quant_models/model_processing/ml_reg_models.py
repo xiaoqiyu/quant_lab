@@ -62,7 +62,8 @@ class Ml_Reg_Model(Model):
         sample_weights = kwargs.get('sample_weights')
         if self.model_name == 'linear_nnls':
             self.fit_linear_nnls(train_X, train_Y, sample_weight=sample_weights)
-            scores = 0.0
+            mse_scores = []
+            r2_scores = []
         else:
             self.model.fit(train_X, train_Y, sample_weights)
             mse_scores = cross_val_score(self.model, train_X, train_Y, cv=int(config['ml_reg_model']['cv']), n_jobs=-1,

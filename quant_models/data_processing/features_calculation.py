@@ -495,13 +495,16 @@ def get_sw_indust(source=0):
 def get_indust_mkt(start_date=None, end_date=None, source=0):
     _df = g_db_fetcher.get_data_fetcher_obj(source)
     _rows, cols = _df.get_sw_idx_codes_jy()
-    inner_codes = [item[0] for item in _rows]
-    industry_codes = [item[1] for item in _rows]
-    code_mapping = dict(zip(inner_codes, industry_codes))
+    inner_codes = [item[cols.index('IndexCode')] for item in _rows]
+    industry_codes = [item[cols.index('IndustryCode')] for item in _rows]
+    industry_names = [item[cols.index('ChiName')] for item in _rows]
+    _code_mapping = dict(zip(inner_codes, industry_codes))
+    _name_mapping = dict(zip(inner_codes, industry_names))
     df_mkt = _df.get_indust_mkt_jy(idx_codes=list(set(inner_codes)), start_date=start_date, end_date=end_date,
                                    return_df=True)
-    df_mkt['IndustryCode'] = [code_mapping.get(k) for k in df_mkt['InnerCode']]
-    df_mkt = df_mkt[['IndustryCode', 'TradingDay', 'ChangePCT']]
+    df_mkt['IndustryCode'] = [_code_mapping.get(k) for k in df_mkt['InnerCode']]
+    df_mkt['IndustryName'] = [_name_mapping.get(k) for k in df_mkt['InnerCode']]
+    df_mkt = df_mkt[['IndustryCode', 'TradingDay', 'ChangePCT', 'IndustryName']]
     return df_mkt
 
 
@@ -598,5 +601,9 @@ if __name__ == '__main__':
     # ret = get_idx_adjust_dates_jy(idx_security_id='00300', start_date='20190103', end_date='20190826', source=0)
     # pprint.pprint(ret)
 
-    ret = get_indust_mkt(start_date='20190701', end_date='20190826')
-    pprint.pprint(ret)
+    # ret = get_indust_mkt(start_date='20190701', end_date='20190826')
+    # print('*'*40)
+    # pprint.pprint(ret)
+
+    ret = get_sw_2nd_indust(security_ids=['001979.XSHE'])
+    print(ret)

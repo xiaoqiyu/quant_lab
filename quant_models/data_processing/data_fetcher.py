@@ -152,8 +152,11 @@ if __name__ == '__main__':
     # rows, cols = df.get_data_fetcher_obj()._get_sec_main(inner_codes=[3, 6, 26])
     # print(rows, cols)
 
-    _rows, cols = df.get_data_fetcher_obj().get_sw_idx_codes_jy()
+    # _rows, cols = df.get_data_fetcher_obj().get_sw_idx_codes_jy()
+    #
+    # rows, cols = df.get_data_fetcher_obj().get_indust_mkt_jy(idx_codes=[item[0] for item in _rows],
+    #                                                          start_date='20190701')
+    # pprint.pprint(rows)
 
-    rows, cols = df.get_data_fetcher_obj().get_indust_mkt_jy(idx_codes=[item[0] for item in _rows],
-                                                             start_date='20190701')
-    pprint.pprint(rows)
+    row, cols = df.get_data_fetcher_obj().get_sw_2nd()
+    print(row)

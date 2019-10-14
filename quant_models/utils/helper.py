@@ -161,7 +161,6 @@ def sort_dict_by_val1(d={}, reverse=False):
     idx_lst = []
 
 
-
 def orth_gs(matrixs=[[]], standard=False):
     mtx_lst = [Matrix(m) for m in matrixs]
     gs = GramSchmidt(mtx_lst, standard)
@@ -176,6 +175,25 @@ def get_source_root():
 
 def resolve_na():
     pass
+
+
+def get_montecarlo(S0=1, T=100, **kwargs):
+    alpha = kwargs.get('alpha') or 0
+    sigma = kwargs.get('sigma') or 1
+    N = kwargs.get('slides') or 10000
+    assumption = kwargs.get('assumption') or 'geometric_brownian_motion'
+    step = T / N
+    X = [x * step for x in range(0, N)]
+    Y = [S0]
+    for i in range(len(X)):
+        b = np.random.randn(1)
+        if assumption == 'geometric_brownian_motion':
+            y = Y[-1] + alpha * step * Y[-1] + sigma * step * Y[-1] * b
+        if assumption == 'arithmetic_brownian_motion':
+            y = Y[-1] + alpha * step + sigma * step * b
+        Y.append(y)
+    Y.remove(Y[-1])
+    return Y
 
 
 if __name__ == '__main__':

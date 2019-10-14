@@ -16,7 +16,8 @@ class OracleHelper(object):
                               mincached=int(params.get("mincached")),
                               maxcached=int(params.get("maxcached")),
                               blocking=True,
-                              threaded=True)
+                              threaded=True,
+                              encoding='UTF-8')
 
     def execute_query(self, sql):
         print(sql)

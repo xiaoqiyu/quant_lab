@@ -15,7 +15,7 @@ logger = Logger(log_level='INFO', handler='ch').get_log()
 
 class DataFetcherDB(object):
     def __init__(self):
-        self.datayes_config = {"user": "gfangm", "pwd": "GfangM123_cms2019", "host": "10.200.40.170", "port": 1521,
+        self.datayes_config = {"user": "gfangm", "pwd": "Gfangm_cmS2019", "host": "10.200.40.170", "port": 1521,
                                "dbname": "clouddb",
                                "mincached": 0, "maxcached": 1}
         self._dyobj = OracleHelper(self.datayes_config)
@@ -253,7 +253,8 @@ class DataFetcherDB(object):
                   "ORDER BY TRADE_DATE"
         return self._dyobj.execute_query(sql_str)
 
-    # FIXME double check the update industry information, check XGRQ field in table LC_ExgIndustry
+    # FIXME double check the update industry information, check XGRQ field in table LC_ExgIndustry;
+    #FIXME  check the updates. and fix some miss, e.g. 001979.XSHE and 603612.XSHG
     def get_sw_indust(self):
         sql_str = """
         SELECT B.SecuCode,B.ChiName,B.ChiNameAbbr,B.SecuMarket,A.FirstIndustryCode, A.FirstIndustryName 
@@ -298,7 +299,7 @@ class DataFetcherDB(object):
         if start_date:
             sql_str = """{0} AND TradingDay >= '{1}'""".format(sql_str, start_date)
         if end_date:
-            sql_str = """{0} AND TradingDay <= '{1}'""".format(sql_str, end_date)
+            sql_str = """{0} AND TradingDay < '{1}'""".format(sql_str, end_date)
         logger.debug('Execute query: {0}'.format(sql_str))
         df = pd.read_sql(sql_str, con=self._jyobj)
         if return_df:
@@ -306,7 +307,7 @@ class DataFetcherDB(object):
         return list(df.values), list(df.columns)
 
     def get_sw_idx_codes_jy(self):
-        sql_str = """SELECT A.IndexCode,A.IndustryCode FROM JYDB.dbo.LC_CorrIndexIndustry A, JYDB.dbo.SecuMain B WHERE 
+        sql_str = """SELECT A.IndexCode,A.IndustryCode,B.ChiName FROM JYDB.dbo.LC_CorrIndexIndustry A, JYDB.dbo.SecuMain B WHERE 
         A.IndexCode=B.InnerCode AND A.IndustryStandard=9 AND A.IndustryCode
         IN (SELECT DISTINCT(FirstIndustryCode) FROM JYDB.dbo.CT_IndustryType WHERE Standard=9 AND Classification=1)
         AND CONVERT(varchar(100), B.SecuCode,112)<='801230'"""

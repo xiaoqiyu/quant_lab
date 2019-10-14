@@ -4,6 +4,19 @@ bc=000300.XSHG
 start_date = 20180103
 end_date = 20190103
 
+[strate1]
+model=linear
+features=barra_feature
+bc=00300
+....
+
+
+
+run(strate1)
+
+
+
+
 
 
 

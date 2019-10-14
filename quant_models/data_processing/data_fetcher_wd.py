@@ -84,5 +84,7 @@ if __name__ == '__main__':
     # # ret = w.tdaysoffset(1, '20190131')
     # print(ret)
     # print(ret.Data[0])
-    ret = get_all_month_start_end_dates('20190101', '20190304')
+    # ret = get_all_month_start_end
+
+    ret = w.wsd("881008.WI", "close,pct_chg", "20190920", "20190925", "")
     print(ret)
