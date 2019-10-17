@@ -30,7 +30,6 @@ class TFMultiFactor(Model):
     def build_model(self, feature_hidden_layers=1, all_hidden_layers=2, feature_shape=(), indust_shape=(),
                     save_prefix=''):
         '''
-
         :param feature_hidden_layers:
         :param all_hidden_layers:
         :param feature_shape: ((sec_num,feature_sub_type_num))
@@ -38,16 +37,17 @@ class TFMultiFactor(Model):
         :param save_prefix:
         :return:
         '''
-        assert feature_shape[0] == indust_shape[0], (
+        assert feature_shape[0][0] == indust_shape[0], (
                 "feature.shape: %s industry.shape: %s" % (feature_shape,
                                                           indust_shape))
         _sub_type_num = [item[1] for item in feature_shape]
         _feature_num = sum(_sub_type_num)
         self.feature_inputs = tf.placeholder(tf.float32,
-                                             shape=(None, feature_shape[0], _feature_num),
+                                             shape=(None, _feature_num),
                                              name='feature_inputs')
-        self.indust_inputs = tf.placeholder(tf.float32, shape=(None, indust_shape[0], indust_shape[1]),
+        self.indust_inputs = tf.placeholder(tf.float32, shape=(None, indust_shape[1]),
                                             name='industry_inputs')
+        self.Y = tf.placeholder(tf.float32, shape=(None, 1))
         prev = 0
         _feature_layer_inputs = []
         for _f_num in _sub_type_num:
@@ -161,16 +161,16 @@ if __name__ == '__main__':
     # m.load_model('tf_dnn')
 
     m = TFMultiFactor()
-    m.build_model(x_shape=(1, 8), acc_shape=(1, 2))
-    x = np.random.random(1600).reshape(200, 8)
+    m.build_model(feature_shape=[(10, 2), (10, 3), (10, 3), (10, 2)], indust_shape=(10, 5))
+    x = np.random.random(2000).reshape(200, 10)
     y = np.random.random(200).reshape(200, 1)
 
     acc = np.random.random(400).reshape(200, 2)
-    m.train_model(x, y, acc, 20, 50, 'test')
+    m.train_model(x, y, acc, 5, 50, 'test')
     # m.output_model('test')
-    m.load_model('test')
-    for i in range(3):
-        # m.load_model('tf_dnn')
-        r = m.predict(np.random.random(8).reshape(1, 8), np.random.random(2).reshape(1, 2))
-        total, tmp, perm, instant = r
-        print(total[0], tmp[0], perm[0], instant[0])
+    # m.load_model('test')
+    # for i in range(3):
+    #     # m.load_model('tf_dnn')
+    #     r = m.predict(np.random.random(8).reshape(1, 8), np.random.random(2).reshape(1, 2))
+    #     total, tmp, perm, instant = r
+    #     print(total[0], tmp[0], perm[0], instant[0])
