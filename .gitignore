@@ -113,5 +113,6 @@ quant_models/model_processing/__pycache__/
 quant_models/strategies/__pycache__/
 quant_models/utils/__pycache__/
 quant_models/playground/
-bundle/
+quant_models/strategies/rqdata/bundle/
+
 
