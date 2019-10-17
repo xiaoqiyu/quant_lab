@@ -15,6 +15,7 @@ from quant_models.utils.helper import get_config
 config = get_config()
 logger = Logger(log_level='DEBUG', handler='ch').get_log()
 
+
 class Dl_Reg_Model(Model):
     def __init__(self, model_name='linear'):
         self.model_name = model_name
