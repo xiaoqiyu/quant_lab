@@ -182,7 +182,7 @@ if __name__ == '__main__':
 
     acc = np.random.random(400).reshape(200, 2)
     m.train_model(x, y, acc, 5, 50, 'test')
-    # m.output_model('test')
+    m.output_model('test')
     # m.load_model('test')
     # for i in range(3):
     #     # m.load_model('tf_dnn')
