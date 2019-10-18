@@ -47,7 +47,7 @@ class TFMultiFactor(Model):
                                              name='feature_inputs')
         self.indust_inputs = tf.placeholder(tf.float32, shape=(None, indust_shape[1]),
                                             name='industry_inputs')
-        self.Y = tf.placeholder(tf.float32, shape=(None, 1))
+        self.train_Y = tf.placeholder(tf.float32, shape=(None, 1))
         prev = 0
         _feature_layer_inputs = []
         for _f_num in _sub_type_num:
@@ -55,13 +55,17 @@ class TFMultiFactor(Model):
             _w = tf.Variable(tf.random_normal([_f_num, 1]))
             _f_val = tf.matmul(self.feature_inputs[:, prev:_f_num], _w)
             _feature_layer_inputs.append(_f_val)
-        flattern_indust_input = tf.unstack(self.indust_inputs)
+        _indust_num = indust_shape[1]
+        flattern_indust_input = []
+        for idx in range(_indust_num):
+            flattern_indust_input.append(self.indust_inputs[:, idx:idx + 1])
+        # flattern_indust_input = tf.unstack(self.indust_inputs)
         _feature_layer_inputs.extend(flattern_indust_input)
-        feature_val = tf.Variable(_feature_layer_inputs)
-
+        # feature_val = tf.Variable(_feature_layer_inputs)
+        feature_val = tf.concat(_feature_layer_inputs, axis=1)
         _total_feature_num = len(feature_shape) + indust_shape[1]
         w = tf.Variable(tf.random_normal([_total_feature_num, 1]))
-        self.output = tf.matmul(_total_feature_num, w)
+        self.output = tf.matmul(feature_val, w)
 
         with tf.name_scope('loss'):
             self.loss = tf.losses.mean_squared_error(labels=self.train_Y, predictions=self.output)
@@ -75,12 +79,22 @@ class TFMultiFactor(Model):
             self.summary_op = tf.summary.merge_all()
 
     def train_model(self, train_X, train_Y, acc, n_epochs=100, batch_size=50, model_name=None):
+        '''
+
+        :param train_X: feature input,N*K vector; N is sec number, K is the total number of sub-type feature
+        :param train_Y: trained label; N*1 vector; e.g. the return of stock
+        :param acc: industry feature input, N*I; N is sec number
+        :param n_epochs: trained epoch
+        :param batch_size: trained batch_size
+        :param model_name:
+        :return:
+        '''
         init = tf.global_variables_initializer()
         # saver = tf.train.Saver()
         self._dataset = DataSet(train_X, train_Y, acc)
 
         with tf.Session() as self.sess:
-            train_writer = tf.summary.FileWriter("E:\pycharm\\algo_trading\mi_remote\mi_models\data\models",
+            train_writer = tf.summary.FileWriter("E:\pycharm\quant_geek\quant_models\data\models",
                                                  self.sess.graph)
             init.run()
             for epoch in range(n_epochs):
@@ -88,11 +102,12 @@ class TFMultiFactor(Model):
                 for iteration in range(self._dataset.num_examples // batch_size):
                     x_batch, y_batch, acc = self._dataset.next_batch(batch_size)
                     self.sess.run([self.training_op],
-                                  feed_dict={self.train_X: x_batch, self.train_Y: y_batch, self.acc_input: acc})
+                                  feed_dict={self.feature_inputs: x_batch, self.train_Y: y_batch,
+                                             self.indust_inputs: acc})
                 x_test, y_test, acc_test = self._dataset.next_batch(batch_size)
                 test_loss, test_summary = self.sess.run([self.loss, self.summary_op],
-                                                        feed_dict={self.train_X: x_test, self.train_Y: y_test,
-                                                                   self.acc_input: acc_test})
+                                                        feed_dict={self.feature_inputs: x_test, self.train_Y: y_test,
+                                                                   self.indust_inputs: acc_test})
                 self._test_loss.append(test_loss)
                 logger.info('epoch: {0}, test_loss:{1}'.format(epoch, test_loss))
                 train_writer.add_summary(test_summary, epoch)
@@ -161,7 +176,7 @@ if __name__ == '__main__':
     # m.load_model('tf_dnn')
 
     m = TFMultiFactor()
-    m.build_model(feature_shape=[(10, 2), (10, 3), (10, 3), (10, 2)], indust_shape=(10, 5))
+    m.build_model(feature_shape=[(10, 2), (10, 3), (10, 3), (10, 2)], indust_shape=(10, 2))
     x = np.random.random(2000).reshape(200, 10)
     y = np.random.random(200).reshape(200, 1)
 
