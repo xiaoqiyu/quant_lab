@@ -74,11 +74,23 @@ mincached = 0
 maxcached = 2
 port = 1433
 
-[barra_features]
-growth = TOTALASSETGROWRATE
-vs = PE,PB,PS
-volume = OBV
-return = ALPHA20,BETA20,VARIANCE20
+[test_features]
+valuation=PB,NetOperateCFTTM,OperatingRevenuePS,FCFF,DividendPaidRatio
+size=LCAP,LFLO
+growth=SGRO,NetAssetGrowRate,DEGM,NetProfitGrowRate,TotalAssetGrowRate,NetCashFlowGrowRate,InvestCashGrowRate,OperCashGrowRate,FinancingCashGrowRate,OperatingProfitGrowRate,BASIC_EPS_YOY
+quality=ROE,ROA,GrossIncomeRatio,ROIC,NP_MARGIN,TA_TURNOVER,TFA_TURNOVER,CA_TURNOVER
+lever=CURRENT_RATIO,QUICK_RATIO,BLEV,ASSET_LIAB_RATIO,CASH_CL,EQUITY_RATIO
+risk=RealizedVolatility,Variance20,Variance60,HsigmaCNE5,DASTD,LossVariance20,LossVariance60,TVSTD6,TVSTD20,Beta252
+liqudity=VOL10,VOL120,VOL20,VOL240,VOL5,VOL60,Volatility
+tech=RVI,RSI,RSTR12,CR20,MACD,DEA,KDJ_D
+momentum=REVS5,REVS10,REVS20,REVS60,REVS120,REVS250,REVS750
+predict=FY12P,DAREV,SFY12P,DASREV,FEARNG,FSALESG
+
+
+
+
+
+
 
 
 

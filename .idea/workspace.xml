@@ -2,9 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="2fcb8905-90be-493e-9565-981ed27d1881" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/quant_models/docs/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/quant_models/api/feature_research.py" beforeDir="false" afterPath="$PROJECT_DIR$/quant_models/api/feature_research.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/quant_models/conf/conf" beforeDir="false" afterPath="$PROJECT_DIR$/quant_models/conf/conf" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -18,8 +17,8 @@
       <file leaf-file-name="tf_multi_factor.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/quant_models/model_processing/tf_multi_factor.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="188">
-              <caret line="96" column="97" selection-start-line="96" selection-start-column="49" selection-end-line="96" selection-end-column="97" />
+            <state relative-caret-position="-1237">
+              <caret line="102" column="80" lean-forward="true" selection-start-line="102" selection-start-column="80" selection-end-line="102" selection-end-column="80" />
               <folding>
                 <element signature="e#123#132#0" expanded="true" />
               </folding>
@@ -27,11 +26,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="feature_research.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="feature_research.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/quant_models/api/feature_research.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="238">
-              <caret line="315" column="29" lean-forward="true" selection-start-line="315" selection-start-column="29" selection-end-line="315" selection-end-column="29" />
+            <state relative-caret-position="354">
+              <caret line="345" column="34" lean-forward="true" selection-start-line="345" selection-start-column="34" selection-end-line="345" selection-end-column="34" />
               <folding>
                 <element signature="e#124#137#0" expanded="true" />
               </folding>
@@ -39,7 +38,16 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="report.ipynb" pinned="false" current-in-tab="true">
+      <file leaf-file-name="conf" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/quant_models/conf/conf">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="276">
+              <caret line="76" column="14" selection-start-line="76" selection-start-column="1" selection-end-line="76" selection-end-column="14" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="report.ipynb" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/quant_models/docs/report.ipynb">
           <provider selected="true" editor-type-id="ipnb-editor">
             <state>
@@ -60,8 +68,8 @@
       <file leaf-file-name="dataset.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/quant_models/data_processing/dataset.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="583">
-              <caret line="72" column="42" selection-start-line="72" selection-start-column="32" selection-end-line="72" selection-end-column="42" />
+            <state relative-caret-position="383">
+              <caret line="64" lean-forward="true" selection-start-line="64" selection-end-line="64" />
             </state>
           </provider>
         </entry>
@@ -102,9 +110,9 @@
       <find>n_hidden2</find>
       <find>fully</find>
       <find>get_idx_returns</find>
-      <find>get_factor_returns</find>
-      <find>unstack</find>
       <find>get_sec</find>
+      <find>unstack</find>
+      <find>get_factor_returns</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -121,7 +129,6 @@
         <option value="$PROJECT_DIR$/quant_models/data_processing/market.py" />
         <option value="$PROJECT_DIR$/quant_models/api/feature_research_barra.py" />
         <option value="$PROJECT_DIR$/quant_models/api/stock_selection_ml.py" />
-        <option value="$PROJECT_DIR$/quant_models/conf/conf" />
         <option value="$PROJECT_DIR$/quant_models/conf/run_config" />
         <option value="$PROJECT_DIR$/quant_models/playground/kiki/cba_analysis.py" />
         <option value="$PROJECT_DIR$/quant_models/playground/kiki/filter.py" />
@@ -143,8 +150,9 @@
         <option value="$PROJECT_DIR$/.gitignore" />
         <option value="$PROJECT_DIR$/quant_models/playground/kiki/algo_strategy.py" />
         <option value="$PROJECT_DIR$/quant_models/model_processing/tf_multi_factor.py" />
-        <option value="$PROJECT_DIR$/quant_models/api/feature_research.py" />
         <option value="$PROJECT_DIR$/quant_models/docs/report.ipynb" />
+        <option value="$PROJECT_DIR$/quant_models/conf/conf" />
+        <option value="$PROJECT_DIR$/quant_models/api/feature_research.py" />
       </list>
     </option>
   </component>
@@ -175,13 +183,26 @@
               <item name="quant_geek" type="b2602c69:ProjectViewProjectNode" />
               <item name="quant_geek" type="462c0819:PsiDirectoryNode" />
               <item name="quant_models" type="462c0819:PsiDirectoryNode" />
-              <item name="docs" type="462c0819:PsiDirectoryNode" />
+              <item name="api" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="quant_geek" type="b2602c69:ProjectViewProjectNode" />
               <item name="quant_geek" type="462c0819:PsiDirectoryNode" />
               <item name="quant_models" type="462c0819:PsiDirectoryNode" />
-              <item name="strategies" type="462c0819:PsiDirectoryNode" />
+              <item name="api" type="462c0819:PsiDirectoryNode" />
+              <item name="feature_research.py" type="8704e2dd:PyFileNode" />
+            </path>
+            <path>
+              <item name="quant_geek" type="b2602c69:ProjectViewProjectNode" />
+              <item name="quant_geek" type="462c0819:PsiDirectoryNode" />
+              <item name="quant_models" type="462c0819:PsiDirectoryNode" />
+              <item name="conf" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="quant_geek" type="b2602c69:ProjectViewProjectNode" />
+              <item name="quant_geek" type="462c0819:PsiDirectoryNode" />
+              <item name="quant_models" type="462c0819:PsiDirectoryNode" />
+              <item name="docs" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="quant_geek" type="b2602c69:ProjectViewProjectNode" />
@@ -337,17 +358,17 @@
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.18809272" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.19336143" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.18647765" />
       <window_info anchor="bottom" id="Version Control" order="9" />
       <window_info anchor="bottom" id="Python Console" order="7" weight="0.2791712" />
-      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.26499456" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.2257361" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info anchor="bottom" id="Terminal" order="8" weight="0.18995929" />
       <window_info id="Favorites" order="2" side_tool="true" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.29225737" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.37731734" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -432,16 +453,6 @@
           <line>1148</line>
           <option name="timeStamp" value="129" />
         </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/quant_models/api/feature_research.py</url>
-          <line>327</line>
-          <option name="timeStamp" value="161" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/quant_models/api/feature_research.py</url>
-          <line>326</line>
-          <option name="timeStamp" value="162" />
-        </line-breakpoint>
       </breakpoints>
       <default-breakpoints>
         <breakpoint type="python-exception">
@@ -450,11 +461,16 @@
           </properties>
         </breakpoint>
       </default-breakpoints>
-      <option name="time" value="164" />
+      <option name="time" value="165" />
     </breakpoint-manager>
   </component>
   <component name="debuggerHistoryManager">
     <expressions id="evaluateExpression">
+      <expression>
+        <expression-string>feature_mapping</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
       <expression>
         <expression-string>pd.DataFrame(industry_exposure_factors,columns=industry_name, index=security_ids[:5])</expression-string>
         <language-id>Python</language-id>
@@ -492,11 +508,6 @@
       </expression>
       <expression>
         <expression-string>exposure_rows</expression-string>
-        <language-id>Python</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>x</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
@@ -570,13 +581,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="34500">
           <caret line="1392" selection-start-line="1392" selection-end-line="1392" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/quant_models/conf/conf">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1900">
-          <caret line="76" column="16" selection-start-line="76" selection-start-column="16" selection-end-line="76" selection-end-column="16" />
         </state>
       </provider>
     </entry>
@@ -835,16 +839,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/quant_models/model_processing/tf_multi_factor.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="188">
-          <caret line="96" column="97" selection-start-line="96" selection-start-column="49" selection-end-line="96" selection-end-column="97" />
-          <folding>
-            <element signature="e#123#132#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/quant_models/data_processing/features_calculation.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="289">
@@ -852,27 +846,44 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/quant_models/docs/report.ipynb">
+      <provider selected="true" editor-type-id="ipnb-editor">
+        <state>
+          <selected id="0" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/quant_models/data_processing/dataset.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="583">
-          <caret line="72" column="42" selection-start-line="72" selection-start-column="32" selection-end-line="72" selection-end-column="42" />
+        <state relative-caret-position="383">
+          <caret line="64" lean-forward="true" selection-start-line="64" selection-end-line="64" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/quant_models/model_processing/tf_multi_factor.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1237">
+          <caret line="102" column="80" lean-forward="true" selection-start-line="102" selection-start-column="80" selection-end-line="102" selection-end-column="80" />
+          <folding>
+            <element signature="e#123#132#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/quant_models/conf/conf">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="276">
+          <caret line="76" column="14" selection-start-line="76" selection-start-column="1" selection-end-line="76" selection-end-column="14" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/quant_models/api/feature_research.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="315" column="29" lean-forward="true" selection-start-line="315" selection-start-column="29" selection-end-line="315" selection-end-column="29" />
+        <state relative-caret-position="354">
+          <caret line="345" column="34" lean-forward="true" selection-start-line="345" selection-start-column="34" selection-end-line="345" selection-end-column="34" />
           <folding>
             <element signature="e#124#137#0" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/quant_models/docs/report.ipynb">
-      <provider selected="true" editor-type-id="ipnb-editor">
-        <state>
-          <selected id="0" />
         </state>
       </provider>
     </entry>
