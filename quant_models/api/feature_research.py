@@ -125,7 +125,7 @@ def get_indust_vectors(security_ids=[]):
     return np.array(ret)
 
 
-def get_indust_exposures(start_date=None, end_date=None, stock_returns=None):
+def get_indust_exposures_time_series_regression(start_date=None, end_date=None, stock_returns=None, period=30):
     logger.info("Start processing the industry exposure for start_date:{0}, end_date:{1} ".format(start_date, end_date))
     df_indust = get_indust_mkt(start_date=start_date, end_date=end_date)
     indust_codes = list(set(df_indust['IndustryCode']))
@@ -143,20 +143,61 @@ def get_indust_exposures(start_date=None, end_date=None, stock_returns=None):
         return_rows = list(zip(list(return_dict.keys()), list(return_dict.values())))
         return_rows = sorted(return_rows, key=lambda x: x[0])
         y = [item[1] for item in return_rows]
+        period = period or x.shape[1]
         # y = y - _last_col
         # y = [_y[idx] - val for idx, val in enumerate(_last_col)]
         n_col = x.shape[1]
         # assert x.shape[0] == len(y)
-        x = x[-x.shape[1]:]
-        y = y[-x.shape[1]:]
+        x = x[-period:]
+        y = y[-period:]
+
+        # for the restriction that sum(exposure) ==1
         x = x.append([[1.0] * x.shape[1]])
         y.append(1.0)
 
+        # regression with restriction
         m = Ml_Reg_Model('linear_nnls')
         m.build_model()
         m.train_model(x, y, sample_weight=(0, 1.0))
         coef, intercept = m.output_model()
         exposure_rows.append(coef)
+
+    logger.info(
+        "Complete processing the industry exposure for start_date:{0}, end_date:{1} with return rows:{2} ".format(
+            start_date, end_date, len(exposure_rows)))
+    return exposure_rows, indust_names
+
+
+def get_indust_exposures_corr(start_date=None, end_date=None, stock_returns=None, period=30, bc_returns=None):
+    logger.info("Start processing the industry exposure for start_date:{0}, end_date:{1} ".format(start_date, end_date))
+    df_indust = get_indust_mkt(start_date=start_date, end_date=end_date)
+    indust_codes = list(set(df_indust['IndustryCode']))
+    indust_names = list(set(df_indust['IndustryName']))
+    indust_rows = []
+    for item in indust_codes:
+        indust_rows.append(list(df_indust[df_indust.IndustryCode == item].sort_values(by='TradingDay')['ChangePCT']))
+    x = pd.DataFrame(indust_rows).transpose()
+    # FIXME check the rows number for x
+    # x = x[list(range(16))]
+    # del df_indust
+    exposure_rows = []
+    bc_return_rows = list(bc_returns.values())
+    for sec_id, return_dict in stock_returns.items():
+        return_rows = list(zip(list(return_dict.keys()), list(return_dict.values())))
+        return_rows = sorted(return_rows, key=lambda x: x[0])
+        y = [item[1] for item in return_rows]
+        period = period or x.shape[1]
+        # y = y - _last_col
+        # y = [_y[idx] - val for idx, val in enumerate(_last_col)]
+        n_col = x.shape[1]
+        # assert x.shape[0] == len(y)
+        x = x[-period:]
+        bc_return_rows = bc_return_rows[-period:]
+        y = y[-period:]
+        x = x.apply(lambda x: x - bc_return_rows)
+        x['y'] = y
+        _corr = list(x.corr()['y'])[:-1]
+        exposure_rows.append(_corr)
     logger.info(
         "Complete processing the industry exposure for start_date:{0}, end_date:{1} with return rows:{2} ".format(
             start_date, end_date, len(exposure_rows)))
@@ -217,8 +258,9 @@ def get_factor_returns(start_date='20181101', end_date='20181131', data_source=0
         ret_mv = get_market_value(security_ids=security_ids, start_date=_start_date, end_date=next_date)
         none_factor_dict = defaultdict()
         # FIXME use the future industry return, should be updated to trace back the history data by windows
-        industry_exposure_factors = get_indust_exposures(start_date=_start_date, end_date=_end_date,
-                                                         stock_returns=ret_returns)
+        industry_exposure_factors = get_indust_exposures_time_series_regression(start_date=_start_date,
+                                                                                end_date=_end_date,
+                                                                                stock_returns=ret_returns)
         _industry_exposure_df = pd.DataFrame(industry_exposure_factors)
         _industry_exposure_df.to_csv('{0}_{1}_{2}.csv'.format(_start_date, _end_date, bc))
         for date, val in ret_features.items():
@@ -261,18 +303,31 @@ if __name__ == '__main__':
     # ret = _get_source_features()
     # pprint.pprint(ret)
 
+    start_date = '20190616'
+    end_date = '20190923'
+    bc = '000300.XSHG'
+    idx_labels = get_idx_returns(security_ids=[bc], start_date=start_date, end_date=end_date,
+                                 source=0).get(bc)
+    # print(idx_labels)
+
     # testing code
-    # secs = ['001979.XSHE', '603612.XSHG']
+    security_ids = get_idx_cons_jy(bc, start_date, end_date)
+    secs = ['001979.XSHE']
     # start_date = '20190616'
     # end_date = '20190923'
-    # ret_returns = get_equity_returns(security_ids=secs, start_date=start_date, end_date=end_date)
-    # industry_exposure_factors, industry_name = get_indust_exposures(start_date=start_date, end_date=end_date,
-    #                                                                 stock_returns=ret_returns)
-    # # df = pd.DataFrame(industry_exposure_factors, columns=industry_name, index=secs)
+    ret_returns = get_equity_returns(security_ids=security_ids, start_date=start_date, end_date=end_date)
+
+    industry_exposure_factors, industry_name = get_indust_exposures_corr(start_date=start_date, end_date=end_date,
+                                                                         stock_returns=ret_returns, period=120,
+                                                                         bc_returns=idx_labels)
+
+    # df = pd.DataFrame(industry_exposure_factors, columns=industry_name, index=secs)
+    df = pd.DataFrame(industry_exposure_factors, columns=industry_name, index=security_ids)
+    df.to_csv("E:\pycharm\quant_geek\quant_models\data\\features\\industry_feature_300.csv")
     # pprint.pprint(industry_name)
     # pprint.pprint(list(industry_exposure_factors[0]))
 
     # test the multi-factor
-    vec, names = get_sw_2nd_vectors(['001979.XSHE', '603612.XSHG'])
-    print(names)
-    print(vec)
+    # vec, names = get_sw_2nd_vectors(['001979.XSHE', '603612.XSHG'])
+    # print(names)
+    # print(vec)
