@@ -53,7 +53,7 @@ def get_trade_schedule(participant_rate=0.15, target_ratio=0.01, sec_code="00229
     return ret_vols, [price_prev, price_ma5]
 
 
-def get_schedule(*args, **kwargs):
+def get_schedule(**kwargs):
     sec_code = kwargs.get('sec_code')
     end_date = kwargs.get('end_date')
     if not sec_code or not end_date:
@@ -82,15 +82,33 @@ def get_schedule(*args, **kwargs):
     return df
 
 
+def main():
+    trade_history = pd.read_excel('data/trade_history.xlsx')
+    df = trade_history['002936']
+    print(df)
+
+
 if __name__ == '__main__':
+    # # 郑州银行
+    # ret = get_schedule(participant_rate=0.15, target_ratio=0.01, sec_code="002936.SZ",
+    #                    end_date="2019-10-18", period=100, target_vol=8000000, target_period=20,
+    #                    price_ratio=0.95, update=True)
+    # print(ret)
+    #
+    # # 蠡湖股份
+    # ret = get_schedule(participant_rate=0.15, target_ratio=0.01, sec_code="300694.SZ",
+    #                    end_date="2019-10-18", period=100, target_vol=2150000, target_period=None,
+    #                    price_ratio=0.98, update=True)
+    # print(ret)
+    #
     # 郑州银行
     ret = get_schedule(participant_rate=0.15, target_ratio=0.01, sec_code="002936.SZ",
-                       end_date="2019-10-18", period=100, target_vol=8000000, target_period=20,
+                       end_date="2019-10-21", period=100, target_vol=8000000, target_period=19,
                        price_ratio=0.95, update=True)
     print(ret)
 
-    # 蠡湖股份
-    ret = get_schedule(participant_rate=0.15, target_ratio=0.01, sec_code="300694.SZ",
-                       end_date="2019-10-18", period=100, target_vol=2150000, target_period=None,
-                       price_ratio=0.98, update=True)
-    print(ret)
+    # # 蠡湖股份
+    # ret = get_schedule(participant_rate=0.15, target_ratio=0.01, sec_code="300694.SZ",
+    #                    end_date="2019-10-21", period=100, target_vol=1508000, target_period=None,
+    #                    price_ratio=0.98, update=True)
+    # print(ret)

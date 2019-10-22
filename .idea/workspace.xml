@@ -2,10 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="2fcb8905-90be-493e-9565-981ed27d1881" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/quant_models/strategies/algo_strategy/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/quant_models/docs/report.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/quant_models/docs/report.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/quant_models/strategies/algo_strategy/algo_strategy.py" beforeDir="false" afterPath="$PROJECT_DIR$/quant_models/strategies/algo_strategy/algo_strategy.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -54,11 +51,11 @@
       <file leaf-file-name="algo_strategy.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/quant_models/strategies/algo_strategy/algo_strategy.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="285">
-              <caret line="88" column="53" lean-forward="true" selection-start-line="88" selection-start-column="53" selection-end-line="88" selection-end-column="53" />
+            <state relative-caret-position="358">
+              <caret line="70" column="26" lean-forward="true" selection-start-line="70" selection-start-column="26" selection-end-line="70" selection-end-column="26" />
               <folding>
                 <element signature="e#121#141#0" expanded="true" />
-                <marker date="1571562283131" expanded="true" signature="3240:3418" ph="..." />
+                <marker date="1571656172408" expanded="true" signature="3359:3541" ph="..." />
               </folding>
             </state>
           </provider>
@@ -97,8 +94,8 @@
       <file leaf-file-name="oracle_helper.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/quant_models/utils/oracle_helper.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1125">
-              <caret line="46" column="52" selection-start-line="46" selection-start-column="52" selection-end-line="46" selection-end-column="52" />
+            <state relative-caret-position="53">
+              <caret line="40" lean-forward="true" selection-start-line="40" selection-end-line="40" />
               <folding>
                 <element signature="e#123#139#0" expanded="true" />
               </folding>
@@ -220,58 +217,13 @@
               <item name="quant_geek" type="b2602c69:ProjectViewProjectNode" />
               <item name="quant_geek" type="462c0819:PsiDirectoryNode" />
               <item name="quant_models" type="462c0819:PsiDirectoryNode" />
-              <item name="api" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="quant_geek" type="b2602c69:ProjectViewProjectNode" />
-              <item name="quant_geek" type="462c0819:PsiDirectoryNode" />
-              <item name="quant_models" type="462c0819:PsiDirectoryNode" />
-              <item name="conf" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="quant_geek" type="b2602c69:ProjectViewProjectNode" />
-              <item name="quant_geek" type="462c0819:PsiDirectoryNode" />
-              <item name="quant_models" type="462c0819:PsiDirectoryNode" />
-              <item name="data" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="quant_geek" type="b2602c69:ProjectViewProjectNode" />
-              <item name="quant_geek" type="462c0819:PsiDirectoryNode" />
-              <item name="quant_models" type="462c0819:PsiDirectoryNode" />
-              <item name="data" type="462c0819:PsiDirectoryNode" />
-              <item name="models" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="quant_geek" type="b2602c69:ProjectViewProjectNode" />
-              <item name="quant_geek" type="462c0819:PsiDirectoryNode" />
-              <item name="quant_models" type="462c0819:PsiDirectoryNode" />
               <item name="model_processing" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="quant_geek" type="b2602c69:ProjectViewProjectNode" />
               <item name="quant_geek" type="462c0819:PsiDirectoryNode" />
               <item name="quant_models" type="462c0819:PsiDirectoryNode" />
-              <item name="playground" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="quant_geek" type="b2602c69:ProjectViewProjectNode" />
-              <item name="quant_geek" type="462c0819:PsiDirectoryNode" />
-              <item name="quant_models" type="462c0819:PsiDirectoryNode" />
-              <item name="playground" type="462c0819:PsiDirectoryNode" />
-              <item name="kiki" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="quant_geek" type="b2602c69:ProjectViewProjectNode" />
-              <item name="quant_geek" type="462c0819:PsiDirectoryNode" />
-              <item name="quant_models" type="462c0819:PsiDirectoryNode" />
-              <item name="strategies" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="quant_geek" type="b2602c69:ProjectViewProjectNode" />
-              <item name="quant_geek" type="462c0819:PsiDirectoryNode" />
-              <item name="quant_models" type="462c0819:PsiDirectoryNode" />
-              <item name="strategies" type="462c0819:PsiDirectoryNode" />
-              <item name="algo_strategy" type="462c0819:PsiDirectoryNode" />
+              <item name="utils" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -355,7 +307,7 @@
       <option name="EMULATE_TERMINAL" value="false" />
       <option name="MODULE_MODE" value="false" />
     </configuration>
-    <configuration name="features_calculation" type="PythonConfigurationType" factoryName="Python" temporary="true">
+    <configuration name="oracle_helper" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="testing" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -363,11 +315,11 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/quant_models/data_processing" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/quant_models/utils" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/quant_models/data_processing/features_calculation.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/quant_models/utils/oracle_helper.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -393,18 +345,18 @@
     </configuration>
     <list>
       <item itemvalue="Python.feature_research" />
-      <item itemvalue="Python.features_calculation" />
       <item itemvalue="Python.algo_strategy" />
       <item itemvalue="Python.tf_multi_factor" />
       <item itemvalue="Python.algo_strategy (1)" />
+      <item itemvalue="Python.oracle_helper" />
     </list>
     <recent_temporary>
       <list>
         <item itemvalue="Python.algo_strategy (1)" />
+        <item itemvalue="Python.oracle_helper" />
         <item itemvalue="Python.feature_research" />
         <item itemvalue="Python.tf_multi_factor" />
         <item itemvalue="Python.algo_strategy" />
-        <item itemvalue="Python.features_calculation" />
       </list>
     </recent_temporary>
   </component>
@@ -429,9 +381,9 @@
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.18647765" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.24754634" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.23118865" />
       <window_info anchor="bottom" id="Version Control" order="9" />
-      <window_info anchor="bottom" id="Python Console" order="7" weight="0.13740458" />
+      <window_info anchor="bottom" id="Python Console" order="7" weight="0.35332605" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info anchor="bottom" id="Terminal" order="8" weight="0.18995929" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.2955289" />
@@ -528,53 +480,53 @@
           </properties>
         </breakpoint>
       </default-breakpoints>
-      <option name="time" value="171" />
+      <option name="time" value="174" />
     </breakpoint-manager>
   </component>
   <component name="debuggerHistoryManager">
     <expressions id="evaluateExpression">
       <expression>
-        <expression-string>target_period</expression-string>
+        <expression-string>trade_history[trade_history.日期==u'20191018']</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>participant_rate</expression-string>
+        <expression-string>trade_history[trade_history.日期=='20191018']</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>target_vol</expression-string>
+        <expression-string>trade_history[trade_history.日期='20191018']</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>curr_df.append(df)</expression-string>
+        <expression-string>trade_history</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>curr_df</expression-string>
+        <expression-string>trade_history.columns</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>feature_mapping</expression-string>
+        <expression-string>str(trade_history.index[0])</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string />
+        <expression-string>list(trade_history.index)</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>pd.DataFrame(industry_exposure_factors,columns=industry_name)</expression-string>
+        <expression-string>list(trade_history.values)</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>pd.DataFrame(industry_exposure_factors)</expression-string>
+        <expression-string>list(trade_history.values）</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
@@ -889,16 +841,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/quant_models/utils/oracle_helper.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1125">
-          <caret line="46" column="52" selection-start-line="46" selection-start-column="52" selection-end-line="46" selection-end-column="52" />
-          <folding>
-            <element signature="e#123#139#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/quant_models/model_processing/tf_multi_factor.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2750">
@@ -940,13 +882,23 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/quant_models/utils/oracle_helper.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="53">
+          <caret line="40" lean-forward="true" selection-start-line="40" selection-end-line="40" />
+          <folding>
+            <element signature="e#123#139#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/quant_models/strategies/algo_strategy/algo_strategy.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="285">
-          <caret line="88" column="53" lean-forward="true" selection-start-line="88" selection-start-column="53" selection-end-line="88" selection-end-column="53" />
+        <state relative-caret-position="358">
+          <caret line="70" column="26" lean-forward="true" selection-start-line="70" selection-start-column="26" selection-end-line="70" selection-end-column="26" />
           <folding>
             <element signature="e#121#141#0" expanded="true" />
-            <marker date="1571562283131" expanded="true" signature="3240:3418" ph="..." />
+            <marker date="1571656172408" expanded="true" signature="3359:3541" ph="..." />
           </folding>
         </state>
       </provider>
