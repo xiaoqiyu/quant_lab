@@ -176,7 +176,7 @@ if __name__ == '__main__':
     # m.load_model('tf_dnn')
 
     m = TFMultiFactor()
-    m.build_model(feature_shape=[(10, 2), (10, 3), (10, 3), (10, 2)], indust_shape=(10, 2))
+    m.build_model(feature_shape=[(1, 2), (1, 3), (1, 3), (1, 2)], indust_shape=(1, 2))
     x = np.random.random(2000).reshape(200, 10)
     y = np.random.random(200).reshape(200, 1)
 

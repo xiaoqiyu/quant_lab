@@ -124,6 +124,7 @@ class DataFetcherDB(object):
             if end_date:
                 sql_str = "{0} AND TRADE_DATE < {1}".format(sql_str, end_date)
         logger.debug('Execute query: {0}'.format(sql_str))
+        print(sql_str)
         return self._dyobj.execute_query(sql_str)
 
     def get_mkt_equd(self, security_ids=(), fields=None, start_date=None, end_date=None, asset_type='stock'):

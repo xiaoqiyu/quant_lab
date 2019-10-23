@@ -25,6 +25,7 @@ from quant_models.model_processing.feature_preprocessing import feature_preproce
 from quant_models.data_processing.features_calculation import get_security_codes
 from quant_models.data_processing.features_calculation import get_sw_2nd_indust
 from quant_models.model_processing.ml_reg_models import Ml_Reg_Model
+from quant_models.model_processing.tf_multi_factor import TFMultiFactor
 from quant_models.utils.date_utils import datetime_delta
 from quant_models.utils.io_utils import write_json_file
 from quant_models.utils.logger import Logger
@@ -42,6 +43,7 @@ def _get_source_features():
     ret = {}
     for k, v in source_features.items():
         ret.update({k: v.split(',')})
+    ret = {'volume': ['OBV', 'VEMA5'], 'ma': ['EMA10', 'ACD6']}
     return ret
 
 
@@ -183,21 +185,24 @@ def get_indust_exposures_corr(start_date=None, end_date=None, stock_returns=None
     exposure_rows = []
     bc_return_rows = list(bc_returns.values())
     for sec_id, return_dict in stock_returns.items():
-        return_rows = list(zip(list(return_dict.keys()), list(return_dict.values())))
-        return_rows = sorted(return_rows, key=lambda x: x[0])
-        y = [item[1] for item in return_rows]
-        period = period or x.shape[1]
-        # y = y - _last_col
-        # y = [_y[idx] - val for idx, val in enumerate(_last_col)]
-        n_col = x.shape[1]
-        # assert x.shape[0] == len(y)
-        x = x[-period:]
-        bc_return_rows = bc_return_rows[-period:]
-        y = y[-period:]
-        x = x.apply(lambda x: x - bc_return_rows)
-        x['y'] = y
-        _corr = list(x.corr()['y'])[:-1]
-        exposure_rows.append(_corr)
+        try:
+            return_rows = list(zip(list(return_dict.keys()), list(return_dict.values())))
+            return_rows = sorted(return_rows, key=lambda x: x[0])
+            y = [item[1] for item in return_rows]
+            period = period or x.shape[1]
+            # y = y - _last_col
+            # y = [_y[idx] - val for idx, val in enumerate(_last_col)]
+            n_col = x.shape[1]
+            # assert x.shape[0] == len(y)
+            x = x[-period:]
+            _bc_return_rows = bc_return_rows[-period:-1]
+            y = y[-period:-1]
+            x = x.apply(lambda x: x - _bc_return_rows)
+            x['y'] = y
+            _corr = list(x.corr()['y'])[:-1]
+            exposure_rows.append(_corr)
+        except Exception as ex:
+            print(ex)
     logger.info(
         "Complete processing the industry exposure for start_date:{0}, end_date:{1} with return rows:{2} ".format(
             start_date, end_date, len(exposure_rows)))
@@ -308,35 +313,40 @@ def get_factor_returns(start_date='20181101', end_date='20181131', data_source=0
 
 
 def feature_models(start_date='20181101', end_date='20181131', data_source=0,
-                    feature_types=[], saved_feature=True, bc=None,
-                    top_ratio=0.25, bottom_ratio=0.2):
+                   feature_types=[], saved_feature=True, bc=None,
+                   top_ratio=0.25, bottom_ratio=0.2):
     root = get_source_root()
     feature_mapping = _get_source_features()
-
+    feature_shape = [(1, len(item)) for item in list(feature_mapping.values())]
+    # FIXME remove hardcode
+    indust_shape = (1, 17)
     date_periods = _get_in_out_dates(start_date=start_date, end_date=end_date, security_id=bc) or [
         [start_date, end_date]]
     next_date = datetime_delta(dt=end_date, format='%Y%m%d', days=1)
     idx_labels = get_idx_returns(security_ids=[bc], start_date=start_date, end_date=next_date,
                                  source=0).get(bc)
     all_factor_returns = []
-
+    # FIXME change to load existing model
+    m = TFMultiFactor()
+    m.build_model(feature_shape=feature_shape, indust_shape=indust_shape)
     for _start_date, _end_date in date_periods:
         logger.info('get factor return: processing from {0} to {1}'.format(_start_date, _end_date))
-        next_date = datetime_delta(dt=_end_date, format='%Y%m%d', days=2)
+        _next_date = datetime_delta(dt=_end_date, format='%Y%m%d', days=2)
         if bc:
             security_ids = get_idx_cons_jy(bc, _start_date, _end_date)
         else:
             security_ids = get_security_codes()
         # FIXME HACK FOR TESTING
-        security_ids = security_ids[:5]
+        security_ids = security_ids[:50]
+
         ret_features = get_equity_daily_features(security_ids=security_ids, features=feature_mapping,
                                                  start_date=_start_date,
                                                  end_date=_end_date, source=data_source)
         ret_returns = get_equity_returns(security_ids=security_ids, start_date=_start_date, end_date=next_date)
-        ret_mv = get_market_value(security_ids=security_ids, start_date=_start_date, end_date=next_date)
+        ret_mv = get_market_value(security_ids=security_ids, start_date=_start_date, end_date=_next_date)
 
-        #FIXME industry vector updates
-        industry_exposure_factors, industry_name = get_indust_exposures_corr(start_date=start_date, end_date=end_date,
+        # FIXME industry vector updates
+        industry_exposure_factors, industry_name = get_indust_exposures_corr(start_date=_start_date, end_date=_end_date,
                                                                              stock_returns=ret_returns, period=120,
                                                                              bc_returns=idx_labels)
         for date, val in ret_features.items():
@@ -361,42 +371,39 @@ def feature_models(start_date='20181101', end_date='20181131', data_source=0,
                 daily_factors = feature_preprocessing(arr=daily_factors, fill_none=True, weights=daily_mv)
             except Exception as ex:
                 logger.error('fail in feature preprocessing with error:{0}'.format(ex))
-            # indus_factors = get_indust_vectors(security_ids)
+
+            # TODO country factors TBD
             courtry_factors = np.ones(len(security_ids)).reshape(len(security_ids), 1)
-            factor_returns = factor_return_regression(courtry_factors, industry_exposure_factors, daily_factors,
-                                                      daily_return)
-            all_factor_returns.append(factor_returns)
-    mean_returns = np.array(all_factor_returns).mean(axis=0)
-    return mean_returns
+            m.train_model(daily_factors, np.array(daily_return).reshape(len(daily_return), 1),
+                          industry_exposure_factors, 2, 5, )
+    return
 
 
 if __name__ == '__main__':
-    # ret = feature_models(start_date='20190801', end_date='20190805', data_source=0, feature_types=[],
-    #                          bc='000300.XSHG')
-    # pprint.pprint(ret)
-
+    ret = feature_models(start_date='20190801', end_date='20190805', data_source=0, feature_types=[],
+                         bc='000300.XSHG')
+    pprint.pprint(ret)
 
     # ret = get_indust_exposures(start_date='20190103', end_date='20190706')
     # pprint.pprint(ret)
     # ret = _get_source_features()
     # pprint.pprint(ret)
 
-
     # industry vector testing
-    start_date = '20190616'
-    end_date = '20190923'
-    bc = '000300.XSHG'
-    idx_labels = get_idx_returns(security_ids=[bc], start_date=start_date, end_date=end_date,
-                                 source=0).get(bc)
-    security_ids = get_idx_cons_jy(bc, start_date, end_date)
-    secs = ['001979.XSHE']
-    ret_returns = get_equity_returns(security_ids=security_ids, start_date=start_date, end_date=end_date)
-
-    industry_exposure_factors, industry_name = get_indust_exposures_corr(start_date=start_date, end_date=end_date,
-                                                                         stock_returns=ret_returns, period=120,
-                                                                         bc_returns=idx_labels)
-    df = pd.DataFrame(industry_exposure_factors, columns=industry_name, index=secs)
-    print(df)
+    # start_date = '20190616'
+    # end_date = '20190923'
+    # bc = '000300.XSHG'
+    # idx_labels = get_idx_returns(security_ids=[bc], start_date=start_date, end_date=end_date,
+    #                              source=0).get(bc)
+    # security_ids = get_idx_cons_jy(bc, start_date, end_date)
+    # secs = ['001979.XSHE']
+    # ret_returns = get_equity_returns(security_ids=security_ids, start_date=start_date, end_date=end_date)
+    #
+    # industry_exposure_factors, industry_name = get_indust_exposures_corr(start_date=start_date, end_date=end_date,
+    #                                                                      stock_returns=ret_returns, period=120,
+    #                                                                      bc_returns=idx_labels)
+    # df = pd.DataFrame(industry_exposure_factors, columns=industry_name, index=secs)
+    # print(df)
     # df = pd.DataFrame(industry_exposure_factors, columns=industry_name, index=security_ids)
     # df.to_csv("E:\pycharm\quant_geek\quant_models\data\\features\\industry_feature_300.csv")
     # pprint.pprint(industry_name)
