@@ -115,6 +115,8 @@ quant_models/utils/__pycache__/
 quant_models/playground/
 quant_models/strategies/rqdata/bundle/
 quant_models/strategies/algo_strategy/data/
+quant_models/applications/algo_strategy/data/
+
 
 
 

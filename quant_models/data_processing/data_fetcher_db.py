@@ -15,7 +15,7 @@ logger = Logger(log_level='INFO', handler='ch').get_log()
 
 class DataFetcherDB(object):
     def __init__(self):
-        self.datayes_config = {"user": "gfangm", "pwd": "Gfangm_cmS2019", "host": "10.200.40.170", "port": 1521,
+        self.datayes_config = {"user": "gfangm", "pwd": "Gfangm1023_cms2019", "host": "10.200.40.170", "port": 1521,
                                "dbname": "clouddb",
                                "mincached": 0, "maxcached": 1}
         self._dyobj = OracleHelper(self.datayes_config)

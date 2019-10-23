@@ -21,12 +21,12 @@ class DataFetcherAPI(object):
         if source == 0:
             self._uqer_client = uqer.Client(token="26356c6121e2766186977ec49253bf1ec4550ee901c983d9a9bff32f59e6a6fb")
         else:
-            # TODO this is not supported in the forllowing data api now
+            # TODO this is not supported in the forllowing data applications now
             self._rq_client = rqdatac.init('user3zszq@ricequant.com', '_admin123@qq.com')
 
     def get_equ_factor(self, factor_type='', security_ids=(), fields=None, start_date=None, end_date=None):
         '''
-        Factor not supported by api now
+        Factor not supported by applications now
         :param factor_type:
         :param security_ids:
         :param fields:

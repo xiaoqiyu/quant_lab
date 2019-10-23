@@ -1,13 +1,14 @@
 # -*- coding: utf-8 -*-
 # @time      : 2019/10/16 11:29
 # @author    : rpyxqi@gmail.com
-# @file      : algo_strategy.py
+# @file      : trading_strategy.py
 
 from WindPy import w
 import talib as ta
 import numpy as np
 import pandas as pd
 import pprint
+import matplotlib.pyplot as plt
 
 w.start()
 
@@ -102,13 +103,53 @@ if __name__ == '__main__':
     # print(ret)
     #
     # 郑州银行
-    ret = get_schedule(participant_rate=0.15, target_ratio=0.01, sec_code="002936.SZ",
-                       end_date="2019-10-21", period=100, target_vol=8000000, target_period=19,
-                       price_ratio=0.95, update=True)
+    # ret = get_schedule(participant_rate=0.15, target_ratio=0.01, sec_code="002936.SZ",
+    #                    end_date="2019-10-22", period=100, target_vol=8000000, target_period=10,
+    #                    price_ratio=0.95, update=True)
+    # print(ret)
+    #
+    # # 蠡湖股份
+    ret = get_schedule(participant_rate=0.15, target_ratio=0.01, sec_code="300694.SZ",
+                       end_date="2019-10-22", period=100, target_vol=2150000-642000-664210, target_period=None,
+                       price_ratio=0.98, update=True)
     print(ret)
 
-    # # 蠡湖股份
-    # ret = get_schedule(participant_rate=0.15, target_ratio=0.01, sec_code="300694.SZ",
+    # ret = get_trade_schedule(participant_rate=0.15, target_ratio=0.01, sec_code="300694.SZ",
     #                    end_date="2019-10-21", period=100, target_vol=1508000, target_period=None,
-    #                    price_ratio=0.98, update=True)
+    #                    price_ratio=0.98)
     # print(ret)
+
+    # 索通发展，参数未设置
+    # ret_vols, ret_prices = get_trade_schedule(participant_rate=0.10, target_ratio=0.01, sec_code="603612.SH",
+    #                                           end_date="2019-10-23", period=100, target_vol=3402350, target_period=11,
+    #                                           price_ratio=0.98)
+    # print(ret_vols)
+    # print(ret_prices)
+    # ret = get_schedule(participant_rate=0.10, target_ratio=0.01, sec_code="603612.SH",
+    #                    end_date="2019-10-22", period=100, target_vol=3402350, target_period=11,
+    #                    price_ratio=0.98, update=False)
+    # print(ret)
+
+
+
+    # 欧陶康视    #交易路径模拟
+    # ret_vols10, ret_prices = get_trade_schedule(participant_rate=0.10, target_ratio=0.01, sec_code="300595.SZ",
+    #                                             end_date="2019-10-22", period=100, target_vol=None, target_period=None,
+    #                                             price_ratio=0.98)
+    # ret_vols5, ret_prices = get_trade_schedule(participant_rate=0.05, target_ratio=0.01, sec_code="300595.SZ",
+    #                                            end_date="2019-10-22", period=100, target_vol=None, target_period=None,
+    #                                            price_ratio=0.98)
+    # ret_vols15, ret_prices = get_trade_schedule(participant_rate=0.15, target_ratio=0.01, sec_code="300595.SZ",
+    #                                             end_date="2019-10-22", period=100, target_vol=None, target_period=None,
+    #                                             price_ratio=0.98)
+
+    # print(len(ret_vols5), len(ret_vols10), len(ret_vols15))
+    # print()
+    # plt.plot([item/100 for item in ret_vols5])
+    # plt.plot([item/100 for item in ret_vols10])
+    # plt.plot([item/100 for item in ret_vols15])
+    # plt.rcParams['font.sans-serif'] = ['SimHei']
+    # plt.legend(["5%市场参与比率", "10%市场参与比率", "15%市场参与比率"])
+    # plt.xlabel("第i个交易日")
+    # plt.ylabel("每日交易量（手）")
+    # # plt.show()

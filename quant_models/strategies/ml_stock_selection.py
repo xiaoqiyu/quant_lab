@@ -29,7 +29,7 @@ from quant_models.data_processing.features_calculation import get_source_feature
 from quant_models.data_processing.data_fetcher import DataFetcher
 from quant_models.utils.helper import get_source_root
 from quant_models.utils.helper import get_config
-from quant_models.api.feature_selection import feature_selection_ic
+from quant_models.applications.feature_selection import feature_selection_ic
 from sklearn import decomposition
 from collections import defaultdict
 from quant_models.model_processing.feature_preprocessing import get_sw1_indust_code

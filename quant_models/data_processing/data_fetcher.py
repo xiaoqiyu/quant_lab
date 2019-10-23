@@ -17,7 +17,7 @@ logger = Logger(log_level='INFO').get_log()
 class DataFetcher(object):
     def __init__(self, source=0):
         '''
-        :param source: int; 0 for db, 1 for cache, 2 for api
+        :param source: int; 0 for db, 1 for cache, 2 for applications
         '''
         self._source = source
         self._db_obj = DataFetcherDB()

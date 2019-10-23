@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
-# @time      : 2019/5/20 10:39
+# @time      : 2019/10/23 10:25
 # @author    : rpyxqi@gmail.com
-# @file      : feature_research.py
+# @file      : feature_mining.py
 
 
 import pprint
@@ -231,6 +231,18 @@ def factor_return_regression(country_factors, indus_factors, deriv_factors, retu
 def get_factor_returns(start_date='20181101', end_date='20181131', data_source=0,
                        feature_types=[], saved_feature=True, bc=None,
                        top_ratio=0.25, bottom_ratio=0.2):
+    '''
+    multi factor framework, regression to calculate the factor returns
+    :param start_date:
+    :param end_date:
+    :param data_source:
+    :param feature_types:
+    :param saved_feature:
+    :param bc:
+    :param top_ratio:
+    :param bottom_ratio:
+    :return:
+    '''
     root = get_source_root()
     feature_mapping = _get_source_features() or get_source_feature_mappings(souce=True, feature_types=feature_types,
                                                                             top_ratio=top_ratio,
@@ -295,13 +307,13 @@ def get_factor_returns(start_date='20181101', end_date='20181131', data_source=0
     return mean_returns
 
 
-def factor_models(start_date='20181101', end_date='20181131', data_source=0,
+def feature_models(start_date='20181101', end_date='20181131', data_source=0,
                     feature_types=[], saved_feature=True, bc=None,
                     top_ratio=0.25, bottom_ratio=0.2):
     root = get_source_root()
     feature_mapping = _get_source_features()
 
-    date_periods = _get_in_out_dates(start_date=start_date, end_date=end_date, security_id='000300.XSHG') or [
+    date_periods = _get_in_out_dates(start_date=start_date, end_date=end_date, security_id=bc) or [
         [start_date, end_date]]
     next_date = datetime_delta(dt=end_date, format='%Y%m%d', days=1)
     idx_labels = get_idx_returns(security_ids=[bc], start_date=start_date, end_date=next_date,
@@ -322,13 +334,11 @@ def factor_models(start_date='20181101', end_date='20181131', data_source=0,
                                                  end_date=_end_date, source=data_source)
         ret_returns = get_equity_returns(security_ids=security_ids, start_date=_start_date, end_date=next_date)
         ret_mv = get_market_value(security_ids=security_ids, start_date=_start_date, end_date=next_date)
-        none_factor_dict = defaultdict()
-        # # FIXME use the future industry return, should be updated to trace back the history data by windows
-        # industry_exposure_factors = get_indust_exposures_time_series_regression(start_date=_start_date,
-        #                                                                         end_date=_end_date,
-        #                                                                         stock_returns=ret_returns)
-        # _industry_exposure_df = pd.DataFrame(industry_exposure_factors)
-        # _industry_exposure_df.to_csv('{0}_{1}_{2}.csv'.format(_start_date, _end_date, bc))
+
+        #FIXME industry vector updates
+        industry_exposure_factors, industry_name = get_indust_exposures_corr(start_date=start_date, end_date=end_date,
+                                                                             stock_returns=ret_returns, period=120,
+                                                                             bc_returns=idx_labels)
         for date, val in ret_features.items():
             daily_factors = []
             daily_return = []
@@ -361,9 +371,9 @@ def factor_models(start_date='20181101', end_date='20181131', data_source=0,
 
 
 if __name__ == '__main__':
-    ret = factor_models(start_date='20190801', end_date='20190805', data_source=0, feature_types=[],
-                             bc='000300.XSHG')
-    pprint.pprint(ret)
+    # ret = feature_models(start_date='20190801', end_date='20190805', data_source=0, feature_types=[],
+    #                          bc='000300.XSHG')
+    # pprint.pprint(ret)
 
 
     # ret = get_indust_exposures(start_date='20190103', end_date='20190706')
@@ -373,19 +383,20 @@ if __name__ == '__main__':
 
 
     # industry vector testing
-    # start_date = '20190616'
-    # end_date = '20190923'
-    # bc = '000300.XSHG'
-    # idx_labels = get_idx_returns(security_ids=[bc], start_date=start_date, end_date=end_date,
-    #                              source=0).get(bc)
-    # security_ids = get_idx_cons_jy(bc, start_date, end_date)
-    # secs = ['001979.XSHE']
-    # ret_returns = get_equity_returns(security_ids=security_ids, start_date=start_date, end_date=end_date)
-    #
-    # industry_exposure_factors, industry_name = get_indust_exposures_corr(start_date=start_date, end_date=end_date,
-    #                                                                      stock_returns=ret_returns, period=120,
-    #                                                                      bc_returns=idx_labels)
-    # # df = pd.DataFrame(industry_exposure_factors, columns=industry_name, index=secs)
+    start_date = '20190616'
+    end_date = '20190923'
+    bc = '000300.XSHG'
+    idx_labels = get_idx_returns(security_ids=[bc], start_date=start_date, end_date=end_date,
+                                 source=0).get(bc)
+    security_ids = get_idx_cons_jy(bc, start_date, end_date)
+    secs = ['001979.XSHE']
+    ret_returns = get_equity_returns(security_ids=security_ids, start_date=start_date, end_date=end_date)
+
+    industry_exposure_factors, industry_name = get_indust_exposures_corr(start_date=start_date, end_date=end_date,
+                                                                         stock_returns=ret_returns, period=120,
+                                                                         bc_returns=idx_labels)
+    df = pd.DataFrame(industry_exposure_factors, columns=industry_name, index=secs)
+    print(df)
     # df = pd.DataFrame(industry_exposure_factors, columns=industry_name, index=security_ids)
     # df.to_csv("E:\pycharm\quant_geek\quant_models\data\\features\\industry_feature_300.csv")
     # pprint.pprint(industry_name)
