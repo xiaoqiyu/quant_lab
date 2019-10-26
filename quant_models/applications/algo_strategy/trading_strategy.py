@@ -35,7 +35,13 @@ def get_trade_schedule(participant_rate=0.15, target_ratio=0.01, sec_code="00229
 
     # compute target vol
     target_vol = target_vol or target_ratio * total_shares[-1]
-
+    # participant rate testing
+    # p_rates_up = []
+    #     # p_rates_down = []
+    #     # for target_period in [10, 20, 30, 40, 50, 60]:
+    #     #     p_rates_up.append(100 * (target_vol / (sum(ma_vols[-target_period:]) * 1.05)))
+    #     #     p_rates_down.append(100 * (target_vol / (sum(ma_vols[-target_period:]) * .95)))
+    #     # return p_rates_up, p_rates_down
     # update the participant_rate according to the target complete period
     if target_period:
         participant_rate = target_vol / sum(ma_vols[-target_period:])
@@ -109,10 +115,10 @@ if __name__ == '__main__':
     # print(ret)
     #
     # # 蠡湖股份
-    ret = get_schedule(participant_rate=0.15, target_ratio=0.01, sec_code="300694.SZ",
-                       end_date="2019-10-22", period=100, target_vol=2150000-642000-664210, target_period=None,
-                       price_ratio=0.98, update=True)
-    print(ret)
+    # ret = get_schedule(participant_rate=0.15, target_ratio=0.01, sec_code="300694.SZ",
+    #                    end_date="2019-10-22", period=100, target_vol=2150000 - 642000 - 664210, target_period=None,
+    #                    price_ratio=0.98, update=True)
+    # print(ret)
 
     # ret = get_trade_schedule(participant_rate=0.15, target_ratio=0.01, sec_code="300694.SZ",
     #                    end_date="2019-10-21", period=100, target_vol=1508000, target_period=None,
@@ -120,17 +126,15 @@ if __name__ == '__main__':
     # print(ret)
 
     # 索通发展，参数未设置
-    # ret_vols, ret_prices = get_trade_schedule(participant_rate=0.10, target_ratio=0.01, sec_code="603612.SH",
-    #                                           end_date="2019-10-23", period=100, target_vol=3402350, target_period=11,
-    #                                           price_ratio=0.98)
-    # print(ret_vols)
-    # print(ret_prices)
-    # ret = get_schedule(participant_rate=0.10, target_ratio=0.01, sec_code="603612.SH",
-    #                    end_date="2019-10-22", period=100, target_vol=3402350, target_period=11,
-    #                    price_ratio=0.98, update=False)
-    # print(ret)
-
-
+    ret_vols, ret_prices = get_trade_schedule(participant_rate=0.10, target_ratio=0.01, sec_code="603612.SH",
+                                              end_date="2019-10-23", period=100, target_vol=3402350, target_period=11,
+                                              price_ratio=0.98)
+    print(ret_vols)
+    print(ret_prices)
+    ret = get_schedule(participant_rate=0.10, target_ratio=0.01, sec_code="603612.SH",
+                       end_date="2019-10-22", period=100, target_vol=3402350, target_period=11,
+                       price_ratio=0.98, update=False)
+    print(ret)
 
     # 欧陶康视    #交易路径模拟
     # ret_vols10, ret_prices = get_trade_schedule(participant_rate=0.10, target_ratio=0.01, sec_code="300595.SZ",
@@ -153,3 +157,41 @@ if __name__ == '__main__':
     # plt.xlabel("第i个交易日")
     # plt.ylabel("每日交易量（手）")
     # # plt.show()
+
+    # 纳思达   #交易路径模拟
+    # ret_vols10, ret_prices = get_trade_schedule(participant_rate=0.10, target_ratio=0.01, sec_code="002180.SZ",
+    #                                             end_date="2019-10-25", period=100, target_vol=None, target_period=None,
+    #                                             price_ratio=0.98)
+    # ret_vols5, ret_prices = get_trade_schedule(participant_rate=0.05, target_ratio=0.01, sec_code="002180.SZ",
+    #                                            end_date="2019-10-25", period=100, target_vol=None, target_period=None,
+    #                                            price_ratio=0.98)
+    # ret_vols15, ret_prices = get_trade_schedule(participant_rate=0.15, target_ratio=0.01, sec_code="002180.SZ",
+    #                                             end_date="2019-10-25", period=100, target_vol=None, target_period=None,
+    #                                             price_ratio=0.98)
+    #
+    # print(len(ret_vols5), len(ret_vols10), len(ret_vols15))
+    # print(np.array(ret_vols5).mean(),np.array(ret_vols10).mean(),np.array(ret_vols15).mean())
+    # plt.plot([item / 100 for item in ret_vols5])
+    # plt.plot([item / 100 for item in ret_vols10])
+    # plt.plot([item / 100 for item in ret_vols15])
+    # plt.rcParams['font.sans-serif'] = ['SimHei']
+    # plt.legend(["5%市场参与比率", "10%市场参与比率", "15%市场参与比率"])
+    # plt.xlabel("第i个交易日")
+    # plt.ylabel("每日交易量（手）")
+    # plt.title("纳思达减持1%股份交易路径模拟")
+    # # plt.show()
+
+    #participant rate testing
+    # p_up, p_down = get_trade_schedule(participant_rate=0.15, target_ratio=0.01, sec_code="002180.SZ",
+    #                                   end_date="2019-10-25", period=100, target_vol=None, target_period=10,
+    #                                   price_ratio=0.98)
+    # xs = [10, 20, 30, 40, 50, 60]
+    # plt.plot(xs, p_up)
+    # plt.plot(xs, p_down)
+    # # plt.xticks([10, 20, 30, 40, 50])
+    # # plt.xlim((10,60))
+    # plt.rcParams['font.sans-serif'] = ['SimHei']
+    # plt.xlabel("计划完成时间(交易日)")
+    # plt.ylabel("市场参与率%")
+    # plt.legend(["市场成交量上浮5%", "市场成交量下滑5%"])
+    # plt.show()
