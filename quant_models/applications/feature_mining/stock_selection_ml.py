@@ -21,15 +21,20 @@ def train_stock_selection(model_name='', start_date='20140603', end_date='201812
     m = Ml_Reg_Model(model_name)
     m.build_model()
     root = get_source_root()
-    feature_path = os.path.join(os.path.realpath(root), 'conf', 'features_{0}_{1}.pkl'.format('20150103', '20151231'))
+    feature_path = os.path.join(os.path.realpath(root), 'data', 'features',
+                                'features_{0}_{1}.pkl'.format('20150103', '20151231'))
     df = pd.read_pickle(feature_path)
-    feature_path = os.path.join(os.path.realpath(root), 'conf', 'features_{0}_{1}.pkl'.format('20160103', '20161231'))
+    feature_path = os.path.join(os.path.realpath(root), 'data', 'features',
+                                'features_{0}_{1}.pkl'.format('20160103', '20161231'))
     df = df.append(pd.read_pickle(feature_path))
-    feature_path = os.path.join(os.path.realpath(root), 'conf', 'features_{0}_{1}.pkl'.format('20170103', '20171231'))
+    feature_path = os.path.join(os.path.realpath(root), 'data', 'features',
+                                'features_{0}_{1}.pkl'.format('20170103', '20171231'))
     df = df.append(pd.read_pickle(feature_path))
-    feature_path = os.path.join(os.path.realpath(root), 'conf', 'features_{0}_{1}.pkl'.format('20180103', '20181231'))
+    feature_path = os.path.join(os.path.realpath(root), 'data', 'features',
+                                'features_{0}_{1}.pkl'.format('20180103', '20181231'))
     df = df.append(pd.read_pickle(feature_path))
-    feature_path = os.path.join(os.path.realpath(root), 'conf', 'features_{0}_{1}.pkl'.format('20190103', '20190531'))
+    feature_path = os.path.join(os.path.realpath(root), 'data', 'features',
+                                'features_{0}_{1}.pkl'.format('20190103', '20190531'))
     df = df.append(pd.read_pickle(feature_path))
     col_names = list(df.columns)
     col_names.remove('TRADE_DATE')
@@ -80,7 +85,6 @@ def train_stock_selection(model_name='', start_date='20140603', end_date='201812
 
 
 if __name__ == '__main__':
-
     st = time.time()
     ret = train_stock_selection(model_name='poly_svr', start_date='20150103', end_date='20190531')
     et = time.time()

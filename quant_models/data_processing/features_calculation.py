@@ -457,6 +457,10 @@ def feature_refine():
 def get_source_feature_mappings(source=True, feature_types=None, top_ratio=0.25, bottom_ratio=0.2):
     root = get_source_root()
     feature_mapping = load_json_file(os.path.join(os.path.realpath(root), 'conf', 'feature_mapping.json'))
+    # return feature_mapping
+    return {'growth': ['TOTALASSETGROWRATE'], 'vs': ['PE', 'PB', 'PS'], 'volume': ['OBV'],
+            'return': ['Variance20', 'Alpha20', 'Beta20']}
+    #FIXME simply the feature selection logic
     if source:
         return feature_mapping
     return get_significant_features(top_ratio=top_ratio, bottom_ratio=bottom_ratio)

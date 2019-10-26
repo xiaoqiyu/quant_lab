@@ -82,7 +82,7 @@ def score_json2csv():
                 continue
     pprint.pprint(rows)
     df = pd.DataFrame(rows, columns=['key', 'score', 'feature_type'])
-    score_path = os.path.join(os.path.realpath(root), 'conf',
+    score_path = os.path.join(os.path.realpath(root), 'data', 'features',
                               'score_20150103_20181231.csv')
     df.to_csv(score_path)
 
@@ -91,8 +91,9 @@ def feature_selection_ic(start_date='20181101', end_date='20181131', data_source
                          feature_types=[], train_feature=True, saved_feature=True, bc='000300.XSHG',
                          top_ratio=0.25, bottom_ratio=0.2):
     root = get_source_root()
-    feature_mapping = get_source_feature_mappings(train_feature=train_feature, feature_types=feature_types,
-                                                  top_ratio=top_ratio, bottom_ratio=bottom_ratio)
+    #FIXME check the update of this funcion
+    feature_mapping = get_source_feature_mappings()
+
 
     date_periods = _get_in_out_dates(start_date=start_date, end_date=end_date, security_id='000300.XSHG') or [
         [start_date, end_date]]
@@ -105,8 +106,9 @@ def feature_selection_ic(start_date='20181101', end_date='20181131', data_source
     for _start_date, _end_date in date_periods:
         next_date = datetime_delta(dt=_end_date, format='%Y%m%d', days=2)
         security_ids = get_idx_cons_dy(bc, _start_date)
-        ret_features = get_stock_daily_features(security_ids=security_ids, features=feature_mapping, start_date=_start_date,
-                                                end_date=_end_date, source=data_source)
+        ret_features = get_equity_daily_features(security_ids=security_ids, features=feature_mapping,
+                                                 start_date=_start_date,
+                                                 end_date=_end_date, source=data_source)
         ret_labels = get_equity_returns(security_ids=security_ids, start_date=_start_date, end_date=next_date)
         none_factor_dict = defaultdict()
 
@@ -158,11 +160,11 @@ def feature_selection_ic(start_date='20181101', end_date='20181131', data_source
                     continue
         logger.debug(rows)
         df = pd.DataFrame(rows, columns=['key', 'score', 'feature_type'])
-        score_path = os.path.join(os.path.realpath(root), 'conf',
+        score_path = os.path.join(os.path.realpath(root), 'data', 'features',
                                   'score_{0}_{1}.csv'.format(start_date, end_date))
         df.to_csv(score_path)
         # write_json_file(train_feature_path, corr_dict)
-        none_dict_path = os.path.join(os.path.realpath(root), 'conf',
+        none_dict_path = os.path.join(os.path.realpath(root), 'data', 'features',
                                       'testing_none_factor_dict_{0}_{1}.json'.format(start_date, end_date))
         write_json_file(none_dict_path, none_factor_dict)
     try:
@@ -173,7 +175,7 @@ def feature_selection_ic(start_date='20181101', end_date='20181131', data_source
         df['LABEL'] = all_labels
 
         if saved_feature:
-            feature_path = os.path.join(os.path.realpath(root), 'conf',
+            feature_path = os.path.join(os.path.realpath(root), 'data', 'features',
                                         'features_{0}_{1}.pkl'.format(start_date, end_date))
             df.to_pickle(feature_path)
     except Exception as ex:
@@ -185,6 +187,6 @@ def feature_selection_ic(start_date='20181101', end_date='20181131', data_source
 
 if __name__ == '__main__':
     import gc
-    ret = feature_selection_ic(start_date='20190103', end_date='20190531', data_source=0,
-                               feature_types=[], train_feature=False, saved_feature=True,
+    ret = feature_selection_ic(start_date='20190103', end_date='20190131', data_source=0,
+                               feature_types=[], train_feature=True, saved_feature=True,
                                bc='000300.XSHG')
