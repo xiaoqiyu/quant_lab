@@ -91,17 +91,16 @@ def feature_selection_ic(start_date='20181101', end_date='20181131', data_source
                          feature_types=[], train_feature=True, saved_feature=True, bc='000300.XSHG',
                          top_ratio=0.25, bottom_ratio=0.2):
     root = get_source_root()
-    #FIXME check the update of this funcion
+    # FIXME check the update of this funcion
     feature_mapping = get_source_feature_mappings()
-
 
     date_periods = _get_in_out_dates(start_date=start_date, end_date=end_date, security_id='000300.XSHG') or [
         [start_date, end_date]]
     all_labels = []
     all_features = []
     all_feature_names = []
-    next_date = datetime_delta(dt=end_date, format='%Y%m%d', days=1)
-    idx_labels = get_idx_returns(security_ids=[bc], start_date=start_date, end_date=next_date,
+    g_next_date = datetime_delta(dt=end_date, format='%Y%m%d', days=1)
+    idx_labels = get_idx_returns(security_ids=[bc], start_date=start_date, end_date=g_next_date,
                                  source=0).get(bc)
     for _start_date, _end_date in date_periods:
         next_date = datetime_delta(dt=_end_date, format='%Y%m%d', days=2)
@@ -155,7 +154,8 @@ def feature_selection_ic(start_date='20181101', end_date='20181131', data_source
         rows = []
         for k, v in corr_dict.items():
             for ft, lst in feature_mapping.items():
-                if k in lst:
+                _lst = [item.upper() for item in lst]
+                if k in _lst:
                     rows.append([k, v, ft])
                     continue
         logger.debug(rows)
@@ -168,12 +168,12 @@ def feature_selection_ic(start_date='20181101', end_date='20181131', data_source
                                       'testing_none_factor_dict_{0}_{1}.json'.format(start_date, end_date))
         write_json_file(none_dict_path, none_factor_dict)
     try:
-        if len(all_feature_names) == 186:
-            # FIXME check when
-            all_feature_names.extend(['SECURITY_ID', 'TRADE_DATE'])
+        if 'SECURITY_ID' not in all_feature_names:
+            all_feature_names.append('SECURITY_ID')
+        if 'TRADE_DATE' not in all_feature_names:
+            all_feature_names.append('TRADE_DATE')
         df = pd.DataFrame(all_features, columns=all_feature_names)
         df['LABEL'] = all_labels
-
         if saved_feature:
             feature_path = os.path.join(os.path.realpath(root), 'data', 'features',
                                         'features_{0}_{1}.pkl'.format(start_date, end_date))
@@ -187,6 +187,8 @@ def feature_selection_ic(start_date='20181101', end_date='20181131', data_source
 
 if __name__ == '__main__':
     import gc
+
     ret = feature_selection_ic(start_date='20190103', end_date='20190131', data_source=0,
                                feature_types=[], train_feature=True, saved_feature=True,
                                bc='000300.XSHG')
+    pprint.pprint(ret)

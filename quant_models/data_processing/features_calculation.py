@@ -159,27 +159,29 @@ def read_features(feature_name=None):
 
 
 # TODO resolve the case when the source features are derived from the market data
+# FIXME check the logic and add calculate feature logic in this function
 def get_cal_features(source_feature_dict={}, cal_features=[]):
-    if not cal_features:
-        return source_feature_dict
-
-    def _cal_testing_feature2(val):
-        pass
-
-    feature_cal_mappings = {
-        "testing_feature1": lambda val: val.get('key1') + val.get('val2'),
-        "testing_feature2": _cal_testing_feature2,
-    }
-    input_val = copy.deepcopy(source_feature_dict)
-    for item in cal_features:
-        try:
-            source_feature_dict.update({item: feature_cal_mappings.get(item)(input_val)})
-        except Exception as ex:
-            logger.error(
-                "Fail to calculate the feature {0} for param:{1} with error:{2}".format(item, source_feature_dict, ex))
-
-    del input_val
     return source_feature_dict
+    # if not cal_features:
+    #     return source_feature_dict
+    #
+    # def _cal_testing_feature2(val):
+    #     pass
+    #
+    # feature_cal_mappings = {
+    #     "testing_feature1": lambda val: val.get('key1') + val.get('val2'),
+    #     "testing_feature2": _cal_testing_feature2,
+    # }
+    # input_val = copy.deepcopy(source_feature_dict)
+    # for item in cal_features:
+    #     try:
+    #         source_feature_dict.update({item: feature_cal_mappings.get(item)(input_val)})
+    #     except Exception as ex:
+    #         logger.error(
+    #             "Fail to calculate the feature {0} for param:{1} with error:{2}".format(item, source_feature_dict, ex))
+    #
+    # del input_val
+    # return source_feature_dict
 
 
 def get_equity_daily_features(security_ids=[], features={'ma': ['ACD6', 'ACD20']}, start_date=20181101,
@@ -211,6 +213,7 @@ def get_equity_daily_features(security_ids=[], features={'ma': ['ACD6', 'ACD20']
     _df = g_db_fetcher.get_data_fetcher_obj(source)
     excluded = ['CREATE_TIME', 'UPDATE_TIME', 'TMSTAMP', 'ID', 'SECURITY_ID_INT', 'SECURITY_ID', 'TRADE_DATE',
                 'TICKER_SYMBOL']
+    retrieve_feature_names = [item.upper() for item in retrieve_feature_names]
     for f_type, f_fields in features.items():
         rows, desc = _df.get_equ_factor(fields=f_fields, factor_type=f_type, security_ids=security_ids,
                                         start_date=start_date, end_date=end_date)
@@ -222,6 +225,7 @@ def get_equity_daily_features(security_ids=[], features={'ma': ['ACD6', 'ACD20']
         if not f_fields:
             # TODO add other fileds
             retrieve_feature_names.extend(list(set(desc) - set(excluded)))
+            retrieve_feature_names = [item.upper() for item in retrieve_feature_names]
         for item in rows:
             sec_id, date = item[id_idx], item[date_idx]
             date_dict = ret_features[date] or {}
@@ -230,7 +234,11 @@ def get_equity_daily_features(security_ids=[], features={'ma': ['ACD6', 'ACD20']
             else:
                 curr_dict = {}
                 date_dict[sec_id] = {}
-            idx_lst = [idx for idx, val in enumerate(desc) if val in retrieve_feature_names]
+            idx_lst = []
+            for idx, val in enumerate(desc):
+                if val.upper() in retrieve_feature_names:
+                    idx_lst.append(idx)
+            # idx_lst = [idx for idx, val in enumerate(desc) if val.upper() in retrieve_feature_names]
             tmp_lst = [item[idx] for idx in idx_lst]
             keys = f_fields or desc
             tmp_dict = dict(zip([desc[idx] for idx in idx_lst], tmp_lst))
@@ -262,8 +270,8 @@ def get_equity_daily_features(security_ids=[], features={'ma': ['ACD6', 'ACD20']
 
 
 def get_time_series_features(security_ids=[], features={'ma': ['ACD6', 'ACD20']}, start_date='', end_date='', step=10):
-    ret_features = get_stock_daily_features(security_ids=security_ids, features=features, start_date=start_date,
-                                            end_date=end_date)
+    ret_features = get_equity_daily_features(security_ids=security_ids, features=features, start_date=start_date,
+                                             end_date=end_date)
     time_series_features = defaultdict(dict)
     for sec_code, tmp_dict in ret_features.items():
         logger.info('processing sec_id:{0} in time series features'.format(sec_code))
@@ -460,7 +468,7 @@ def get_source_feature_mappings(source=True, feature_types=None, top_ratio=0.25,
     # return feature_mapping
     return {'growth': ['TOTALASSETGROWRATE'], 'vs': ['PE', 'PB', 'PS'], 'volume': ['OBV'],
             'return': ['Variance20', 'Alpha20', 'Beta20']}
-    #FIXME simply the feature selection logic
+    # FIXME simply the feature selection logic
     if source:
         return feature_mapping
     return get_significant_features(top_ratio=top_ratio, bottom_ratio=bottom_ratio)

@@ -1,7 +1,7 @@
 [constants]
 no_dash_datetime_format = %%Y%%m%%d %%H:%%M:%%S
 wd_datetime_format = %%Y-%%m-%%d %%H:%%M:%%S
-root_path = E:\pycharm\quant_github\quant_models
+root_path = E:\pycharm\quant_geek\quant_models
 
 [defaults]
 numerical_default = 0.0

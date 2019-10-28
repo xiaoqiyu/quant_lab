@@ -167,25 +167,24 @@ def win_and_std(arr=None):
     arr = np.clip(arr, a_min=_min, a_max=_max)
     return arr if std == 0 else [(item - mean) / std for item in arr]
 
-
 # if __name__ == '__main__':
-    # linear_reg()
-    # b = load_boston()
-    # x = b['data']
-    # y = b['target']
-    # names = b['feature_names']
-    # ret = feature_selection_sort(x, y, names)
-    # print(ret)
+# linear_reg()
+# b = load_boston()
+# x = b['data']
+# y = b['target']
+# names = b['feature_names']
+# ret = feature_selection_sort(x, y, names)
+# print(ret)
 
-    # iris = load_iris()
-    # x, y = iris.data, iris.target
-    # x_new = feature_selection_embedded(x, y)
-    # print(x_new[:10])
+# iris = load_iris()
+# x, y = iris.data, iris.target
+# x_new = feature_selection_embedded(x, y)
+# print(x_new[:10])
 
-    # x = np.random.random(10).reshape(5, 2)
-    # x[0, 0] = 10
-    # x1 = feature_preprocessing(x)
-    # print(x1)
+# x = np.random.random(10).reshape(5, 2)
+# x[0, 0] = 10
+# x1 = feature_preprocessing(x)
+# print(x1)
 
-    # df = get_sw1_indust_code(['000001.XSHE', '000002.XSHE'], '20190531')
-    # print(df)
+# df = get_sw1_indust_code(['000001.XSHE', '000002.XSHE'], '20190531')
+# print(df)

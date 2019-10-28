@@ -106,6 +106,7 @@ venv.bak/
 # ignore local cache
 *ignore*/
 quant_models/strategies/rqdata/
+quant_models/strategies/rqdata/bundle/
 quant_models/__pycache__/
 quant_models/data/
 quant_models/data_processing/__pycache__/

@@ -35,8 +35,8 @@ def after_trading(context):
 
 __config__ = {
     "base": {
-        "start_date": "2019-01-10",
-        "end_date": "2019-05-23",
+        "start_date": "2018-01-10",
+        "end_date": "2018-05-23",
         "frequency": "1d",
         "matching_type": "current_bar",
         "data_bundle_path": "rqdata/bundle",
