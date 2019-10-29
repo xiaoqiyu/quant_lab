@@ -21,21 +21,14 @@ from sklearn.externals import joblib
 model_name = 'linear'
 config = get_config()
 
+# TODO change the path of the backtesting results
 root = get_source_root()
-
 # get the file name of the features
 _feature_path = os.path.join(os.path.realpath(root), 'data', 'features', 'feature_mining_strategy')
 
 
 def init(context):
-    m = Ml_Reg_Model(model_name)
     model_path = os.path.join(get_parent_dir(), 'data', 'models', 'stock_selection_{0}'.format(model_name))
-    # self.model = joblib.load(model_path)
-    # model_source = os.path.join(get_parent_dir(), 'data', 'models')
-    # os.chdir(model_source)
-    # self.model = joblib.load(model_name)
-    # m.build_model()
-    # m.load_model('stock_selection_{0}'.format(model_name))
     feature_names = get_selected_features(__config__['base']['start_date'], __config__['base']['end_date'],
                                           up_ratio=0.2, down_ratio=0.1)
     root = get_source_root()
@@ -54,10 +47,6 @@ def init(context):
     context.features = df
     context.model = joblib.load(model_path)
     context.feature_names = feature_names
-    root = get_source_root()
-
-    # get the file name of the features
-    context.feature_path = os.path.join(os.path.realpath(root), 'data', 'features', 'feature_mining_strategy')
 
 
 def before_trading(context):
