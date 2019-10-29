@@ -60,9 +60,9 @@ __config__ = {
             "enabled": True,
             "show": True,
             "plot": False,
-            "output_file": "output_result.pkl",
+            "output_file": "{0}.pkl".format(__file__),
             "plot": True,
-            "plot_save_file": 'output_result.png',
+            "plot_save_file": '{0}.png'.format(__file__),
         },
         "sys_simulation": {
             "enabled": True,

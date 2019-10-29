@@ -1,11 +1,13 @@
 [constants]
 no_dash_datetime_format = %%Y%%m%%d %%H:%%M:%%S
 wd_datetime_format = %%Y-%%m-%%d %%H:%%M:%%S
+stand_date_format = %%Y%%m%%d
 root_path = E:\pycharm\quant_geek\quant_models
 
 [defaults]
 numerical_default = 0.0
 decom_ratio = 0.8
+
 
 [ml_clf_model]
 max_samples = 0.5

@@ -13,6 +13,7 @@ def main():
     ret = feature_selection_ic(start_date='20190103', end_date='20190531', data_source=0,
                                feature_types=[], train_feature=True, saved_feature=True,
                                bc='000300.XSHG')
+
     # train ml model
     st = time.time()
     ret = train_stock_selection(model_name='linear', start_date='20150103', end_date='20190531', score_bound=(0.2, 0.1))
@@ -22,3 +23,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+

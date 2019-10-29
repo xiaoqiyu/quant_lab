@@ -67,11 +67,14 @@ class Model(object):
 
     def save_model(self, model_path):
         model_path = os.path.join(get_parent_dir(), 'data', 'models', model_path)
-        joblib.dump(self.model, model_path)
+        joblib.dump(self.model, model_path, protocol=2)
 
     def load_model(self, model_name):
         model_path = os.path.join(get_parent_dir(), 'data', 'models', '{0}'.format(model_name))
         self.model = joblib.load(model_path)
+        # model_source = os.path.join(get_parent_dir(), 'data', 'models')
+        # os.chdir(model_source)
+        # self.model = joblib.load(model_name)
 
     def train_features(self, train_X, train_Y, predict=True, threshold=0.15):
         pass

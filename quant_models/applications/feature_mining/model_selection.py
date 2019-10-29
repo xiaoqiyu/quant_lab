@@ -17,7 +17,7 @@ config = get_config()
 feature_model_name = 'random_forest'
 
 
-def _get_selected_features(start_date=None, end_date=None, up_ratio=0.2, down_ratio=0.2):
+def get_selected_features(start_date=None, end_date=None, up_ratio=0.2, down_ratio=0.2):
     root = get_source_root()
     feature_source = os.path.join(os.path.realpath(root), 'data', 'features')
     files = os.listdir(feature_source)
@@ -54,6 +54,7 @@ def train_stock_selection(model_name='', start_date='20140603', end_date='201812
     feature_source = os.path.join(os.path.realpath(root), 'data', 'features')
     ret = os.listdir(feature_source)
     # TODO the feature naming rule could be change, then this hardcode will be changed accordingly
+    # FIXME add the start and end end restriction
     _feature_paths = [os.path.join(feature_source, item) for item in ret if item.startswith('features')]
 
     # load the feature data
@@ -62,7 +63,7 @@ def train_stock_selection(model_name='', start_date='20140603', end_date='201812
         df = df.append(pd.read_pickle(p))
 
     # select the features by the ic values
-    feature_names = _get_selected_features(start_date=start_date, end_date=end_date, up_ratio=score_bound[0],
+    feature_names = get_selected_features(start_date=start_date, end_date=end_date, up_ratio=score_bound[0],
                                            down_ratio=score_bound[1])
 
     train_X = df[feature_names].values
@@ -70,10 +71,9 @@ def train_stock_selection(model_name='', start_date='20140603', end_date='201812
     sec_ids = list(df['SECURITY_ID'])
     train_Y = df.iloc[:, -1]
     decom_ratio = float(config['defaults']['decom_ratio'])
-    n_cols = df.shape[1]
 
     # PCA processing
-    pca = decomposition.PCA(n_components=int(n_cols * decom_ratio))
+    pca = decomposition.PCA(n_components=int(len(feature_names) * decom_ratio))
     train_X = pca.fit_transform(train_X)
     train_Y = train_Y.fillna(0.0)
     st = time.time()
