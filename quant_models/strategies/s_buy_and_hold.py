@@ -5,7 +5,9 @@
 
 from rqalpha.api import *
 import time
-from quant_models.utils.decorators import timeit
+from quant_models.utils.helper import get_config
+
+config = get_config()
 
 
 def init(context):
@@ -35,8 +37,8 @@ def after_trading(context):
 
 __config__ = {
     "base": {
-        "start_date": "2018-01-10",
-        "end_date": "2018-05-23",
+        "start_date": config["feature_mining_backtesting"]["start_date"],
+        "end_date": config["feature_mining_backtesting"]["end_date"],
         "frequency": "1d",
         "matching_type": "current_bar",
         "data_bundle_path": "rqdata/bundle",

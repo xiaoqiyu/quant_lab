@@ -88,11 +88,10 @@ def score_json2csv():
 
 
 def feature_selection_ic(start_date='20181101', end_date='20181131', data_source=0,
-                         feature_types=[], train_feature=True, saved_feature=True, bc='000300.XSHG',
-                         top_ratio=0.25, bottom_ratio=0.2):
+                         feature_types=[], train_feature=True, saved_feature=True, bc='000300.XSHG'):
     root = get_source_root()
     # FIXME check the update of this funcion
-    feature_mapping = get_source_feature_mappings()
+    feature_mapping = get_source_feature_mappings(feature_types=feature_types)
 
     date_periods = _get_in_out_dates(start_date=start_date, end_date=end_date, security_id='000300.XSHG') or [
         [start_date, end_date]]
@@ -105,6 +104,7 @@ def feature_selection_ic(start_date='20181101', end_date='20181131', data_source
     for _start_date, _end_date in date_periods:
         next_date = datetime_delta(dt=_end_date, format='%Y%m%d', days=2)
         security_ids = get_idx_cons_dy(bc, _start_date)
+        # FIXME add some filter,e.g. halt sec
         ret_features = get_equity_daily_features(security_ids=security_ids, features=feature_mapping,
                                                  start_date=_start_date,
                                                  end_date=_end_date, source=data_source)

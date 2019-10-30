@@ -1,12 +1,17 @@
 [constants]
 no_dash_datetime_format = %%Y%%m%%d %%H:%%M:%%S
 wd_datetime_format = %%Y-%%m-%%d %%H:%%M:%%S
-stand_date_format = %%Y%%m%%d
+standard_date_format = %%Y%%m%%d
 root_path = E:\pycharm\quant_geek\quant_models
 
 [defaults]
 numerical_default = 0.0
 decom_ratio = 0.8
+
+[feature_mining_backtesting]
+start_date = 2019-01-03
+end_date = 2019-09-30
+
 
 
 [ml_clf_model]

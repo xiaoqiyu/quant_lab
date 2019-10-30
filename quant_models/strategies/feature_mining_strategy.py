@@ -75,8 +75,8 @@ def after_trading(context):
 
 __config__ = {
     "base": {
-        "start_date": "2019-01-10",
-        "end_date": "2019-01-17",
+        "start_date": config["feature_mining_backtesting"]["start_date"],
+        "end_date": config["feature_mining_backtesting"]["end_date"],
         "frequency": "1d",
         "matching_type": "current_bar",
         "data_bundle_path": "rqdata/bundle",
