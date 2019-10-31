@@ -7,16 +7,15 @@ import datetime
 from quant_models.utils.logger import Logger
 from quant_models.utils.oracle_helper import OracleHelper
 from quant_models.data_processing.data_fetcher import DataFetcherDB
+from quant_models.utils.helper import get_config
 
 logger = Logger('log.txt', 'INFO', __name__).get_log()
 df = DataFetcherDB()
+config = get_config()
 
 
 def get_dates_statics(start_date='', end_date='', calendar_date=''):
-    config = {"user": "cust", "pwd": "admin123", "host": "172.253.32.132", "port": 1521, "dbname": "dbcenter",
-              "mincached": 0, "maxcached": 1}
-
-    db_obj = OracleHelper()
+    db_obj = OracleHelper(config['datayes_db_config'])
     if calendar_date:
         sql_str = ('''select *
                   from cust.md_trade_cal
@@ -131,7 +130,7 @@ def get_all_month_start_end_dates(start_date='', end_date=''):
     :return: list of trading dates, with format 'yyyydddd'
     '''
     rows, cols = get_dates_statics(start_date, end_date)
-    return list(set([(item[6].strftime('%Y%m%d'), item[7].strftime('%Y%m%d') ) for item in rows]))
+    return list(set([(item[6].strftime('%Y%m%d'), item[7].strftime('%Y%m%d')) for item in rows]))
 
 
 # def is_trading_date(curr_date=None):
@@ -147,6 +146,7 @@ if __name__ == '__main__':
     # print(start_date, end_date)
     ret = get_all_trading_dates('20190220', '20190620')
     import pandas as pd
+
     df = pd.DataFrame(ret, columns=['date'], index=None)
-    df.to_csv('trading_dates.csv')
+    # df.to_csv('trading_dates.csv')
     print(df)

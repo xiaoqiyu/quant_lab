@@ -5,18 +5,20 @@
 
 
 import sqlite3 as sqlite
-import pandas as pd
-import datetime
-import traceback
-from quant_models.utils.helper import list_files
+import os
 from quant_models.utils.io_utils import load_json_file
 import cx_Oracle
+import traceback
+from quant_models.utils.helper import get_source_root
 
 
 class SQLiteHelper(object):
     def __init__(self):
+        root = get_source_root()
+        # get the file name of the features
+        feature_source = os.path.join(os.path.realpath(root), 'data', 'features', 'cache_features')
         try:
-            self._conn = sqlite.connect('E:/pycharm/algo_trading/quant_models/quant_models/data/features/cache_data')
+            self._conn = sqlite.connect(feature_source)
         except Exception as ex:
             traceback.print_exc()
 
@@ -45,27 +47,39 @@ class SQLiteHelper(object):
         # self._conn.close()
 
 
-def create_factor_tables():
+# CREATE FEATURE TABLE
+def create_features_table():
     db = SQLiteHelper()
-    factor_mappings = load_json_file('E:\pycharm\\algo_trading\quant_models\quant_models\conf\\feature_mapping.json')
-    # table_names = ['EQU_FACTOR_{0}'.format(item) for item in list(factor_mappings.keys())]
-
-    for f_type, fields in factor_mappings.items():
-        table_name = 'EQU_FACTOR_{0}'.format(f_type.upper())
-        s1 = "CREATE TABLE {0} (SECURITY_ID_INT INT, SECURITY_ID TEXT,TRADE_DATE INT,TICKER_SYMBOL TEXT, ".format(
-            table_name)
-        for f in fields:
-            s1 += "{0} REAL,".format(f)
-        s1 = s1[:-1] + ')'
-        print(s1)
-        try:
-            db.execute_sql(s1)
-        except Exception as ex:
-            print(ex)
-
+    root = get_source_root()
+    # get the file name of the features
+    feature_mapping_source = os.path.join(os.path.realpath(root), 'conf', 'feature_mapping.json')
+    feature_mapping = load_json_file(feature_mapping_source)
+    _vals = list(feature_mapping.values())
+    fields = []
+    for item in _vals:
+        fields.extend(item)
+    table_name = 'FEATURE_CACHE'
+    s1 = "CREATE TABLE {0} (TICKER_SYMBOL INT, TRADE_DATE TEXT,SECURITY_ID TEXT,D_LABEL REAL,M_LABEL REAL, ".format(
+        table_name)
+    for f in fields:
+        s1 += "{0} REAL,".format(f)
+    s1 = s1[:-1] + ')'
+    print(s1)
+    try:
+        db.execute_sql(s1)
+    except Exception as ex:
+        print(ex)
 
 
 if __name__ == '__main__':
+    #delete feature table
+    # db = SQLiteHelper()
+    # db.execute_sql("DROP TABLE FEATURE_CACHE")
+    # db.execute_query("SELECT * FROM FEATURE_CACHE")
+
+    #create feature table
+    create_features_table()
+
     # _conn = cx_Oracle.connect('cust/admin123@10.200.40.170/clouddb', encoding='utf-8')
     # cursor = _conn.cursor()
     # sql_str = "SELECT * FROM equ_factor_vs WHERE TRADE_DATE>20181201"
@@ -74,4 +88,7 @@ if __name__ == '__main__':
     # desc = cursor.description
     # cursor.close()
     # print(desc)
-    db = SQLiteHelper()
+    # db = SQLiteHelper()
+    # create_features_tables()
+    # db.execute_sql("DROP TABLE FEATURE_CACHE")
+    # db.execute_query("SELECT * FROM FEATURE_CACHE")

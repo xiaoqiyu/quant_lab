@@ -117,6 +117,11 @@ quant_models/playground/
 quant_models/strategies/rqdata/bundle/
 quant_models/strategies/algo_strategy/data/
 quant_models/applications/algo_strategy/data/
+quant_models/data/features/
+quant_models/data/models/
+quant_models/data/results/
+quant_models/data/strategies/
+
 
 
 

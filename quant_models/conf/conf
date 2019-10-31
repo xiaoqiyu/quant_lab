@@ -11,6 +11,7 @@ decom_ratio = 0.8
 [feature_mining_backtesting]
 start_date = 2019-01-03
 end_date = 2019-09-30
+backtrack_period = 250
 
 
 
@@ -65,7 +66,7 @@ train_steps = 100
 
 [datayes_db_config]
 user = gfangm
-pwd = GfangM123_cms2019
+pwd = Gfangm1023_cms2019
 host = 10.200.40.170
 dbname = clouddb
 mincached = 0

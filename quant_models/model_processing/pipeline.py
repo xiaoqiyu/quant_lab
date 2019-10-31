@@ -51,7 +51,7 @@ cat_pipeline = Pipeline([
 ])
 
 # feature_selection_pipeline = Pipeline([
-#     {'feature_selection_ic', SelectFromModel(LinearSVC(penalty='l1'))},
+#     {'feature_selection_complete', SelectFromModel(LinearSVC(penalty='l1'))},
 #     {'classification', RandomForestClassifier()}
 # ])
 

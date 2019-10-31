@@ -120,10 +120,6 @@ def get_sw1_indust_code(sec_ids=[], trade_date=''):
 def feature_preprocessing(arr=None, fill_none=False, trade_date='', sec_ids=[], neutralized=False):
     if isinstance(arr, list):
         arr = np.array(arr)
-    indust_ret = get_sw1_indust_code(sec_ids, trade_date)
-    indust_codes = list(indust_ret.values())
-    all_indust_set = list(set(indust_codes))
-    indust_features = np.array([[1 if _tmp == item else 0 for _tmp in all_indust_set] for item in indust_codes])
 
     if fill_none:
         _input_pip = Pipeline([
@@ -153,6 +149,11 @@ def feature_preprocessing(arr=None, fill_none=False, trade_date='', sec_ids=[], 
     _ret = np.array(_ret).transpose()
     if not neutralized:
         return _ret
+    # FIXME check the industry neutralized logic
+    indust_ret = get_sw1_indust_code(sec_ids, trade_date)
+    indust_codes = list(indust_ret.values())
+    all_indust_set = list(set(indust_codes))
+    indust_features = np.array([[1 if _tmp == item else 0 for _tmp in all_indust_set] for item in indust_codes])
     m = Ml_Reg_Model('linear')
     m.build_model()
     m.train_model(indust_features, _ret)

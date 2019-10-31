@@ -36,7 +36,7 @@ def get_selected_features(start_date=None, end_date=None, up_ratio=0.2, down_rat
     return list(set(selected_features))
 
 
-def train_stock_selection(model_name='', start_date='20140603', end_date='20181231', score_bound=(0.2, 0.1)):
+def train_features_models(model_name='', start_date='20140603', end_date='20181231', score_bound=(0.2, 0.1)):
     '''
 
     :param model_name:
@@ -47,7 +47,7 @@ def train_stock_selection(model_name='', start_date='20140603', end_date='201812
     :return:
     '''
     m = Ml_Reg_Model(model_name)
-    m.build_model()
+    m = m.load_model(model_name) or m.build_model()
     root = get_source_root()
 
     # get the file name of the features
@@ -109,7 +109,7 @@ def train_stock_selection(model_name='', start_date='20140603', end_date='201812
 
 if __name__ == '__main__':
     st = time.time()
-    ret = train_stock_selection(model_name='linear', start_date='20150103', end_date='20190531', score_bound=(0.2, 0.1))
+    ret = train_features_models(model_name='linear', start_date='20150103', end_date='20190531', score_bound=(0.2, 0.1))
     et = time.time()
     print(et - st)
     print(ret)

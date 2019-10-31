@@ -72,9 +72,7 @@ class Model(object):
     def load_model(self, model_name):
         model_path = os.path.join(get_parent_dir(), 'data', 'models', '{0}'.format(model_name))
         self.model = joblib.load(model_path)
-        # model_source = os.path.join(get_parent_dir(), 'data', 'models')
-        # os.chdir(model_source)
-        # self.model = joblib.load(model_name)
+        return self.model
 
     def train_features(self, train_X, train_Y, predict=True, threshold=0.15):
         pass

@@ -12,7 +12,7 @@ from quant_models.utils.decorators import timeit
 from quant_models.utils.helper import get_source_root
 from quant_models.utils.helper import get_config
 from quant_models.utils.helper import get_parent_dir
-from quant_models.applications.feature_mining.feature_selection import feature_selection_ic
+from quant_models.applications.feature_mining.feature_selection import feature_selection_complete
 from quant_models.model_processing.ml_reg_models import Ml_Reg_Model
 from quant_models.applications.feature_mining.model_selection import get_selected_features
 from sklearn import decomposition

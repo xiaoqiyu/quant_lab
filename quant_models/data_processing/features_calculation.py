@@ -20,6 +20,7 @@ from quant_models.data_processing.data_fetcher import DataFetcher
 from quant_models.utils.io_utils import load_json_file
 from quant_models.utils.io_utils import write_json_file
 from quant_models.utils.logger import Logger
+from quant_models.utils.sql_lite_helper import SQLiteHelper
 
 numerical_default = 0.0
 config = get_config()
@@ -118,44 +119,31 @@ def _resolve_start_end_dates(start_date=None, end_date=None, datetime_intervals=
         return dates[0], dates[-1]
 
 
-def save_features(payload=[], path='', key_type=''):
-    feature_path = path
-    logger.info('save_features to file:{0}'.format(feature_path))
-    with open(feature_path, 'w') as f:
-        for row in payload:
-            if isinstance(row, dict):
-                key = row.pop(key_type)
-                lst = row.values()
-                line = key
-            elif isinstance(row, list) or isinstance(row, np.ndarray):
-                lst = row
-                line = ''
-            else:
-                lst = []
-                line = ''
-            for item in lst:
-                line = '{0}\t{1}'.format(line, item) if line else '{0}'.format(item)
-            line = line + '\n'
-            f.write(line)
-    f.close()
+def save_features(columns=(), payload=[]):
+    '''
+
+    :param payload: {'key1':[val_lst]}
+    :return:
+    '''
+    sql_db = SQLiteHelper()
+    sql_str = "INSERT INTO FEATURE_CACHE ({0}) VALUES ".format(','.join(columns))
+    is_first = True
+    for row in payload:
+        if is_first:
+            is_first = False
+            _str = ','.join(row)
+            sql_str = '{0} ({1})'.format(sql_str, _str)
+        if not is_first:
+            sql_str = "{0},".format(sql_str)
+            _str = ','.join(row)
+            sql_str = '{0} ({1})'.format(sql_str, _str)
+    print(sql_str)
+    sql_db.execute_sql(sql_str)
 
 
 def read_features(feature_name=None):
-    feature_path = os.path.join(get_parent_dir(), 'data', 'features', feature_name)
-    logger.info("read_features from file:{0}".format(feature_name))
-    files = list_files(abs_path=feature_path)
-    ret_lines = []
-    for f in files:
-        with open(f, 'r') as fr:
-            lines = fr.readlines()
-            row = [line.strip('\n').split('\t') for line in lines]
-            flag = False
-            for i in row:
-                if i is not 'nan':
-                    flag = True
-            if flag:
-                ret_lines.extend(row)
-    return ret_lines
+    sql_db = SQLiteHelper()
+    return sql_db.execute_query("SELECT * FROM FEATURE_CACHE")
 
 
 # TODO resolve the case when the source features are derived from the market data
@@ -462,21 +450,17 @@ def feature_refine():
     df.to_csv(save_file)
 
 
-def get_source_feature_mappings(source=True, feature_types=None, top_ratio=0.25, bottom_ratio=0.2):
+def get_source_feature_mappings(feature_types=None):
     root = get_source_root()
     feature_mapping = load_json_file(os.path.join(os.path.realpath(root), 'conf', 'feature_mapping.json'))
+    if not feature_types:
+        return feature_mapping
+    for k, v in feature_mapping.items():
+        if not k in feature_types:
+            feature_mapping.pop(k)
     # return feature_mapping
     return {'growth': ['TOTALASSETGROWRATE'], 'vs': ['PE', 'PB', 'PS'], 'volume': ['OBV'],
             'return': ['Variance20', 'Alpha20', 'Beta20']}
-    # FIXME simply the feature selection logic
-    if source:
-        return feature_mapping
-    return get_significant_features(top_ratio=top_ratio, bottom_ratio=bottom_ratio)
-
-    # return {'growth': ['TOTALASSETGROWRATE'], 'vs': ['PE', 'PB', 'PS'], 'volume': ['OBV'],
-    #         'return': ['Variance20', 'Alpha20', 'Beta20']}
-    # return {'volume': ['OBV'],
-    #         'return': ['VARIANCE20', 'ALPHA20', 'BETA20']}
 
 
 def get_security_codes(sec_type=1, source=0):

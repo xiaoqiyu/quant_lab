@@ -56,6 +56,7 @@ class Ml_Reg_Model(Model):
         self.features = kwargs.get('features')
         param_grids = kwargs.get('super_params') or self._best_estimate
         self.model = regs.get(self.model_name)
+        return self.model
 
     @timeit
     def train_model(self, train_X=[], train_Y=[], **kwargs):
