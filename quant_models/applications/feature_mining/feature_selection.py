@@ -10,6 +10,8 @@ import pprint
 from collections import defaultdict
 import time
 import os
+import gc
+from WindPy import w
 import pandas as pd
 from quant_models.data_processing.features_calculation import get_equity_daily_features
 from quant_models.data_processing.features_calculation import get_equity_returns
@@ -26,10 +28,12 @@ from quant_models.utils.io_utils import load_json_file
 from quant_models.utils.helper import get_source_root
 from quant_models.utils.date_utils import datetime_delta
 from quant_models.model_processing.feature_preprocessing import feature_preprocessing
+from quant_models.utils.decorators import timeit
 
 logger = Logger(log_level='DEBUG', handler='ch').get_log()
 config = get_config()
 feature_model_name = 'random_forest'
+w.start()
 
 
 def _resolve_none(arr=[], col_names=[], none_dict={}):
@@ -89,10 +93,8 @@ def score_json2csv():
     df.to_csv(score_path)
 
 
-def features_retrieve(start_date='20181101', end_date='20181131', data_source=0,
+def retrieve_features(start_date='20181101', end_date='20181131', data_source=0,
                       feature_types=[], bc='000300.XSHG'):
-    root = get_source_root()
-    # FIXME check the update of this funcion
     feature_mapping = get_source_feature_mappings(feature_types=feature_types)
     date_periods = _get_in_out_dates(start_date=start_date, end_date=end_date, security_id='000300.XSHG') or [
         [start_date, end_date]]
@@ -146,143 +148,75 @@ def features_retrieve(start_date='20181101', end_date='20181131', data_source=0,
         df['LABEL'] = all_labels
     except Exception as ex:
         logger.error(ex)
+    del ret_features
+    del ret_labels
+    gc.collect()
     return df
 
 
-def features_cache(start_date='20181101', end_date='20181131', data_source=0,
+@timeit
+def cache_features(start_date='20180101', end_date='20181231', data_source=0,
                    feature_types=[], bc='000300.XSHG'):
-    df = features_retrieve(start_date=start_date, end_date=end_date, data_source=data_source,
-                           feature_types=feature_types, bc=bc)
-    # save_features(tuple(df.columns), tuple(df.values))
-    root = get_source_root()
-    feature_source = os.path.join(os.path.realpath(root), 'data', 'features',
-                                  'features_{0}_{1}.csv'.format(start_date, end_date))
-    # df.to_pickle(feature_source)
-    df.to_csv(feature_source)
-
-
-
-def features_train(start_date='', end_date=''):
-    rows, desc = read_features()
-    _df = pd.DataFrame(rows, columns=desc)
-
-
-def feature_setup():
-    pass
-
-
-def feature_selection_complete(start_date='20181101', end_date='20181131', data_source=0,
-                               feature_types=[], train_feature=True, saved_feature=True, bc='000300.XSHG'):
     '''
-    including query the origin features and feature calculation and ic calculation
+    cache the features
     :param start_date:
     :param end_date:
     :param data_source:
     :param feature_types:
-    :param train_feature:
-    :param saved_feature:
     :param bc:
     :return:
     '''
+    df = retrieve_features(start_date=start_date, end_date=end_date, data_source=data_source,
+                           feature_types=feature_types, bc=bc)
+    # save_features(tuple(df.columns), tuple(df.values))
     root = get_source_root()
-    # FIXME check the update of this funcion
-    feature_mapping = get_source_feature_mappings(feature_types=feature_types)
-    date_periods = _get_in_out_dates(start_date=start_date, end_date=end_date, security_id='000300.XSHG') or [
-        [start_date, end_date]]
-    all_labels = []
-    all_features = []
-    all_feature_names = []
-    g_next_date = datetime_delta(dt=end_date, format='%Y%m%d', days=1)
-    idx_labels = get_idx_returns(security_ids=[bc], start_date=start_date, end_date=g_next_date,
-                                 source=0).get(bc)
-    for _start_date, _end_date in date_periods:
-        next_date = datetime_delta(dt=_end_date, format='%Y%m%d', days=2)
-        security_ids = get_idx_cons_dy(bc, _start_date)
-        # FIXME add some filter,e.g. halt sec
-        ret_features = get_equity_daily_features(security_ids=security_ids, features=feature_mapping,
-                                                 start_date=_start_date,
-                                                 end_date=_end_date, source=data_source)
-        ret_labels = get_equity_returns(security_ids=security_ids, start_date=_start_date, end_date=next_date)
-        none_factor_dict = defaultdict()
 
-        for date, val in ret_features.items():
-            date_features = []
-            date_labels = []
-            for sec_id, f_lst in val.items():
-                _val_lst = list(f_lst.values())
-                all_feature_names = list(f_lst.keys())
-                date_features.append(_val_lst)
-                try:
-                    s_label = ret_labels.get(sec_id).get(str(date))
-                    i_label = idx_labels.get(str(date))
-                    label = (s_label - i_label) * 100
-                except Exception as ex:
-                    label = np.nan
-                    logger.error('fail to calculate the label with error:{0}'.format(ex))
-                date_labels.append(label)
-            try:
-                date_features = feature_preprocessing(arr=date_features, fill_none=True, trade_date=date,
-                                                      sec_ids=list(val.keys()), neutralized=False)
-            except Exception as ex:
-                logger.error('fail in feature preprocessing with error:{0}'.format(ex))
-            try:
-                df_shape = date_features.shape
-                date_features = np.column_stack((date_features, list(val.keys()), [date] * df_shape[0]))
-                all_features.extend(date_features)
-                all_labels.extend(date_labels)
-            except Exception as ex:
-                logger.error('fail to reshape features features with error:{0}'.format(ex))
-
-    if train_feature:
-        n_col = len(all_features[0])
-        corr_dict = {}
-        f_cnt = 0
-        for idx in range(n_col - 2):
-            f_cnt += 1
-            _tmp = [float(item[idx]) for item in all_features]
-            try:
-                corr = np.corrcoef(_tmp[1:], all_labels[1:])
-                corr_dict.update({all_feature_names[idx]: corr[0][1]})
-            except Exception as ex:
-                logger.error('fail to calculate corr with error:{0}'.format(ex))
-        rows = []
-        for k, v in corr_dict.items():
-            for ft, lst in feature_mapping.items():
-                _lst = [item.upper() for item in lst]
-                if k in _lst:
-                    rows.append([k, v, ft])
-                    continue
-        logger.debug(rows)
-        df = pd.DataFrame(rows, columns=['key', 'score', 'feature_type'])
-        score_path = os.path.join(os.path.realpath(root), 'data', 'features',
-                                  'score_{0}_{1}.csv'.format(start_date, end_date))
-        df.to_csv(score_path)
-        # write_json_file(train_feature_path, corr_dict)
-        none_dict_path = os.path.join(os.path.realpath(root), 'data', 'features',
-                                      'testing_none_factor_dict_{0}_{1}.json'.format(start_date, end_date))
-        write_json_file(none_dict_path, none_factor_dict)
-    try:
-        if 'SECURITY_ID' not in all_feature_names:
-            all_feature_names.append('SECURITY_ID')
-        if 'TRADE_DATE' not in all_feature_names:
-            all_feature_names.append('TRADE_DATE')
-        df = pd.DataFrame(all_features, columns=all_feature_names)
-        df['LABEL'] = all_labels
-        if saved_feature:
-            feature_path = os.path.join(os.path.realpath(root), 'data', 'features',
-                                        'features_{0}_{1}.pkl'.format(start_date, end_date))
-            df.to_pickle(feature_path)
-    except Exception as ex:
-        logger.error(ex)
+    # df.to_pickle(feature_source)
+    df['MONTH'] = [item[:6] for item in df['TRADE_DATE']]
+    m_dates = set(df['MONTH'])
+    n_mdates = len(m_dates)
+    for idx, m_date in enumerate(m_dates):
+        _df = df[df.MONTH == m_date]
+        feature_source = os.path.join(os.path.realpath(root), 'data', 'features',
+                                      'features{0}_{1}.csv'.format(bc.split('.')[0], m_date))
+        logger.info('Saving the {0} th features {1} out of {2}'.format(idx, feature_source, n_mdates))
+        _df.to_csv(feature_source, index=None)
+    del df
     gc.collect()
-    time.sleep(3)
-    return df
+
+
+@timeit
+def train_features(start_date='', end_date='', bc='000300.XSHG'):
+    # rows, desc = read_features()
+    # _df = pd.DataFrame(rows, columns=desc)
+    _w_ret = w.tdays(start_date, end_date)
+    t_months = list(set([item.strftime('%Y%m') for item in _w_ret.Data[0]]))
+    root = get_source_root()
+    feature_paths = [os.path.join(os.path.realpath(root), 'data', 'features',
+                                  'features{0}_{1}.csv'.format(bc.split('.')[0], m_date)) for m_date in t_months]
+    if feature_paths:
+        df = pd.read_csv(feature_paths[0])
+        for p in feature_paths[1:]:
+            df.append(pd.read_csv(p))
+    cols = list(df.columns)[:-4]
+    cols.append('LABEL')
+    df_corr = df[cols].corr()
+    score_df = pd.DataFrame({'feature': cols[:-1], 'score': df_corr['LABEL'][:-1]})
+    score_path = os.path.join(os.path.realpath(root), 'data', 'features',
+                              'score_{0}_{1}.csv'.format(start_date, end_date))
+    score_df.to_csv(score_path, index=None)
+    return score_df
 
 
 if __name__ == '__main__':
     import gc
-    # ret = feature_selection_complete(start_date='20190103', end_date='20190131', data_source=0,
-    #                                  feature_types=[], train_feature=True, saved_feature=True,
-    #                                  bc='000300.XSHG')
-    features_cache(start_date='20190103', end_date='20190131', data_source=0,
+    cache_features(start_date='20170103', end_date='20171231', data_source=0,
                    feature_types=[], bc='000300.XSHG')
+    gc.collect()
+    cache_features(start_date='20180103', end_date='20181231', data_source=0,
+                   feature_types=[], bc='000300.XSHG')
+    gc.collect()
+    cache_features(start_date='20190103', end_date='20190531', data_source=0,
+                   feature_types=[], bc='000300.XSHG')
+    gc.collect()
+    # train_features(start_date='20190103', end_date='20190531', bc='000300.XSHG')

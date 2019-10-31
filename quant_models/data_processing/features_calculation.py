@@ -455,7 +455,8 @@ def get_source_feature_mappings(feature_types=None):
     feature_mapping = load_json_file(os.path.join(os.path.realpath(root), 'conf', 'feature_mapping.json'))
     if not feature_types:
         return feature_mapping
-    for k, v in feature_mapping.items():
+    _tmp = copy.deepcopy(feature_mapping)
+    for k, v in _tmp.items():
         if not k in feature_types:
             feature_mapping.pop(k)
     # return feature_mapping

@@ -10,6 +10,7 @@ from quant_models.model_processing.ml_reg_models import Ml_Reg_Model
 from quant_models.utils.logger import Logger
 from quant_models.utils.helper import get_config
 from quant_models.utils.helper import get_source_root
+from quant_models.utils.decorators import timeit
 from sklearn import decomposition
 
 logger = Logger(log_level='DEBUG', handler='ch').get_log()
@@ -36,7 +37,8 @@ def get_selected_features(start_date=None, end_date=None, up_ratio=0.2, down_rat
     return list(set(selected_features))
 
 
-def train_features_models(model_name='', start_date='20140603', end_date='20181231', score_bound=(0.2, 0.1)):
+@timeit
+def train_models(model_name='', start_date='20140603', end_date='20181231', score_bound=(0.2, 0.1)):
     '''
 
     :param model_name:
@@ -64,7 +66,7 @@ def train_features_models(model_name='', start_date='20140603', end_date='201812
 
     # select the features by the ic values
     feature_names = get_selected_features(start_date=start_date, end_date=end_date, up_ratio=score_bound[0],
-                                           down_ratio=score_bound[1])
+                                          down_ratio=score_bound[1])
 
     train_X = df[feature_names].values
     dataes = list(df['TRADE_DATE'])
@@ -109,7 +111,7 @@ def train_features_models(model_name='', start_date='20140603', end_date='201812
 
 if __name__ == '__main__':
     st = time.time()
-    ret = train_features_models(model_name='linear', start_date='20150103', end_date='20190531', score_bound=(0.2, 0.1))
+    ret = train_models(model_name='linear', start_date='20150103', end_date='20190531', score_bound=(0.2, 0.1))
     et = time.time()
     print(et - st)
     print(ret)
