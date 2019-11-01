@@ -12,11 +12,12 @@ from quant_models.utils.decorators import timeit
 from quant_models.utils.helper import get_source_root
 from quant_models.utils.helper import get_config
 from quant_models.utils.helper import get_parent_dir
-from quant_models.applications.feature_mining.feature_selection import feature_selection_complete
-from quant_models.model_processing.ml_reg_models import Ml_Reg_Model
 from quant_models.applications.feature_mining.model_selection import get_selected_features
+from quant_models.applications.feature_mining.model_selection import train_models
+from quant_models.applications.feature_mining.feature_selection import load_cache_features
 from sklearn import decomposition
 from sklearn.externals import joblib
+from WindPy import w
 
 model_name = 'linear'
 config = get_config()
@@ -25,26 +26,15 @@ config = get_config()
 root = get_source_root()
 # get the file name of the features
 _feature_path = os.path.join(os.path.realpath(root), 'data', 'features', 'feature_mining_strategy')
+w.start()
 
 
 def init(context):
     model_path = os.path.join(get_parent_dir(), 'data', 'models', 'stock_selection_{0}'.format(model_name))
     feature_names = get_selected_features(__config__['base']['start_date'], __config__['base']['end_date'],
                                           up_ratio=0.2, down_ratio=0.1)
-    root = get_source_root()
-
-    # get the file name of the features
-    feature_source = os.path.join(os.path.realpath(root), 'data', 'features')
-    ret = os.listdir(feature_source)
-    # TODO the feature naming rule could be change, then this hardcode will be changed accordingly
-    # FIXME add the start and end end restriction
-    _feature_paths = [os.path.join(feature_source, item) for item in ret if item.startswith('features')]
-
-    # load the feature data
-    df = pd.read_pickle(_feature_paths[0])
-    for p in _feature_paths[1:]:
-        df = df.append(pd.read_pickle(p))
-    context.features = df
+    config.features = load_cache_features(__config__['base']['start_date'], __config__['base']['end_date'],
+                                          __config__['base']['benchmark'])
     context.model = joblib.load(model_path)
     context.feature_names = feature_names
 
@@ -70,7 +60,9 @@ def handle_bar(context, bar_dict):
 
 
 def after_trading(context):
-    pass
+    now = context.now.strftime('%Y%m%d')
+
+    train_models(model_name='linear', start_date='20150103', end_date='20190531', score_bound=(0.2, 0.1))
 
 
 __config__ = {

@@ -11,6 +11,7 @@ from quant_models.utils.logger import Logger
 from quant_models.utils.helper import get_config
 from quant_models.utils.helper import get_source_root
 from quant_models.utils.decorators import timeit
+from quant_models.applications.feature_mining.feature_selection import train_features
 from sklearn import decomposition
 
 logger = Logger(log_level='DEBUG', handler='ch').get_log()
@@ -30,7 +31,7 @@ def get_selected_features(start_date=None, end_date=None, up_ratio=0.2, down_rat
     _score_path = os.path.join(feature_source, _path)
     df = pd.read_csv(_score_path)
     df = df.sort_values(by='score')
-    features = list(df['key'])
+    features = list(df['feature'])
     left, right = int(len(features) * up_ratio), int(len(features) * down_ratio)
     selected_features = features[:left]
     selected_features.extend(features[right:])
@@ -38,7 +39,7 @@ def get_selected_features(start_date=None, end_date=None, up_ratio=0.2, down_rat
 
 
 @timeit
-def train_models(model_name='', start_date='20140603', end_date='20181231', score_bound=(0.2, 0.1)):
+def train_models(model_name='', start_date='20140603', end_date='20181231', score_bound=(0.2, 0.1), bc='000300.XSHG'):
     '''
 
     :param model_name:
@@ -52,21 +53,16 @@ def train_models(model_name='', start_date='20140603', end_date='20181231', scor
     m = m.load_model(model_name) or m.build_model()
     root = get_source_root()
 
-    # get the file name of the features
-    feature_source = os.path.join(os.path.realpath(root), 'data', 'features')
-    ret = os.listdir(feature_source)
-    # TODO the feature naming rule could be change, then this hardcode will be changed accordingly
-    # FIXME add the start and end end restriction
-    _feature_paths = [os.path.join(feature_source, item) for item in ret if item.startswith('features')]
-
-    # load the feature data
-    df = pd.read_pickle(_feature_paths[0])
-    for p in _feature_paths[1:]:
-        df = df.append(pd.read_pickle(p))
+    df, score_df = train_features(start_date=start_date, end_date=end_date, bc=bc)
+    score_df = score_df.sort_values(by='score', ascending=False)
+    _feature_names = list(score_df['feature'])
+    n_rows = len(_feature_names)
+    feature_names = list(
+        set(_feature_names[:int(n_rows * score_bound[0])]).union(set(_feature_names[int(n_rows * score_bound[1]):])))
 
     # select the features by the ic values
-    feature_names = get_selected_features(start_date=start_date, end_date=end_date, up_ratio=score_bound[0],
-                                          down_ratio=score_bound[1])
+    # feature_names = get_selected_features(start_date=start_date, end_date=end_date, up_ratio=score_bound[0],
+    #                                       down_ratio=score_bound[1])
 
     train_X = df[feature_names].values
     dataes = list(df['TRADE_DATE'])

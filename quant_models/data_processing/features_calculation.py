@@ -211,9 +211,7 @@ def get_equity_daily_features(security_ids=[], features={'ma': ['ACD6', 'ACD20']
         # logger.info('start processing rows for factor type:{0}'.format(f_type))
 
         if not f_fields:
-            # TODO add other fileds
-            retrieve_feature_names.extend(list(set(desc) - set(excluded)))
-            retrieve_feature_names = [item.upper() for item in retrieve_feature_names]
+            continue
         for item in rows:
             sec_id, date = item[id_idx], item[date_idx]
             date_dict = ret_features[date] or {}
@@ -228,7 +226,6 @@ def get_equity_daily_features(security_ids=[], features={'ma': ['ACD6', 'ACD20']
                     idx_lst.append(idx)
             # idx_lst = [idx for idx, val in enumerate(desc) if val.upper() in retrieve_feature_names]
             tmp_lst = [item[idx] for idx in idx_lst]
-            keys = f_fields or desc
             tmp_dict = dict(zip([desc[idx] for idx in idx_lst], tmp_lst))
             tmp_dict1 = copy.deepcopy(tmp_dict)
             for k1, v1 in tmp_dict1.items():
@@ -453,14 +450,14 @@ def feature_refine():
 def get_source_feature_mappings(feature_types=None):
     root = get_source_root()
     feature_mapping = load_json_file(os.path.join(os.path.realpath(root), 'conf', 'feature_mapping.json'))
-    if not feature_types:
-        return feature_mapping
-    _tmp = copy.deepcopy(feature_mapping)
-    for k, v in _tmp.items():
-        if not k in feature_types:
-            feature_mapping.pop(k)
+    # if not feature_types:
+    #     return feature_mapping
+    # _tmp = copy.deepcopy(feature_mapping)
+    # for k, v in _tmp.items():
+    #     if not k in feature_types:
+    #         feature_mapping.pop(k)
     # return feature_mapping
-    return {'growth': ['TOTALASSETGROWRATE'], 'vs': ['PE', 'PB', 'PS'], 'volume': ['OBV'],
+    return {'growth': ['TOTALASSETGROWRATE'],
             'return': ['Variance20', 'Alpha20', 'Beta20']}
 
 

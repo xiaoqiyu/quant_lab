@@ -14,14 +14,11 @@ def main():
     # cache_features(start_date='20190103', end_date='20190531', data_source=0,
     #                feature_types=[], bc='000300.XSHG')
 
-    #calculate the features scores
+    # calculate the features scores
     train_features(start_date='20190103', end_date='20190531', bc='000300.XSHG')
 
     # train ml model
-    st = time.time()
-    ret = train_models(model_name='linear', start_date='20150103', end_date='20190531', score_bound=(0.2, 0.1))
-    et = time.time()
-    print(et - st)
+    train_models(model_name='linear', start_date='20150103', end_date='20190531', score_bound=(0.2, 0.1))
 
 
 if __name__ == '__main__':
