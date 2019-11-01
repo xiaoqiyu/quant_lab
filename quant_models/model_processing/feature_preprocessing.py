@@ -118,6 +118,7 @@ def get_sw1_indust_code(sec_ids=[], trade_date=''):
 
 
 def feature_preprocessing(arr=None, fill_none=False, trade_date='', sec_ids=[], neutralized=False):
+    logger.info("Start feature_prepcessing...")
     if isinstance(arr, list):
         arr = np.array(arr)
 
@@ -147,6 +148,7 @@ def feature_preprocessing(arr=None, fill_none=False, trade_date='', sec_ids=[], 
         except Exception as ex:
             continue
     _ret = np.array(_ret).transpose()
+    logger.info("Complete feature_prepcessing")
     if not neutralized:
         return _ret
     # FIXME check the industry neutralized logic
@@ -158,6 +160,7 @@ def feature_preprocessing(arr=None, fill_none=False, trade_date='', sec_ids=[], 
     m.build_model()
     m.train_model(indust_features, _ret)
     pred_y = m.predict(indust_features)
+    logger.info("Complete feature_prepcessing")
     return _ret - pred_y
 
 

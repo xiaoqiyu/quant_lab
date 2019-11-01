@@ -72,8 +72,14 @@ def _get_in_out_dates(start_date=None, end_date=None, security_id=None):
     return ret
 
 
-def _next_trading_date(trade_date=''):
-    return w.tdaysoffset(1, trade_date).Data[0][0].strftime('%Y%m%d')
+def _next_trading_date(tdays=[], trade_date=''):
+    # assume tdays is sorted and has enough dates
+    cnt = 0
+    for d in tdays:
+        if d < trade_date:
+            cnt += 1
+    if tdays[cnt] == trade_date:
+        return tdays[cnt + 1]
 
 
 def retrieve_features(start_date='20181101', end_date='20181131', data_source=0,
@@ -84,11 +90,14 @@ def retrieve_features(start_date='20181101', end_date='20181131', data_source=0,
     all_labels = []
     all_features = []
     all_feature_names = []
-    g_next_date = _next_trading_date(end_date)
+    g_next_date = w.tdaysoffset(1, end_date).Data[0][0].strftime('%Y%m%d')
     idx_labels = get_idx_returns(security_ids=[bc], start_date=start_date, end_date=g_next_date,
                                  source=0).get(bc)
+    _w_ret = w.tdays(start_date, g_next_date)
+    tdays = [item.strftime(config['constants']['standard_date_format']) for item in _w_ret.Data[0]]
+    tdays = sorted(tdays)
     for _start_date, _end_date in date_periods:
-        next_date = _next_trading_date(_end_date)
+        next_date = _next_trading_date(tdays, _end_date)
         security_ids = get_idx_cons_dy(bc, _start_date)
         # FIXME add some filter,e.g. halt sec
         logger.info("Start query the features from :{0} to {1}....".format(_start_date, _end_date))
@@ -101,6 +110,7 @@ def retrieve_features(start_date='20181101', end_date='20181131', data_source=0,
         logger.info("Complete query the market returns from :{0} to {1}".format(_start_date, next_date))
         logger.info("Start calculate the features from :{0} to {1}....".format(_start_date, _end_date))
         for date, val in ret_features.items():
+            logger.info("Starting processing for date:{0}....".format(date))
             date_features = []
             date_labels = []
             for sec_id, f_lst in val.items():
@@ -108,7 +118,7 @@ def retrieve_features(start_date='20181101', end_date='20181131', data_source=0,
                 all_feature_names = list(f_lst.keys())
                 date_features.append(_val_lst)
                 try:
-                    _next_date = _next_trading_date(str(date))
+                    _next_date = _next_trading_date(tdays, str(date))
                     s_label = ret_labels.get(sec_id).get(str(_next_date))
                     i_label = idx_labels.get(str(_next_date))
                     label = (s_label - i_label) * 100
@@ -116,11 +126,13 @@ def retrieve_features(start_date='20181101', end_date='20181131', data_source=0,
                     label = np.nan
                     logger.error('Fail to calculate the label with error:{0}'.format(ex))
                 date_labels.append(label)
+
             try:
                 date_features = feature_preprocessing(arr=date_features, fill_none=True, trade_date=date,
                                                       sec_ids=list(val.keys()), neutralized=False)
             except Exception as ex:
                 logger.error('Fail in feature preprocessing with error:{0}'.format(ex))
+            logger.info('Adding sec_id and trade_dates and reshape...')
             try:
                 df_shape = date_features.shape
                 date_features = np.column_stack((date_features, list(val.keys()), [date] * df_shape[0]))
@@ -128,6 +140,7 @@ def retrieve_features(start_date='20181101', end_date='20181131', data_source=0,
                 all_labels.extend(date_labels)
             except Exception as ex:
                 logger.error('fail to reshape features features with error:{0}'.format(ex))
+            logger.info("Complete processing for date:{0}".format(date))
         logger.info("Complete calculate the features from :{0} to {1}".format(_start_date, _end_date))
     try:
         if 'SECURITY_ID' not in all_feature_names:
@@ -211,13 +224,14 @@ def train_features(start_date='', end_date='', bc='000300.XSHG'):
 
 if __name__ == '__main__':
     import gc
-    cache_features(start_date='20170103', end_date='20171231', data_source=0,
+
+    cache_features(start_date='20170403', end_date='20171231', data_source=0,
                    feature_types=[], bc='000300.XSHG')
-    gc.collect()
-    cache_features(start_date='20180103', end_date='20181231', data_source=0,
-                   feature_types=[], bc='000300.XSHG')
-    gc.collect()
-    cache_features(start_date='20190103', end_date='20190531', data_source=0,
-                   feature_types=[], bc='000300.XSHG')
-    gc.collect()
+    # gc.collect()
+    # cache_features(start_date='20180103', end_date='20181231', data_source=0,
+    #                feature_types=[], bc='000300.XSHG')
+    # gc.collect()
+    # cache_features(start_date='20190103', end_date='20190531', data_source=0,
+    #                feature_types=[], bc='000300.XSHG')
+    # gc.collect()
     # train_features(start_date='20190103', end_date='20190531', bc='000300.XSHG')

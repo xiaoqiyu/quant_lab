@@ -450,15 +450,15 @@ def feature_refine():
 def get_source_feature_mappings(feature_types=None):
     root = get_source_root()
     feature_mapping = load_json_file(os.path.join(os.path.realpath(root), 'conf', 'feature_mapping.json'))
-    # if not feature_types:
-    #     return feature_mapping
-    # _tmp = copy.deepcopy(feature_mapping)
-    # for k, v in _tmp.items():
-    #     if not k in feature_types:
-    #         feature_mapping.pop(k)
-    # return feature_mapping
-    return {'growth': ['TOTALASSETGROWRATE'],
-            'return': ['Variance20', 'Alpha20', 'Beta20']}
+    if not feature_types:
+        return feature_mapping
+    _tmp = copy.deepcopy(feature_mapping)
+    for k, v in _tmp.items():
+        if not k in feature_types:
+            feature_mapping.pop(k)
+    return feature_mapping
+    # return {'growth': ['TOTALASSETGROWRATE'],
+    #         'return': ['Variance20', 'Alpha20', 'Beta20']}
 
 
 def get_security_codes(sec_type=1, source=0):

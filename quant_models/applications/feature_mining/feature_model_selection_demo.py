@@ -18,7 +18,8 @@ def main():
     train_features(start_date='20190103', end_date='20190531', bc='000300.XSHG')
 
     # train ml model
-    train_models(model_name='linear', start_date='20150103', end_date='20190531', score_bound=(0.2, 0.1))
+    train_models(model_name='linear', start_date='20150103', end_date='20190531',
+                 score_bound=(0.2, 0.1))
 
 
 if __name__ == '__main__':

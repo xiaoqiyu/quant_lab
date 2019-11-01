@@ -34,7 +34,7 @@ def get_selected_features(start_date=None, end_date=None, up_ratio=0.2, down_rat
     features = list(df['feature'])
     left, right = int(len(features) * up_ratio), int(len(features) * down_ratio)
     selected_features = features[:left]
-    selected_features.extend(features[right:])
+    selected_features.extend(features[-right:])
     return list(set(selected_features))
 
 
@@ -89,19 +89,6 @@ def train_models(model_name='', start_date='20140603', end_date='20181231', scor
                                '{0}_{1}_{2}.txt'.format(model_name, start_date, end_date))
     with open(result_path, 'a+') as fout:
         fout.write('{0}\t{1}'.format(str(list(mse_scores)), str(list(r2_scores))))
-
-    # this section is not part of the model training, it is for the cache for predicted score, which is for
-    # the subsequent convenient strategy backtesting
-    # ret_scores = []
-    # for idx, text_x in enumerate(train_X):
-    #     date = dataes[idx]
-    #     sec_id = sec_ids[idx]
-    #     pred_y = m.predict(text_x)
-    #     ret_scores.append([date, sec_id, pred_y[0]])
-    # result_path = os.path.join(os.path.join((os.path.join(os.path.realpath(root), 'data')), 'results'),
-    #                            'pred_score_{0}_{1}_{2}.csv'.format(model_name, start_date, end_date))
-    # _df = pd.DataFrame(ret_scores, columns=['date', 'sec_id', 'score'])
-    # _df.to_csv(result_path, index=False)
     return mse_scores, r2_scores
 
 
