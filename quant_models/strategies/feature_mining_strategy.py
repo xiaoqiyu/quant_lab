@@ -17,7 +17,7 @@ from quant_models.applications.feature_mining.model_selection import train_model
 from quant_models.applications.feature_mining.feature_selection import load_cache_features
 from sklearn import decomposition
 from sklearn.externals import joblib
-from WindPy import w
+
 
 model_name = 'linear'
 config = get_config()
@@ -25,20 +25,21 @@ strategy_config = config['feature_mining_strategy']
 # TODO change the path of the backtesting results
 root = get_source_root()
 # get the file name of the features
-_feature_path = os.path.join(os.path.realpath(root), 'data', 'features', 'feature_mining_strategy')
-w.start()
+# _feature_path = os.path.join(os.path.realpath(root), 'data', 'features', 'feature_mining_strategy')
+# w.start()
 
 
 def init(context):
     model_path = os.path.join(get_parent_dir(), 'data', 'models', 'stock_selection_{0}'.format(model_name))
     feature_names = get_selected_features(__config__['base']['start_date'], __config__['base']['end_date'],
                                           up_ratio=0.2, down_ratio=0.1)
+    print(feature_names)
+    print('Start lodding features...')
     context.features = load_cache_features(__config__['base']['start_date'], __config__['base']['end_date'],
                                            __config__['base']['benchmark'])
+    print('Complete lodding features...')
     context.model = joblib.load(model_path)
-    #FIXME HACK FOR TESTING
-    context.feature_names = ['PB', 'PE', 'OBV', 'VARIANCE20', 'ALPHA20']
-    # context.feature_names = feature_names
+    context.feature_names = feature_names
 
 
 def before_trading(context):
@@ -47,9 +48,9 @@ def before_trading(context):
 
 def handle_bar(context, bar_dict):
     now = context.now.strftime(config['constants']['standard_date_format'])
-    # feature_df = context.features[context.features.TRADE_DATE == now]
-    #FIXME HACK FOR TESTING
-    feature_df = context.features[context.features.TRADE_DATE == list(context.features.TRADE_DATE)[0]]
+    feature_df = context.features[context.features.TRADE_DATE == int(now)]
+    # #FIXME HACK FOR TESTING
+    # feature_df = context.features[context.features.TRADE_DATE == list(context.features.TRADE_DATE)[0]]
     sec_ids = list(feature_df['SECURITY_ID'])
     selected_df = feature_df[context.feature_names]
     n_cols = selected_df.shape[1]
@@ -64,15 +65,16 @@ def handle_bar(context, bar_dict):
 
 
 def after_trading(context):
-    now = context.now.strftime(config['constants']['standard_date_format'])
-    next_tday = w.tdaysoffset(1, now).Data[0][0].strftime(config['constants']['standard_date_format'])
-    # now is the month end
-    if now[:6] != next_tday[:6]:
-        start_date = w.tdaysoffset(-strategy_config['backtrack_period'], now).Data[0][0].strftime(
-            config['constants']['standard_date_format'])
-        end_date = w.tdaysoffset(-1, now).Data[0][0].strftime(config['constants']['standard_date_format'])
-        train_models(model_name=strategy_config['model_name'], start_date=start_date, end_date=end_date, score_bound=(
-            float(strategy_config['up_ratio']), float(strategy_config['down_ratio'])))
+    pass
+    # now = context.now.strftime(config['constants']['standard_date_format'])
+    # next_tday = w.tdaysoffset(1, now).Data[0][0].strftime(config['constants']['standard_date_format'])
+    # # now is the month end
+    # if now[:6] != next_tday[:6]:
+    #     start_date = w.tdaysoffset(-strategy_config['backtrack_period'], now).Data[0][0].strftime(
+    #         config['constants']['standard_date_format'])
+    #     end_date = w.tdaysoffset(-1, now).Data[0][0].strftime(config['constants']['standard_date_format'])
+    #     train_models(model_name=strategy_config['model_name'], start_date=start_date, end_date=end_date, score_bound=(
+    #         float(strategy_config['up_ratio']), float(strategy_config['down_ratio'])))
 
 
 __config__ = {

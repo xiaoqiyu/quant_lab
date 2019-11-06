@@ -65,17 +65,20 @@ if __name__ == '__main__':
     # func1()
     w.start()
     # w.wsd(sec_code, "close,volume,turn,open,chg,pct_chg,total_shares", t_days[-pe
-    ret = w.wsd('002180.SZ', 'pct_chg', '20190801', '20191024')
-    # print(ret.Data[0])
-    # print(np.array(ret.Data[0]).std()/math.sqrt(30))
+    ret = w.wsd('002180.SZ', 'pct_chg', '20190802', '20191101')
+    prices = list(np.array(ret.Data[0]))
+    log_returns = []
+    print(ret.Data[0])
+    print(np.array(ret.Data[0]).std()/math.sqrt(60))
+
     #30天，0.54
-    mock_prices = []
-    for i in range(100):
-        ret = func1(S0=27.64, r=0, sigma=0.18, I=1000, T=0.15)
-        mock_prices.append(np.array(ret).mean())
-        # pprint.pprint(np.array(ret).mean())
-    arr_p = np.array(mock_prices)
-    print(arr_p.max(), arr_p.min(), arr_p.mean())
+    # mock_prices = []
+    # for i in range(100):
+    #     ret = func1(S0=27.64, r=0, sigma=0.18, I=1000, T=0.15)
+    #     mock_prices.append(np.array(ret).mean())
+    #     # pprint.pprint(np.array(ret).mean())
+    # arr_p = np.array(mock_prices)
+    # print(arr_p.max(), arr_p.min(), arr_p.mean())
 
 
     # func2()

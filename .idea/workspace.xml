@@ -3,7 +3,16 @@
   <component name="ChangeListManager">
     <list default="true" id="2fcb8905-90be-493e-9565-981ed27d1881" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/quant_models/applications/feature_mining/feature_selection.py" beforeDir="false" afterPath="$PROJECT_DIR$/quant_models/applications/feature_mining/feature_selection.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/quant_models/applications/feature_mining/log.txt" beforeDir="false" afterPath="$PROJECT_DIR$/quant_models/applications/feature_mining/log.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/quant_models/applications/feature_mining/model_selection.py" beforeDir="false" afterPath="$PROJECT_DIR$/quant_models/applications/feature_mining/model_selection.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/quant_models/docs/report.ipynb" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/quant_models/model_processing/feature_preprocessing.py" beforeDir="false" afterPath="$PROJECT_DIR$/quant_models/model_processing/feature_preprocessing.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/quant_models/model_processing/ml_reg_models.py" beforeDir="false" afterPath="$PROJECT_DIR$/quant_models/model_processing/ml_reg_models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/quant_models/model_processing/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/quant_models/model_processing/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/quant_models/strategies/feature_mining_strategy.py" beforeDir="false" afterPath="$PROJECT_DIR$/quant_models/strategies/feature_mining_strategy.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/quant_models/strategies/s_buy_and_hold.py" beforeDir="false" afterPath="$PROJECT_DIR$/quant_models/strategies/s_buy_and_hold.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/quant_models/utils/monte_carlo.py" beforeDir="false" afterPath="$PROJECT_DIR$/quant_models/utils/monte_carlo.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -17,8 +26,11 @@
       <file leaf-file-name="feature_model_selection_demo.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/quant_models/applications/feature_mining/feature_model_selection_demo.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="125">
-              <caret line="5" column="11" selection-start-line="5" selection-start-column="11" selection-end-line="5" selection-end-column="11" />
+            <state relative-caret-position="500">
+              <caret line="20" column="11" selection-start-line="20" selection-start-column="11" selection-end-line="20" selection-end-column="11" />
+              <folding>
+                <element signature="e#136#147#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -26,8 +38,8 @@
       <file leaf-file-name="feature_selection.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/quant_models/applications/feature_mining/feature_selection.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1250">
-              <caret line="74" column="4" selection-start-line="74" selection-start-column="4" selection-end-line="74" selection-end-column="4" />
+            <state relative-caret-position="793">
+              <caret line="215" column="42" selection-start-line="215" selection-start-column="42" selection-end-line="215" selection-end-column="42" />
               <folding>
                 <element signature="e#125#160#0" expanded="true" />
               </folding>
@@ -38,8 +50,20 @@
       <file leaf-file-name="decorators.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/quant_models/utils/decorators.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="675">
-              <caret line="36" column="22" selection-start-line="36" selection-start-column="22" selection-end-line="36" selection-end-column="22" />
+            <state relative-caret-position="400">
+              <caret line="16" column="54" selection-start-line="16" selection-start-column="54" selection-end-line="16" selection-end-column="54" />
+              <folding>
+                <element signature="e#118#129#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="algo_trading_strategy_testing.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/quant_models/playground/kiki/algo_trading_strategy_testing.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="357">
+              <caret line="118" column="42" selection-start-line="118" selection-start-column="42" selection-end-line="118" selection-end-column="42" />
             </state>
           </provider>
         </entry>
@@ -47,8 +71,8 @@
       <file leaf-file-name="feature_mining_strategy.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/quant_models/strategies/feature_mining_strategy.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="350">
-              <caret line="27" column="62" selection-start-line="27" selection-start-column="62" selection-end-line="27" selection-end-column="62" />
+            <state relative-caret-position="1">
+              <caret line="29" selection-start-line="28" selection-end-line="29" />
               <folding>
                 <element signature="e#132#157#0" expanded="true" />
               </folding>
@@ -59,19 +83,22 @@
       <file leaf-file-name="strategy_demo.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/quant_models/strategies/strategy_demo.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="300">
-              <caret line="12" selection-start-line="12" selection-end-line="12" />
+            <state relative-caret-position="847">
+              <caret line="35" column="7" lean-forward="true" selection-start-line="35" selection-start-column="7" selection-end-line="35" selection-end-column="7" />
+              <folding>
+                <element signature="e#120#139#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="feature_preprocessing.py" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/quant_models/model_processing/feature_preprocessing.py">
+      <file leaf-file-name="model_selection.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/quant_models/applications/feature_mining/model_selection.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1300">
-              <caret line="67" column="62" lean-forward="true" selection-start-line="67" selection-start-column="62" selection-end-line="67" selection-end-column="62" />
+            <state relative-caret-position="428">
+              <caret line="65" column="25" lean-forward="true" selection-start-line="65" selection-start-column="25" selection-end-line="66" selection-end-column="31" />
               <folding>
-                <element signature="e#129#138#0" expanded="true" />
+                <element signature="e#122#133#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -80,8 +107,8 @@
       <file leaf-file-name="s_buy_and_hold.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/quant_models/strategies/s_buy_and_hold.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1025">
-              <caret line="43" column="44" selection-start-line="43" selection-start-column="44" selection-end-line="43" selection-end-column="44" />
+            <state relative-caret-position="475">
+              <caret line="19" column="8" selection-start-line="19" selection-start-column="8" selection-end-line="19" selection-end-column="8" />
               <folding>
                 <element signature="e#122#147#0" expanded="true" />
               </folding>
@@ -89,38 +116,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="date_utils.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/quant_models/utils/date_utils.py">
+      <file leaf-file-name="feature_mining.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/quant_models/applications/feature_mining/feature_mining.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1850">
-              <caret line="78" column="58" selection-start-line="78" selection-start-column="58" selection-end-line="78" selection-end-column="58" />
-              <folding>
-                <element signature="e#118#133#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="features_calculation.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/quant_models/data_processing/features_calculation.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="225">
-              <caret line="26" selection-start-line="26" selection-end-line="26" />
-              <folding>
-                <element signature="e#127#145#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="model_selection.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/quant_models/applications/feature_mining/model_selection.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="600">
-              <caret line="33" column="34" selection-start-line="33" selection-start-column="34" selection-end-line="33" selection-end-column="34" />
-              <folding>
-                <element signature="e#122#133#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="986">
+              <caret line="226" selection-start-line="226" selection-end-line="227" selection-end-column="19" />
             </state>
           </provider>
         </entry>
@@ -137,7 +137,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>None</find>
       <find>target_period</find>
       <find>participant_rate</find>
       <find>args</find>
@@ -167,6 +166,7 @@
       <find>train</find>
       <find>feature_mining_backtesting</find>
       <find>minepy</find>
+      <find>property.get</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -175,7 +175,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/quant_models/utils/sql_server_helper.py" />
         <option value="$PROJECT_DIR$/quant_models/data_processing/market.py" />
         <option value="$PROJECT_DIR$/quant_models/api/feature_research_barra.py" />
         <option value="$PROJECT_DIR$/quant_models/api/stock_selection_ml.py" />
@@ -194,14 +193,12 @@
         <option value="$PROJECT_DIR$/quant_models/utils/oracle_helper.py" />
         <option value="$PROJECT_DIR$/quant_models/model_processing/dl_reg_models.py" />
         <option value="$PROJECT_DIR$/quant_models/playground/kiki/algo_strategy.py" />
-        <option value="$PROJECT_DIR$/quant_models/docs/report.ipynb" />
         <option value="$PROJECT_DIR$/quant_models/api/feature_research.py" />
         <option value="$PROJECT_DIR$/quant_models/strategies/algo_strategy.py" />
         <option value="$PROJECT_DIR$/quant_models/strategies/algo_strategy/algo_strategy.py" />
         <option value="$PROJECT_DIR$/quant_models/applications/feature_mining/feature_research.py" />
         <option value="$PROJECT_DIR$/quant_models/data_processing/data_fetcher_db.py" />
         <option value="$PROJECT_DIR$/quant_models/model_processing/tf_multi_factor.py" />
-        <option value="$PROJECT_DIR$/quant_models/utils/monte_carlo.py" />
         <option value="$PROJECT_DIR$/quant_models/model_processing/g_tf_multi_factor.py" />
         <option value="$PROJECT_DIR$/quant_models/applications/feature_mining/ic_ml_feature_model.py" />
         <option value="$PROJECT_DIR$/quant_models/applications/feature_mining/stock_selection_ml.py" />
@@ -209,29 +206,32 @@
         <option value="$PROJECT_DIR$/quant_models/data/features/score_20190103_20190131.csv" />
         <option value="$PROJECT_DIR$/quant_models/applications/algo_strategy/trading_strategy_demo.py" />
         <option value="$PROJECT_DIR$/quant_models/applications/feature_mining/feature_mining.py" />
-        <option value="$PROJECT_DIR$/quant_models/strategies/s_buy_and_hold.py" />
         <option value="$PROJECT_DIR$/quant_models/docs/头脑风暴" />
         <option value="$PROJECT_DIR$/quant_models/utils/date_utils.py" />
-        <option value="$PROJECT_DIR$/quant_models/model_processing/models.py" />
-        <option value="$PROJECT_DIR$/quant_models/model_processing/ml_reg_models.py" />
         <option value="$PROJECT_DIR$/quant_models/utils/sql_lite_helper.py" />
-        <option value="$PROJECT_DIR$/quant_models/playground/kiki/algo_trading_strategy_testing.py" />
         <option value="$PROJECT_DIR$/.gitignore" />
         <option value="$PROJECT_DIR$/quant_models/applications/algo_strategy/trading_strategy.py" />
         <option value="$PROJECT_DIR$/quant_models/data_processing/features_calculation.py" />
         <option value="$PROJECT_DIR$/quant_models/conf/conf" />
         <option value="$PROJECT_DIR$/quant_models/applications/feature_mining/feature_model_selection_demo.py" />
+        <option value="$PROJECT_DIR$/quant_models/model_processing/feature_preprocessing.py" />
+        <option value="$PROJECT_DIR$/quant_models/utils/monte_carlo.py" />
+        <option value="$PROJECT_DIR$/quant_models/model_processing/models.py" />
+        <option value="$PROJECT_DIR$/quant_models/model_processing/ml_reg_models.py" />
+        <option value="$PROJECT_DIR$/quant_models/playground/kiki/algo_trading_strategy_testing.py" />
+        <option value="$PROJECT_DIR$/quant_models/strategies/s_buy_and_hold.py" />
         <option value="$PROJECT_DIR$/quant_models/strategies/strategy_demo.py" />
-        <option value="$PROJECT_DIR$/quant_models/applications/feature_mining/model_selection.py" />
+        <option value="$PROJECT_DIR$/quant_models/utils/decorators.py" />
         <option value="$PROJECT_DIR$/quant_models/strategies/feature_mining_strategy.py" />
         <option value="$PROJECT_DIR$/quant_models/applications/feature_mining/feature_selection.py" />
-        <option value="$PROJECT_DIR$/quant_models/model_processing/feature_preprocessing.py" />
+        <option value="$PROJECT_DIR$/quant_models/docs/report.ipynb" />
+        <option value="$PROJECT_DIR$/quant_models/applications/feature_mining/model_selection.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="-74" />
-    <option name="y" value="399" />
+    <option name="x" value="-8" />
+    <option name="y" value="-8" />
     <option name="width" value="1080" />
     <option name="height" value="860" />
   </component>
@@ -264,6 +264,13 @@
               <item name="quant_geek" type="462c0819:PsiDirectoryNode" />
               <item name="quant_models" type="462c0819:PsiDirectoryNode" />
               <item name="applications" type="462c0819:PsiDirectoryNode" />
+              <item name="algo_strategy" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="quant_geek" type="b2602c69:ProjectViewProjectNode" />
+              <item name="quant_geek" type="462c0819:PsiDirectoryNode" />
+              <item name="quant_models" type="462c0819:PsiDirectoryNode" />
+              <item name="applications" type="462c0819:PsiDirectoryNode" />
               <item name="feature_mining" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -276,7 +283,13 @@
               <item name="quant_geek" type="b2602c69:ProjectViewProjectNode" />
               <item name="quant_geek" type="462c0819:PsiDirectoryNode" />
               <item name="quant_models" type="462c0819:PsiDirectoryNode" />
-              <item name="data_processing" type="462c0819:PsiDirectoryNode" />
+              <item name="data" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="quant_geek" type="b2602c69:ProjectViewProjectNode" />
+              <item name="quant_geek" type="462c0819:PsiDirectoryNode" />
+              <item name="quant_models" type="462c0819:PsiDirectoryNode" />
+              <item name="docs" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="quant_geek" type="b2602c69:ProjectViewProjectNode" />
@@ -304,7 +317,7 @@
   </component>
   <component name="PropertiesComponent">
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
-    <property name="settings.editor.selected.configurable" value="preferences.keymap" />
+    <property name="settings.editor.selected.configurable" value="vcs.Subversion" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
@@ -325,7 +338,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.feature_selection">
+  <component name="RunManager" selected="Python.strategy_demo">
     <configuration name="algo_trading_strategy_testing" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="testing" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -344,7 +357,7 @@
       <option name="EMULATE_TERMINAL" value="false" />
       <option name="MODULE_MODE" value="false" />
     </configuration>
-    <configuration name="date_utils" type="PythonConfigurationType" factoryName="Python" temporary="true">
+    <configuration name="feature_mining_strategy" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="testing" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -352,11 +365,11 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/quant_models/utils" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/quant_models/strategies" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/quant_models/utils/date_utils.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/quant_models/strategies/feature_mining_strategy.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -380,7 +393,7 @@
       <option name="EMULATE_TERMINAL" value="false" />
       <option name="MODULE_MODE" value="false" />
     </configuration>
-    <configuration name="sql_lite_helper" type="PythonConfigurationType" factoryName="Python" temporary="true">
+    <configuration name="model_selection" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="testing" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -388,11 +401,11 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/quant_models/utils" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/quant_models/applications/feature_mining" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/quant_models/utils/sql_lite_helper.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/quant_models/applications/feature_mining/model_selection.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -419,22 +432,22 @@
     <list>
       <item itemvalue="Python.algo_trading_strategy_testing" />
       <item itemvalue="Python.strategy_demo" />
-      <item itemvalue="Python.date_utils" />
-      <item itemvalue="Python.sql_lite_helper" />
       <item itemvalue="Python.feature_selection" />
+      <item itemvalue="Python.model_selection" />
+      <item itemvalue="Python.feature_mining_strategy" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.feature_selection" />
         <item itemvalue="Python.strategy_demo" />
-        <item itemvalue="Python.date_utils" />
+        <item itemvalue="Python.model_selection" />
+        <item itemvalue="Python.feature_mining_strategy" />
         <item itemvalue="Python.algo_trading_strategy_testing" />
-        <item itemvalue="Python.sql_lite_helper" />
+        <item itemvalue="Python.feature_selection" />
       </list>
     </recent_temporary>
   </component>
   <component name="SvnConfiguration">
-    <configuration />
+    <configuration>C:\Users\HP\AppData\Roaming\Subversion</configuration>
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -457,24 +470,25 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1096" height="1896" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.009451796" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.3553875" />
       <window_info anchor="bottom" id="TODO" order="7" weight="0.329539" />
       <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.2538418" />
       <window_info anchor="bottom" id="Version Control" order="9" weight="0.329539" />
-      <window_info anchor="bottom" id="Python Console" order="6" weight="0.3875925" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.4217416" />
+      <window_info anchor="bottom" id="Python Console" order="6" weight="0.25213432" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.31246442" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info anchor="bottom" id="Terminal" order="8" weight="0.18995929" />
       <window_info id="Favorites" order="2" side_tool="true" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.3175868" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.38190097" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
-      <window_info anchor="bottom" id="Find" order="1" weight="0.33124644" />
     </layout>
     <layout-to-restore>
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -503,14 +517,14 @@
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/quant_models/data_processing/features_calculation.py</url>
-          <line>208</line>
-          <option name="timeStamp" value="364" />
+          <url>file://$PROJECT_DIR$/quant_models/applications/feature_mining/model_selection.py</url>
+          <line>84</line>
+          <option name="timeStamp" value="413" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/quant_models/data_processing/features_calculation.py</url>
-          <line>209</line>
-          <option name="timeStamp" value="365" />
+          <url>file://$PROJECT_DIR$/quant_models/applications/feature_mining/model_selection.py</url>
+          <line>85</line>
+          <option name="timeStamp" value="414" />
         </line-breakpoint>
       </breakpoints>
       <breakpoints-dialog>
@@ -523,78 +537,59 @@
           </properties>
         </breakpoint>
       </default-breakpoints>
-      <option name="time" value="374" />
+      <option name="time" value="415" />
     </breakpoint-manager>
   </component>
   <component name="debuggerHistoryManager">
     <expressions id="evaluateExpression">
       <expression>
-        <expression-string>sorted(tdays)</expression-string>
+        <expression-string>train_X.shape</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>date_periods</expression-string>
+        <expression-string>train_X</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>tdays</expression-string>
+        <expression-string>set(_feature_names[-int(n_rows * score_bound[1]):])</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>rows</expression-string>
+        <expression-string>set(_feature_names[int(n_rows * score_bound[1]):])</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>desc</expression-string>
+        <expression-string>len(list(set(_feature_names[:int(n_rows * score_bound[0])]).union(set(_feature_names[int(n_rows * score_bound[1]):]))))</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>context.features[context.features.TRADE_DATE ==list(context.features.TRADE_DATE)[0]]</expression-string>
+        <expression-string>list(set(_feature_names[:int(n_rows * score_bound[0])]).union(set(_feature_names[int(n_rows * score_bound[1]):])))</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>context.features[context.features.TRADE_DATE ==list(context.features.TRADE_DATE)[0]].shape</expression-string>
+        <expression-string>set(_feature_names[:int(n_rows * score_bound[0])]).union(set(_feature_names[int(n_rows * score_bound[1]):]))</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>[context.features.TRADE_DATE ==list(context.features.TRADE_DATE)[0]]</expression-string>
+        <expression-string>set(_feature_names[:int(n_rows * score_bound[0])])</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>context.features.TRADE_DATE ==list(context.features.TRADE_DATE)[0]</expression-string>
-        <language-id>Python</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>list(context.features.TRADE_DATE)[0]</expression-string>
+        <expression-string>n_rows</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
     </expressions>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/quant_models/data_processing/date_fetcher_api.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="449">
-          <caret line="36" column="12" lean-forward="true" selection-start-line="36" selection-start-column="12" selection-end-line="36" selection-end-column="12" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/quant_models/data_processing/data_fetcher_db.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-662">
-          <caret line="91" column="37" lean-forward="true" selection-start-line="91" selection-start-column="37" selection-end-line="91" selection-end-column="37" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/quant_models/model_processing/ml_clfs_models.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="900">
@@ -704,13 +699,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/quant_models/docs/report.ipynb">
-      <provider selected="true" editor-type-id="ipnb-editor">
-        <state>
-          <selected id="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://D:/anaconda3/Lib/site-packages/rqalpha/__init__.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="787">
@@ -746,27 +734,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/quant_models/model_processing/models.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="569">
-          <caret line="71" column="8" selection-start-line="71" selection-start-column="8" selection-end-line="71" selection-end-column="8" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/quant_models/model_processing/ml_reg_models.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="425">
-          <caret line="31" column="8" selection-start-line="31" selection-start-column="8" selection-end-line="31" selection-end-column="8" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/quant_models/applications/algo_strategy/trading_strategy_demo.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="250">
-          <caret line="10" column="17" selection-start-line="10" selection-start-column="17" selection-end-line="10" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/quant_models/strategies/lstm_trading_signal.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="200">
@@ -774,31 +741,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/quant_models/applications/algo_strategy/trading_strategy.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="150">
-          <caret line="11" selection-start-line="11" selection-end-line="11" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/quant_models/applications/feature_mining/feature_mining.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1224">
-          <caret line="351" column="37" selection-start-line="351" selection-start-column="25" selection-end-line="351" selection-end-column="37" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/.gitignore">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="956">
           <caret line="103" column="12" selection-start-line="103" selection-start-column="12" selection-end-line="103" selection-end-column="12" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/quant_models/playground/kiki/algo_trading_strategy_testing.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="305">
-          <caret line="106" column="45" selection-start-line="106" selection-start-column="44" selection-end-line="106" selection-end-column="45" />
         </state>
       </provider>
     </entry>
@@ -826,60 +772,6 @@
     <entry file="file://$PROJECT_DIR$/quant_models/conf/feature_mapping.json">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/quant_models/utils/date_utils.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1850">
-          <caret line="78" column="58" selection-start-line="78" selection-start-column="58" selection-end-line="78" selection-end-column="58" />
-          <folding>
-            <element signature="e#118#133#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/quant_models/applications/feature_mining/feature_model_selection_demo.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="125">
-          <caret line="5" column="11" selection-start-line="5" selection-start-column="11" selection-end-line="5" selection-end-column="11" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/quant_models/strategies/s_buy_and_hold.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1025">
-          <caret line="43" column="44" selection-start-line="43" selection-start-column="44" selection-end-line="43" selection-end-column="44" />
-          <folding>
-            <element signature="e#122#147#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/quant_models/applications/feature_mining/model_selection.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="600">
-          <caret line="33" column="34" selection-start-line="33" selection-start-column="34" selection-end-line="33" selection-end-column="34" />
-          <folding>
-            <element signature="e#122#133#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/quant_models/strategies/feature_mining_strategy.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="350">
-          <caret line="27" column="62" selection-start-line="27" selection-start-column="62" selection-end-line="27" selection-end-column="62" />
-          <folding>
-            <element signature="e#132#157#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/quant_models/conf/conf">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="75">
-          <caret line="3" column="20" selection-start-line="3" selection-end-line="3" selection-end-column="20" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://D:/anaconda3/Lib/codecs.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="391">
@@ -887,46 +779,172 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/quant_models/applications/feature_mining/feature_selection.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1250">
-          <caret line="74" column="4" selection-start-line="74" selection-start-column="4" selection-end-line="74" selection-end-column="4" />
-          <folding>
-            <element signature="e#125#160#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/quant_models/utils/decorators.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="675">
-          <caret line="36" column="22" selection-start-line="36" selection-start-column="22" selection-end-line="36" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/quant_models/data_processing/features_calculation.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="225">
-          <caret line="26" selection-start-line="26" selection-end-line="26" />
+        <state relative-caret-position="163">
+          <caret line="239" column="62" selection-start-line="239" selection-start-column="62" selection-end-line="239" selection-end-column="62" />
           <folding>
             <element signature="e#127#145#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/quant_models/strategies/strategy_demo.py">
+    <entry file="file://$PROJECT_DIR$/quant_models/utils/date_utils.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="300">
-          <caret line="12" selection-start-line="12" selection-end-line="12" />
+        <state relative-caret-position="942">
+          <caret line="78" column="58" selection-start-line="78" selection-start-column="58" selection-end-line="78" selection-end-column="58" />
+          <folding>
+            <element signature="e#118#133#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/quant_models/model_processing/feature_preprocessing.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1300">
-          <caret line="67" column="62" lean-forward="true" selection-start-line="67" selection-start-column="62" selection-end-line="67" selection-end-column="62" />
+        <state relative-caret-position="93">
+          <caret line="136" column="13" selection-start-line="136" selection-start-column="13" selection-end-line="136" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/quant_models/applications/algo_strategy/trading_strategy.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="175">
+          <caret line="12" selection-start-line="12" selection-end-line="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/quant_models/utils/monte_carlo.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="757">
+          <caret line="52" column="45" selection-start-line="52" selection-start-column="45" selection-end-line="52" selection-end-column="45" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/quant_models/model_processing/models.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="375">
+          <caret line="34" column="8" selection-start-line="34" selection-start-column="8" selection-end-line="34" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/quant_models/applications/algo_strategy/trading_strategy_demo.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="550">
+          <caret line="22" lean-forward="true" selection-start-line="22" selection-end-line="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/quant_models/model_processing/ml_reg_models.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="848">
+          <caret line="52" column="54" selection-start-line="52" selection-start-column="54" selection-end-line="52" selection-end-column="54" />
           <folding>
-            <element signature="e#129#138#0" expanded="true" />
+            <element signature="e#122#154#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/quant_models/applications/feature_mining/feature_mining.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="986">
+          <caret line="226" selection-start-line="226" selection-end-line="227" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/quant_models/strategies/s_buy_and_hold.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="475">
+          <caret line="19" column="8" selection-start-line="19" selection-start-column="8" selection-end-line="19" selection-end-column="8" />
+          <folding>
+            <element signature="e#122#147#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://D:/anaconda3/Lib/site-packages/sklearn/cross_validation.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="331">
+          <caret line="43" selection-start-line="43" selection-end-line="43" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/quant_models/playground/kiki/algo_trading_strategy_testing.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="357">
+          <caret line="118" column="42" selection-start-line="118" selection-start-column="42" selection-end-line="118" selection-end-column="42" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/quant_models/utils/decorators.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="400">
+          <caret line="16" column="54" selection-start-line="16" selection-start-column="54" selection-end-line="16" selection-end-column="54" />
+          <folding>
+            <element signature="e#118#129#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/quant_models/applications/feature_mining/feature_selection.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="793">
+          <caret line="215" column="42" selection-start-line="215" selection-start-column="42" selection-end-line="215" selection-end-column="42" />
+          <folding>
+            <element signature="e#125#160#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/quant_models/strategies/feature_mining_strategy.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1">
+          <caret line="29" selection-start-line="28" selection-end-line="29" />
+          <folding>
+            <element signature="e#132#157#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/quant_models/applications/feature_mining/feature_model_selection_demo.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="500">
+          <caret line="20" column="11" selection-start-line="20" selection-start-column="11" selection-end-line="20" selection-end-column="11" />
+          <folding>
+            <element signature="e#136#147#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/quant_models/strategies/strategy_demo.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="847">
+          <caret line="35" column="7" lean-forward="true" selection-start-line="35" selection-start-column="7" selection-end-line="35" selection-end-column="7" />
+          <folding>
+            <element signature="e#120#139#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/quant_models/docs/report.ipynb">
+      <provider selected="true" editor-type-id="ipnb-editor">
+        <state>
+          <selected id="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/quant_models/conf/conf">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="25">
+          <caret line="1" column="23" selection-start-line="1" selection-end-line="1" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/quant_models/applications/feature_mining/model_selection.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="428">
+          <caret line="65" column="25" lean-forward="true" selection-start-line="65" selection-start-column="25" selection-end-line="66" selection-end-column="31" />
+          <folding>
+            <element signature="e#122#133#0" expanded="true" />
           </folding>
         </state>
       </provider>

@@ -160,7 +160,7 @@ def retrieve_features(start_date='20181101', end_date='20181131', data_source=0,
 
 @timeit
 def cache_features(start_date='20180101', end_date='20181231', data_source=0,
-                   feature_types=[], bc='000300.XSHG'):
+                   feature_types=[], bc='000300.XSHG', sufix=None):
     '''
     cache the features
     :param start_date:
@@ -179,6 +179,12 @@ def cache_features(start_date='20180101', end_date='20181231', data_source=0,
 
     # df.to_pickle(feature_source)
     logger.info("Start saving the features....")
+    if sufix:
+        feature_source = os.path.join(os.path.realpath(root), 'data', 'features',
+                                      'features{0}_{1}.csv'.format(bc.split('.')[0], sufix))
+        df.to_csv(feature_source)
+        del df
+        return
     df['MONTH'] = [item[:6] for item in df['TRADE_DATE']]
     m_dates = set(df['MONTH'])
     n_mdates = len(m_dates)
@@ -195,14 +201,21 @@ def cache_features(start_date='20180101', end_date='20181231', data_source=0,
 @timeit
 def load_cache_features(start_date='', end_date='', bc='000300.XSHG'):
     _w_ret = w.tdays(start_date, end_date)
-    t_months = list(set([item.strftime('%Y%m') for item in _w_ret.Data[0]]))
+    # t_months = list(set([item.strftime('%Y%m') for item in _w_ret.Data[0]]))
+    t_years = list(set([item.strftime('%y') for item in _w_ret.Data[0]]))
     root = get_source_root()
     feature_paths = [os.path.join(os.path.realpath(root), 'data', 'features',
-                                  'features{0}_{1}.csv'.format(bc.split('.')[0], m_date)) for m_date in t_months]
+                                  'features{0}_{1}.csv'.format(bc.split('.')[0], m_date)) for m_date in t_years]
     if feature_paths:
+        # logger.info('Reading features:{0}'.format(feature_paths[0]))
         df = pd.read_csv(feature_paths[0])
         for p in feature_paths[1:]:
-            df.append(pd.read_csv(p))
+            # logger.info('Reading features:{0}'.format(p))
+            # _df = pd.read_csv(p)
+            # df = df.append(_df)
+            df = df.append(pd.read_csv(p))
+    df = df[df.TRADE_DATE >= int(start_date.replace('-',''))]
+    df = df[df.TRADE_DATE < int(end_date.replace('-',''))]
     return df
 
 
@@ -225,13 +238,8 @@ def train_features(start_date='', end_date='', bc='000300.XSHG'):
 if __name__ == '__main__':
     import gc
 
-    cache_features(start_date='20170403', end_date='20171231', data_source=0,
-                   feature_types=[], bc='000300.XSHG')
-    # gc.collect()
-    # cache_features(start_date='20180103', end_date='20181231', data_source=0,
-    #                feature_types=[], bc='000300.XSHG')
-    # gc.collect()
-    # cache_features(start_date='20190103', end_date='20190531', data_source=0,
-    #                feature_types=[], bc='000300.XSHG')
-    # gc.collect()
+    # cache_features(start_date='20170103', end_date='20170331', data_source=0,
+    #                feature_types=[], bc='000300.XSHG', sufix='17')
     # train_features(start_date='20190103', end_date='20190531', bc='000300.XSHG')
+    ret = load_cache_features(start_date='20170103', end_date='20180630')
+    print(ret.shape)

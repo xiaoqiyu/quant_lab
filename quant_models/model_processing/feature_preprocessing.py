@@ -13,7 +13,7 @@ from sklearn.feature_selection import SelectFromModel
 import numpy as np
 import pandas as pd
 from scipy import stats
-#from minepy import MINE
+# from minepy import MINE
 from quant_models.utils.logger import Logger
 from sklearn.preprocessing import Imputer
 from sklearn.pipeline import Pipeline
@@ -62,7 +62,7 @@ def _sort_feature_by_corr(x=[], y=[], feature_names=[], corr_type='pearson'):
     return scores
 
 
-#def _sort_feature_by_mic(x=[], y=[], feature_names=[]):
+# def _sort_feature_by_mic(x=[], y=[], feature_names=[]):
 #    '''
 
 #    I(X;Y)=E[I(xi;yj)]=∑xiϵX∑yjϵYp(xi,yj)logp(xi,yj)p(xi)p(yj)

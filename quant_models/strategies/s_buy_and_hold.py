@@ -37,8 +37,8 @@ def after_trading(context):
 
 __config__ = {
     "base": {
-        "start_date": config["feature_mining_backtesting"]["start_date"],
-        "end_date": config["feature_mining_backtesting"]["end_date"],
+        "start_date": config["feature_mining_strategy"]["start_date"],
+        "end_date": config["feature_mining_strategy"]["end_date"],
         "frequency": "1d",
         "matching_type": "current_bar",
         "data_bundle_path": "rqdata/bundle",
@@ -62,9 +62,9 @@ __config__ = {
             "enabled": True,
             "show": True,
             "plot": False,
-            "output_file": "{0}.pkl".format(__file__),
+            "output_file": "s_buy_and_hold.pkl",
             "plot": True,
-            "plot_save_file": '{0}.png'.format(__file__),
+            "plot_save_file": 's_buy_and_hold.png',
         },
         "sys_simulation": {
             "enabled": True,

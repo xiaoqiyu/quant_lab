@@ -26,8 +26,10 @@ logger = Logger(log_level='DEBUG', handler='ch').get_log()
 
 class Ml_Reg_Model(Model):
     def __init__(self, model_name=None):
-        self.model_name = model_name
-        self._best_estimate = {}
+        Model.__init__(self, model_name)
+        # self.model = None
+        # self.model_name = model_name
+        # self._best_estimate = {}
 
     def build_model(self, **kwargs):
         regs = {
