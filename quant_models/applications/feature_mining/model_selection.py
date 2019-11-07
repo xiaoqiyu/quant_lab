@@ -14,6 +14,7 @@ from quant_models.utils.helper import get_source_root
 from quant_models.utils.decorators import timeit
 from quant_models.applications.feature_mining.feature_selection import train_features
 from sklearn import decomposition
+from sklearn.ensemble import gradient_boosting
 import datetime
 
 logger = Logger(log_level='DEBUG', handler='ch').get_log()
@@ -43,7 +44,8 @@ def get_selected_features(start_date=None, end_date=None, up_ratio=0.2, down_rat
 
 
 @timeit
-def train_models(model_name='', start_date='20140603', end_date='20181231', score_bound=(0.2, 0.1), bc='000300.XSHG'):
+def train_models(model_name='', start_date='20140603', end_date='20181231', feature_ratio=1.0, bc='000300.XSHG',
+                 feature_df=None, score_df=None, cache_df=False):
     '''
 
     :param model_name:
@@ -54,17 +56,20 @@ def train_models(model_name='', start_date='20140603', end_date='20181231', scor
     :return:
     '''
     m = Ml_Reg_Model(model_name)
-    model_full_name = 'stock_selection_{0}'.format(model_name)
+    model_full_name = '{0}_{1}_{2}_{3}'.format(model_name, start_date, end_date, feature_ratio, bc)
     if not m.load_model(model_full_name):
         m.build_model()
     root = get_source_root()
-
-    df, score_df = train_features(start_date=start_date, end_date=end_date, bc=bc)
+    if not cache_df:
+        df, score_df = train_features(start_date=start_date, end_date=end_date, bc=bc)
+    else:
+        df = feature_df
+        score_df = score_df
     score_df = score_df.sort_values(by='score', ascending=False)
     _feature_names = list(score_df['feature'])
-    n_rows = len(_feature_names)
+    _score_bound = int(len(_feature_names) * feature_ratio / 2)
     feature_names = list(
-        set(_feature_names[:int(n_rows * score_bound[0])]).union(set(_feature_names[-int(n_rows * score_bound[1]):])))
+        set(_feature_names[:_score_bound + 1]).union(set(_feature_names[-_score_bound:])))
 
     # select the features by the ic values
     # feature_names = get_selected_features(start_date=start_date, end_date=end_date, up_ratio=score_bound[0],
@@ -75,17 +80,14 @@ def train_models(model_name='', start_date='20140603', end_date='20181231', scor
     sec_ids = list(df['SECURITY_ID'])
     train_Y = df.iloc[:, -1]
     decom_ratio = float(config['defaults']['decom_ratio'])
-
-    del df
-    gc.collect()
-
     # PCA processing
     pca = decomposition.PCA(n_components=int(len(feature_names) * decom_ratio))
     train_X = pca.fit_transform(train_X)
     train_Y = train_Y.fillna(0.0)
     st = time.time()
     logger.info('start training the models')
-    mse_scores, r2_scores = m.train_model(train_X[:1000], train_Y[:1000])
+    # mse_scores, r2_scores = m.train_model(train_X[:1000], train_Y[:1000])
+    mse_scores, r2_scores = m.train_model(train_X, train_Y)
     et = time.time()
     logger.info('complete training model with time:{0}'.format(et - st))
 
@@ -95,17 +97,51 @@ def train_models(model_name='', start_date='20140603', end_date='20181231', scor
     logger.info("Mean squared error:{0}: %0.5f -  %0.5f" % (
         r2_scores.mean() - r2_scores.std() * 3, r2_scores.mean() + r2_scores.std() * 3))
     result_path = os.path.join(os.path.join((os.path.join(os.path.realpath(root), 'data')), 'results'),
-                               '{0}_{1}_{2}.txt'.format(model_name, start_date, end_date))
+                               'feature_model_selection.txt')
+
     with open(result_path, 'a+') as fout:
-        fout.write('{0}\n'.format(datetime.datetime.now().strftime(config['constants']['no_dash_datetime_format'])))
-        fout.write('{0}\t{1}'.format(str(list(mse_scores)), str(list(r2_scores))))
-        fout.write('\n')
+        # fout.write('{0}\n'.format(datetime.datetime.now().strftime(config['constants']['no_dash_datetime_format'])))
+        fout.write('{0}\n'.format(model_full_name))
+        fout.write('mse: {0}\n r2_score:{1}\n'.format(str(list(mse_scores)), str(list(r2_scores))))
     return mse_scores, r2_scores
+
+
+def train_model_selections():
+    model_names = config['feature_mining_strategy']['model_names'].split(',')
+    bc = config['feature_mining_strategy']['benchmark']
+    start_date = config['feature_mining_strategy']['start_date']
+    end_date = config['feature_mining_strategy']['end_date']
+    _feature_ratios = config['feature_mining_strategy']['feature_ratios'].split(',')
+    feature_ratios = [float(item) for item in list(_feature_ratios)]
+    best_mse = 0.0
+    best_score = 0.0
+    best_model = ''
+    cv = int(config['ml_reg_model']['cv'])
+    df, score_df = train_features(start_date=start_date, end_date=end_date, bc=bc)
+    for model_name in model_names:
+        for f_ratio in feature_ratios:
+            # FIXME grid search for some specific model
+            mse, r2 = train_models(model_name=model_name, start_date=start_date, end_date=end_date,
+                                   feature_ratio=f_ratio,
+                                   bc=bc, feature_df=df, score_df=score_df, cache_df=True)
+            logger.info('Train Results for {0},{1},{2} are mes:{3},r2_score:{4}'.format(model_name, f_ratio, bc, mse,
+                                                                                        r2))
+            if sum(list(mse)) / cv > best_mse:
+                best_model = '{0}_{1}'.format(model_name, f_ratio)
+                best_mse = sum(list(mse)) / cv
+            if sum(list(r2)) / cv > best_score:
+                best_score = sum(list(r2)) / cv
+    print(best_mse, best_score, best_model)
+    del df
+    del score_df
+    gc.collect()
+    return best_mse, best_score, best_model
 
 
 if __name__ == '__main__':
     st = time.time()
-    ret = train_models(model_name='linear', start_date='20170103', end_date='20181231', score_bound=(0.2, 0.1))
+    # ret = train_models(model_name='linear', start_date='20170103', end_date='20181231', )
+    ret = train_model_selections()
     et = time.time()
     print(et - st)
     print(ret)

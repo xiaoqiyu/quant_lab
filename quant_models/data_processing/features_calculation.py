@@ -269,21 +269,22 @@ def get_time_series_features(security_ids=[], features={'ma': ['ACD6', 'ACD20']}
     return time_series_features
 
 
-def get_equity_returns(security_ids=[], start_date='20181101', end_date='20181103', source=0, trade_date=None):
-    if trade_date:
-        start_date = end_date = trade_date
-    _df = g_db_fetcher.get_data_fetcher_obj(source)
-    rows, desc = _df.get_mkt_equd(security_ids=security_ids, fields=['CLOSE_PRICE', 'PRE_CLOSE_PRICE'],
-                                  start_date=start_date, end_date=end_date)
-    ticker_idx, exchange_idx, pre_close_idx, close_idx, trade_date_idx = desc.index('TICKER_SYMBOL'), desc.index(
-        'EXCHANGE_CD'), desc.index('PRE_CLOSE_PRICE'), desc.index('CLOSE_PRICE'), desc.index('TRADE_DATE')
-    ret_label = defaultdict(dict)
-    for item in rows:
-        security_id = '{0}.{1}'.format(item[ticker_idx], item[exchange_idx])
-        return_val = (item[close_idx] - item[pre_close_idx]) / item[pre_close_idx]
-        trade_date = item[trade_date_idx].strftime('%Y%m%d')
-        ret_label[security_id].update({trade_date: return_val})
-    return ret_label
+# TODO QUERY FROM DATAYES DATABASE, DATA ISSUE TO BE SOLVED
+# def get_equity_returns(security_ids=[], start_date='20181101', end_date='20181103', source=0, trade_date=None):
+#     if trade_date:
+#         start_date = end_date = trade_date
+#     _df = g_db_fetcher.get_data_fetcher_obj(source)
+#     rows, desc = _df.get_mkt_equd(security_ids=security_ids, fields=['CLOSE_PRICE', 'PRE_CLOSE_PRICE'],
+#                                   start_date=start_date, end_date=end_date)
+#     ticker_idx, exchange_idx, pre_close_idx, close_idx, trade_date_idx = desc.index('TICKER_SYMBOL'), desc.index(
+#         'EXCHANGE_CD'), desc.index('PRE_CLOSE_PRICE'), desc.index('CLOSE_PRICE'), desc.index('TRADE_DATE')
+#     ret_label = defaultdict(dict)
+#     for item in rows:
+#         security_id = '{0}.{1}'.format(item[ticker_idx], item[exchange_idx])
+#         return_val = (item[close_idx] - item[pre_close_idx]) / item[pre_close_idx]
+#         trade_date = item[trade_date_idx].strftime('%Y%m%d')
+#         ret_label[security_id].update({trade_date: return_val})
+#     return ret_label
 
 
 def get_market_value(security_ids=[], start_date='20181101', end_date='20181103', source=0, trade_date=None):
@@ -302,17 +303,51 @@ def get_market_value(security_ids=[], start_date='20181101', end_date='20181103'
     return ret_label
 
 
+def get_equity_returns(security_ids=[], start_date='20181101', end_date='20181103', source=0, trade_date=None):
+    if trade_date:
+        start_date = end_date = trade_date
+    _df = g_db_fetcher.get_data_fetcher_obj(source)
+    rows, desc = _df.get_equtiy_mkt_jy(security_ids=security_ids, fields=[],
+                                       start_date=start_date, end_date=end_date)
+    ticker_idx, exchange_idx, pre_close_idx, close_idx, trade_date_idx = desc.index('SecuCode'), desc.index(
+        'SecuMarket'), desc.index('PrevClosePrice'), desc.index('ClosePrice'), desc.index('TradingDay')
+    ret_label = defaultdict(dict)
+    for item in rows:
+        _exchange_cd = 'XSHG' if item[exchange_idx] == 83 else 'XSHE'
+        security_id = '{0}.{1}'.format(item[ticker_idx], _exchange_cd)
+        return_val = (item[close_idx] - item[pre_close_idx]) / item[pre_close_idx]
+        trade_date = item[trade_date_idx].strftime('%Y%m%d')
+        ret_label[security_id].update({trade_date: return_val})
+    return ret_label
+
+
+# FIXME DATA PROBLEM IN DATEYES DATABASE
+# def get_idx_returns(security_ids=[], start_date='20181101', end_date='20181103', source=0, trade_date=None):
+#     if trade_date:
+#         start_date = end_date = trade_date
+#     _df = g_db_fetcher.get_data_fetcher_obj(source)
+#     rows, desc = _df.get_mkt_equd(security_ids=security_ids, fields=['CHG_PCT'],
+#                                   start_date=start_date, end_date=end_date, asset_type='idx')
+#     ticker_idx, exchange_idx, chg_pct_idx, trade_date_idx = desc.index('TICKER_SYMBOL'), desc.index(
+#         'EXCHANGE_CD'), desc.index('CHG_PCT'), desc.index('TRADE_DATE')
+#     ret_label = defaultdict(dict)
+#     for item in rows:
+#         security_id = '{0}.{1}'.format(item[ticker_idx], item[exchange_idx])
+#         trade_date = item[trade_date_idx].strftime('%Y%m%d')
+#         ret_label[security_id].update({trade_date: float(item[chg_pct_idx])})
+#     return ret_label
+
 def get_idx_returns(security_ids=[], start_date='20181101', end_date='20181103', source=0, trade_date=None):
     if trade_date:
         start_date = end_date = trade_date
     _df = g_db_fetcher.get_data_fetcher_obj(source)
-    rows, desc = _df.get_mkt_equd(security_ids=security_ids, fields=['CHG_PCT'],
-                                  start_date=start_date, end_date=end_date, asset_type='idx')
-    ticker_idx, exchange_idx, chg_pct_idx, trade_date_idx = desc.index('TICKER_SYMBOL'), desc.index(
-        'EXCHANGE_CD'), desc.index('CHG_PCT'), desc.index('TRADE_DATE')
+    rows, desc = _df.get_idx_mkt_jy(security_ids=security_ids, start_date=start_date, end_date=end_date)
+    ticker_idx, exchange_idx, chg_pct_idx, trade_date_idx = desc.index('SecuCode'), desc.index(
+        'SecuMarket'), desc.index('ChangePCT'), desc.index('TradingDay')
     ret_label = defaultdict(dict)
     for item in rows:
-        security_id = '{0}.{1}'.format(item[ticker_idx], item[exchange_idx])
+        _exchange_cd = 'XSHG' if item[exchange_idx] == 83 else 'XSHE'
+        security_id = '{0}.{1}'.format(item[ticker_idx], _exchange_cd)
         trade_date = item[trade_date_idx].strftime('%Y%m%d')
         ret_label[security_id].update({trade_date: float(item[chg_pct_idx])})
     return ret_label
@@ -599,5 +634,12 @@ if __name__ == '__main__':
     # print('*'*40)
     # pprint.pprint(ret)
 
-    ret = get_sw_2nd_indust(security_ids=['001979.XSHE'])
-    print(ret)
+    # ret = get_sw_2nd_indust(security_ids=['001979.XSHE'])
+    # print(ret)
+
+    ret = get_idx_returns(security_ids=['000300.XSHG'], start_date='20190701', end_date='20190801', source=0)
+    pprint.pprint(ret)
+
+    ret = get_equity_returns(security_ids=['002673.XSHE', '600196.XSHG'], start_date='20190701', end_date='20190801',
+                             source=0)
+    pprint.pprint(ret)

@@ -5,10 +5,12 @@
 
 
 import pyodbc
-import pandas as pd
 from collections import defaultdict
-from quant_models.utils.oracle_helper import OracleHelper
+
+import pandas as pd
+
 from quant_models.utils.logger import Logger
+from quant_models.utils.oracle_helper import OracleHelper
 
 logger = Logger(log_level='INFO', handler='ch').get_log()
 
@@ -164,10 +166,11 @@ class DataFetcherDB(object):
         if end_date:
             sql_str = "{0} AND TRADE_DATE < TO_DATE({1}, 'yyyymmdd')".format(sql_str, end_date)
         logger.debug('Execute query: {0}'.format(sql_str))
+        print(sql_str)
         return self._dyobj.execute_query(sql_str)
 
     def get_mkt_mins(self, startdate='', enddate='', sec_codes=[], filter='',
-                        orderby='', groupby='', table_name='CUST.EQUITY_PRICEMIN'):
+                     orderby='', groupby='', table_name='CUST.EQUITY_PRICEMIN'):
         '''
         Fetch the minute level data from tonglian in oracle
         Return the rows of values: ['DATADATE', 'TICKER', 'EXCHANGECD', 'SHORTNM', 'SECOFFSET', 'BARTIME', 'CLOSEPRICE',
@@ -255,11 +258,11 @@ class DataFetcherDB(object):
         return self._dyobj.execute_query(sql_str)
 
     # FIXME double check the update industry information, check XGRQ field in table LC_ExgIndustry;
-    #FIXME  check the updates. and fix some miss, e.g. 001979.XSHE and 603612.XSHG
+    # FIXME  check the updates. and fix some miss, e.g. 001979.XSHE and 603612.XSHG
     def get_sw_indust(self):
         sql_str = """
-        SELECT B.SecuCode,B.ChiName,B.ChiNameAbbr,B.SecuMarket,A.FirstIndustryCode, A.FirstIndustryName 
-        FROM JYDB.dbo.LC_ExgIndustry A, JYDB.dbo.SecuMain B WHERE A.CompanyCode=B.CompanyCode AND A.Standard=9 AND 
+        SELECT B.SecuCode,B.ChiName,B.ChiNameAbbr,B.SecuMarket,A.FirstIndustryCode, A.FirstIndustryName
+        FROM JYDB.dbo.LC_ExgIndustry A, JYDB.dbo.SecuMain B WHERE A.CompanyCode=B.CompanyCode AND A.Standard=24 AND
         A.IfPerformed=1 AND B.SecuMarket IN (83,90)
         """
         df = pd.read_sql(sql_str, con=self._jyobj)
@@ -314,3 +317,30 @@ class DataFetcherDB(object):
         AND CONVERT(varchar(100), B.SecuCode,112)<='801230'"""
         df = pd.read_sql(sql_str, con=self._jyobj)
         return list(df.values), list(df.columns)
+
+    # FIXME only query the first code in security_ids
+    def get_idx_mkt_jy(self, security_ids=[], start_date='', end_date=''):
+        _ticker, _exchange_cd = security_ids[0].split('.')
+        sql_str = """SELECT * FROM JYDB.dbo.QT_IndexQuote A, JYDB.dbo.SecuMain B WHERE SecuCategory=4 AND 
+        CONVERT(varchar(100), SecuCode,112)='{0}' AND A.InnerCode=B.InnerCode AND A.TradingDay>='{1}' and 
+        A.TradingDay<'{2}' AND B.SecuMarket IN (83,90)
+        """.format(_ticker, start_date, end_date)
+        df = pd.read_sql(sql_str, con=self._jyobj)
+        return list(df.values), list(df.columns)
+
+    def get_equtiy_mkt_jy(self, security_ids=(), fields=None, start_date=None, end_date=None, asset_type='stock'):
+        tickers = [item.split('.')[0] for item in security_ids]
+        if tickers:
+            _ = '('
+            for t in tickers:
+                _ = "{0}'{1}',".format(_,t)
+            _ = _[:-1] + ')'
+            sql_str = """SELECT * FROM JYDB.dbo.QT_DailyQuote A, JYDB.dbo.SecuMain B WHERE SecuCategory=1 AND
+            CONVERT(varchar(100), SecuCode,112) IN {0} AND A.InnerCode=B.InnerCode AND A.TradingDay>='{1}' and A.TradingDay<'{2}'
+            AND B.SecuMarket IN (83,90)
+                """.format(_, start_date, end_date)
+            print(sql_str)
+            df = pd.read_sql(sql_str, con=self._jyobj)
+            return list(df.values), list(df.columns)
+
+

@@ -75,11 +75,11 @@ def _get_in_out_dates(start_date=None, end_date=None, security_id=None):
 def _next_trading_date(tdays=[], trade_date=''):
     # assume tdays is sorted and has enough dates
     cnt = 0
+    tdays = sorted(tdays)
     for d in tdays:
         if d < trade_date:
             cnt += 1
-    if tdays[cnt] == trade_date:
-        return tdays[cnt + 1]
+    return tdays[cnt]
 
 
 def retrieve_features(start_date='20181101', end_date='20181131', data_source=0,
@@ -98,6 +98,8 @@ def retrieve_features(start_date='20181101', end_date='20181131', data_source=0,
     tdays = sorted(tdays)
     for _start_date, _end_date in date_periods:
         next_date = _next_trading_date(tdays, _end_date)
+        if not next_date:
+            logger.error("Fail to get the next trading date for :{0}".format(_end_date))
         security_ids = get_idx_cons_dy(bc, _start_date)
         # FIXME add some filter,e.g. halt sec
         logger.info("Start query the features from :{0} to {1}....".format(_start_date, _end_date))
@@ -121,7 +123,7 @@ def retrieve_features(start_date='20181101', end_date='20181131', data_source=0,
                     _next_date = _next_trading_date(tdays, str(date))
                     s_label = ret_labels.get(sec_id).get(str(_next_date))
                     i_label = idx_labels.get(str(_next_date))
-                    label = (s_label - i_label) * 100
+                    label = s_label*100 - i_label
                 except Exception as ex:
                     label = np.nan
                     logger.error('Fail to calculate the label with error:{0}'.format(ex))
@@ -207,15 +209,15 @@ def load_cache_features(start_date='', end_date='', bc='000300.XSHG'):
     feature_paths = [os.path.join(os.path.realpath(root), 'data', 'features',
                                   'features{0}_{1}.csv'.format(bc.split('.')[0], m_date)) for m_date in t_years]
     if feature_paths:
-        # logger.info('Reading features:{0}'.format(feature_paths[0]))
+        logger.info('Reading features:{0}'.format(feature_paths[0]))
         df = pd.read_csv(feature_paths[0])
         for p in feature_paths[1:]:
             # logger.info('Reading features:{0}'.format(p))
             # _df = pd.read_csv(p)
             # df = df.append(_df)
             df = df.append(pd.read_csv(p))
-    df = df[df.TRADE_DATE >= int(start_date.replace('-',''))]
-    df = df[df.TRADE_DATE < int(end_date.replace('-',''))]
+    df = df[df.TRADE_DATE >= int(start_date.replace('-', ''))]
+    df = df[df.TRADE_DATE < int(end_date.replace('-', ''))]
     return df
 
 
@@ -238,8 +240,14 @@ def train_features(start_date='', end_date='', bc='000300.XSHG'):
 if __name__ == '__main__':
     import gc
 
-    # cache_features(start_date='20170103', end_date='20170331', data_source=0,
-    #                feature_types=[], bc='000300.XSHG', sufix='17')
+    cache_features(start_date='20160103', end_date='20161231', data_source=0,
+                   feature_types=[], bc='000300.XSHG', sufix='16')
+    gc.collect()
+    cache_features(start_date='20150103', end_date='20151231', data_source=0,
+                   feature_types=[], bc='000300.XSHG', sufix='15')
+    gc.collect()
+    # cache_features(start_date='20190103', end_date='20191031', data_source=0,
+    #                feature_types=[], bc='000300.XSHG', sufix='19')
     # train_features(start_date='20190103', end_date='20190531', bc='000300.XSHG')
-    ret = load_cache_features(start_date='20170103', end_date='20180630')
-    print(ret.shape)
+    # ret = load_cache_features(start_date='20170103', end_date='20180630')
+    # print(ret.shape)

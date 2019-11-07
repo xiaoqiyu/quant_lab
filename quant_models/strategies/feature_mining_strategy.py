@@ -9,21 +9,24 @@ import time
 import os
 import pandas as pd
 from quant_models.utils.decorators import timeit
+from collections import defaultdict
 from quant_models.utils.helper import get_source_root
 from quant_models.utils.helper import get_config
 from quant_models.utils.helper import get_parent_dir
 from quant_models.applications.feature_mining.model_selection import get_selected_features
 from quant_models.applications.feature_mining.model_selection import train_models
 from quant_models.applications.feature_mining.feature_selection import load_cache_features
+from quant_models.data_processing.features_calculation import get_sw_indust
 from sklearn import decomposition
 from sklearn.externals import joblib
-
 
 model_name = 'linear'
 config = get_config()
 strategy_config = config['feature_mining_strategy']
 # TODO change the path of the backtesting results
 root = get_source_root()
+
+
 # get the file name of the features
 # _feature_path = os.path.join(os.path.realpath(root), 'data', 'features', 'feature_mining_strategy')
 # w.start()
@@ -33,11 +36,8 @@ def init(context):
     model_path = os.path.join(get_parent_dir(), 'data', 'models', 'stock_selection_{0}'.format(model_name))
     feature_names = get_selected_features(__config__['base']['start_date'], __config__['base']['end_date'],
                                           up_ratio=0.2, down_ratio=0.1)
-    print(feature_names)
-    print('Start lodding features...')
     context.features = load_cache_features(__config__['base']['start_date'], __config__['base']['end_date'],
                                            __config__['base']['benchmark'])
-    print('Complete lodding features...')
     context.model = joblib.load(model_path)
     context.feature_names = feature_names
 
@@ -49,19 +49,32 @@ def before_trading(context):
 def handle_bar(context, bar_dict):
     now = context.now.strftime(config['constants']['standard_date_format'])
     feature_df = context.features[context.features.TRADE_DATE == int(now)]
-    # #FIXME HACK FOR TESTING
-    # feature_df = context.features[context.features.TRADE_DATE == list(context.features.TRADE_DATE)[0]]
     sec_ids = list(feature_df['SECURITY_ID'])
+    indust_ret = get_sw_indust(source=0)
+    indust_scores = defaultdict(list)
     selected_df = feature_df[context.feature_names]
     n_cols = selected_df.shape[1]
     decom_ratio = float(config['defaults']['decom_ratio'])
     pca = decomposition.PCA(n_components=int(n_cols * decom_ratio))
     train_X = pca.fit_transform(list(selected_df.values))
     pred_Y = context.model.predict(train_X)
-    sec_scores = sorted(list(zip(sec_ids, pred_Y)), key=lambda x: x[1], reverse=True)
-    buy_lst = [item[0] for item in sec_scores[:10]]
+    for idx, sec_id in enumerate(sec_ids):
+        _score = pred_Y[idx]
+        _indust = indust_ret.get(sec_id)
+        indust_scores[_indust].append((sec_id, _score))
+    buy_lst = []
+    n_indust = len(list(indust_scores.keys()))
+    each_indust_num = int(int(strategy_config["holding_topk"])/n_indust)
+    for indust, lst in indust_scores.items():
+        _score_lst = sorted(lst, key=lambda x: x[1])
+        buy_lst.extend([item[0] for item in _score_lst[:each_indust_num]])
+
+    buy_lst = list(set(buy_lst))
+    # sec_scores = sorted(list(zip(sec_ids, pred_Y)), key=lambda x: x[1], reverse=True)
+    # buy_lst = [item[0] for item in sec_scores[:int(strategy_config["holding_topk"])]]
+    each_position = 1.0 / len(buy_lst)
     for sec_id in buy_lst:
-        order_target_percent(sec_id, 0.1)
+        order_target_percent(sec_id, each_position)
 
 
 def after_trading(context):

@@ -9,13 +9,16 @@ numerical_default = 0.0
 decom_ratio = 0.8
 
 [feature_mining_strategy]
-start_date = 2019-01-03
-end_date = 2019-06-30
+start_date = 20150103
+end_date = 20181231
 backtrack_period = 250
-up_ratio = 0.2
-down_ratio = 0.1
-model_name = linear
+model_names = linear
+feature_ratios = 0.2,0.3,0.6,0.9
 benchmark = 000300.XSHG
+holding_topk = 50
+best_model_names = linear,random_forest,gbdt,decision_tree
+best_feature_ratio = 1.0
+
 
 
 [ml_clf_model]
@@ -45,7 +48,7 @@ alpha = 0.9
 verbose = 0
 max_leaf_nodes = None
 warm_start = False
-cv = 3
+cv = 5
 
 [dl_reg_model]
 units = 1
