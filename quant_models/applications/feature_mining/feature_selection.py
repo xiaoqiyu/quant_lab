@@ -230,7 +230,7 @@ def train_features(start_date='', end_date='', bc='000300.XSHG'):
     cols = list(df.columns)[:-4]
     cols.append('LABEL')
     df_corr = df[cols].corr()
-    score_df = pd.DataFrame({'feature': cols[:-1], 'score': df_corr['LABEL'][:-1]})
+    score_df = pd.DataFrame({'feature': list(df_corr.iloc[:,-1].index)[:-1], 'score': list(df_corr.iloc[:,-1].values)[:-1]})
     score_path = os.path.join(os.path.realpath(root), 'data', 'features',
                               'score_{0}_{1}.csv'.format(start_date, end_date))
     score_df.to_csv(score_path, index=None)
