@@ -40,6 +40,7 @@ def init(context):
                                            __config__['base']['benchmark'])
     context.model = joblib.load(model_path)
     context.feature_names = feature_names
+    context.neu = False
 
 
 def before_trading(context):
@@ -50,31 +51,35 @@ def handle_bar(context, bar_dict):
     now = context.now.strftime(config['constants']['standard_date_format'])
     feature_df = context.features[context.features.TRADE_DATE == int(now)]
     sec_ids = list(feature_df['SECURITY_ID'])
-    indust_ret = get_sw_indust(source=0)
-    indust_scores = defaultdict(list)
+
     selected_df = feature_df[context.feature_names]
     n_cols = selected_df.shape[1]
     decom_ratio = float(config['defaults']['decom_ratio'])
     pca = decomposition.PCA(n_components=int(n_cols * decom_ratio))
-    #TODO OUTPUT OF THE pca shape does not match. should be 300*303, not 300*300
     train_X = pca.fit_transform(list(selected_df.values))
     pred_Y = context.model.predict(train_X)
-    for idx, sec_id in enumerate(sec_ids):
-        _score = pred_Y[idx]
-        if _score < 0:
-            continue
-        _indust = indust_ret.get(sec_id)
-        indust_scores[_indust].append((sec_id, _score))
     buy_lst = []
-    n_indust = len(list(indust_scores.keys()))
-    each_indust_num = int(int(strategy_config["holding_topk"])/n_indust)
-    for indust, lst in indust_scores.items():
-        _score_lst = sorted(lst, key=lambda x: x[1])
-        buy_lst.extend([item[0] for item in _score_lst[:each_indust_num]])
 
-    buy_lst = list(set(buy_lst))
-    # sec_scores = sorted(list(zip(sec_ids, pred_Y)), key=lambda x: x[1], reverse=True)
-    # buy_lst = [item[0] for item in sec_scores[:int(strategy_config["holding_topk"])]]
+    if context.neu:
+        indust_ret = get_sw_indust(source=0)
+        indust_scores = defaultdict(list)
+        for idx, sec_id in enumerate(sec_ids):
+            _score = pred_Y[idx]
+            if _score < 0:
+                continue
+            _indust = indust_ret.get(sec_id)
+            indust_scores[_indust].append((sec_id, _score))
+        n_indust = len(list(indust_scores.keys()))
+        each_indust_num = int(int(strategy_config["holding_topk"]) / n_indust)
+        for indust, lst in indust_scores.items():
+            _score_lst = sorted(lst, key=lambda x: x[1])
+            buy_lst.extend([item[0] for item in _score_lst[:each_indust_num]])
+        buy_lst = list(set(buy_lst))
+    else:
+        sec_scores = sorted(list(zip(sec_ids, pred_Y)), key=lambda x: x[1], reverse=True)
+        buy_lst = [item[0] for item in sec_scores[:10]]
+    #TODO st filter and position control
+    print('len of buy lst is:{0}'.format(len(buy_lst)))
     each_position = 1.0 / len(buy_lst)
     for sec_id in buy_lst:
         order_target_percent(sec_id, each_position)
