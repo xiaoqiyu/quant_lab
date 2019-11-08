@@ -22,25 +22,27 @@ config = get_config()
 feature_model_name = 'random_forest'
 
 
-def get_selected_features(start_date=None, end_date=None, up_ratio=0.2, down_ratio=0.1):
+def get_selected_features():
     root = get_source_root()
     feature_source = os.path.join(os.path.realpath(root), 'data', 'features')
-    files = os.listdir(feature_source)
-    files = [item for item in files if item.startswith('score')]
+    # files = os.listdir(feature_source)
+    # files = [item for item in files if item.startswith('score')]
     # get the score with the corresponding start and end date, otherwise return the latest one
     # TODO confirm whether the listdir function's return is sorted by time
     # _path = 'score_{0}_{1}'.format(start_date, end_date) if 'score_{0}_{1}'.format(start_date, end_date) in files else \
     #     files[-1]
-    _path = files[0]
-    _score_path = os.path.join(feature_source, _path)
+    # _path = files[0]
+    _score_path = os.path.join(feature_source,
+                               'score_{0}_{1}.csv'.format(config['feature_mining_strategy']['start_date'],
+                                                          config['feature_mining_strategy']['end_date']))
     # logger.info("Reading score from path:{0}".format(_score_path))
-    df = pd.read_csv(_score_path)
-    df = df.sort_values(by='score', ascending=False)
-    features = list(df['feature'])
-    left, right = int(len(features) * up_ratio), int(len(features) * down_ratio)
-    selected_features = features[:left]
-    selected_features.extend(features[-right:])
-    return list(set(selected_features))
+    score_df = pd.read_csv(_score_path)
+    score_df = score_df.sort_values(by='score', ascending=False)
+    _feature_names = list(score_df['feature'])
+    _score_bound = int(len(_feature_names) * float(config['feature_mining_strategy']['best_feature_ratio']) / 2)
+    feature_names = list(
+        set(_feature_names[:_score_bound + 1]).union(set(_feature_names[-_score_bound:])))
+    return feature_names
 
 
 @timeit
@@ -79,10 +81,12 @@ def train_models(model_name='', start_date='20140603', end_date='20181231', feat
     dataes = list(df['TRADE_DATE'])
     sec_ids = list(df['SECURITY_ID'])
     train_Y = df.iloc[:, -1]
-    decom_ratio = float(config['defaults']['decom_ratio'])
+    decom_ratio = float(config['feature_mining_strategy']['component_ratio'])
     # PCA processing
-    pca = decomposition.PCA(n_components=int(len(feature_names) * decom_ratio))
-    train_X = pca.fit_transform(train_X)
+    n_component = min(int(len(feature_names) * decom_ratio), int(config['feature_mining_strategy']['n_component']))
+    pca = decomposition.PCA(n_components=n_component)
+    # train_X = pca.fit_transform(train_X)
+    train_X = pca.fit_transform(pd.DataFrame(train_X).fillna(method='ffill'))
     train_Y = train_Y.fillna(0.0)
     st = time.time()
     logger.info('start training the models')

@@ -33,9 +33,9 @@ root = get_source_root()
 
 
 def init(context):
-    model_path = os.path.join(get_parent_dir(), 'data', 'models', 'stock_selection_{0}'.format(model_name))
-    feature_names = get_selected_features(__config__['base']['start_date'], __config__['base']['end_date'],
-                                          up_ratio=0.2, down_ratio=0.1)
+    # model_path = os.path.join(get_parent_dir(), 'data', 'models', 'stock_selection_{0}'.format(model_name))
+    model_path = os.path.join(get_parent_dir(), 'data', 'models', 'linear_20150103_20181231_0.9')
+    feature_names = get_selected_features()
     context.features = load_cache_features(__config__['base']['start_date'], __config__['base']['end_date'],
                                            __config__['base']['benchmark'])
     context.model = joblib.load(model_path)
@@ -56,10 +56,13 @@ def handle_bar(context, bar_dict):
     n_cols = selected_df.shape[1]
     decom_ratio = float(config['defaults']['decom_ratio'])
     pca = decomposition.PCA(n_components=int(n_cols * decom_ratio))
+    #TODO OUTPUT OF THE pca shape does not match. should be 300*303, not 300*300
     train_X = pca.fit_transform(list(selected_df.values))
     pred_Y = context.model.predict(train_X)
     for idx, sec_id in enumerate(sec_ids):
         _score = pred_Y[idx]
+        if _score < 0:
+            continue
         _indust = indust_ret.get(sec_id)
         indust_scores[_indust].append((sec_id, _score))
     buy_lst = []
@@ -92,8 +95,8 @@ def after_trading(context):
 
 __config__ = {
     "base": {
-        "start_date": strategy_config["start_date"],
-        "end_date": strategy_config["end_date"],
+        "start_date": strategy_config["backtest_start_date"],
+        "end_date": strategy_config["backtest_end_date"],
         "frequency": "1d",
         "matching_type": "current_bar",
         "data_bundle_path": "rqdata/bundle",

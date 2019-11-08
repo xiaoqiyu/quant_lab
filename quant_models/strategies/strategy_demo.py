@@ -17,7 +17,7 @@ from quant_models.utils.logger import Logger
 from quant_models.utils.decorators import timeit
 from quant_models.utils.helper import get_source_root
 
-logger = Logger('log.txt', 'INFO', __name__).get_log()
+# logger = Logger('log.txt', 'INFO', __name__).get_log()
 
 
 def result_analysis():

@@ -209,7 +209,7 @@ def load_cache_features(start_date='', end_date='', bc='000300.XSHG'):
     feature_paths = [os.path.join(os.path.realpath(root), 'data', 'features',
                                   'features{0}_{1}.csv'.format(bc.split('.')[0], m_date)) for m_date in t_years]
     if feature_paths:
-        logger.info('Reading features:{0}'.format(feature_paths[0]))
+        # logger.info('Reading features:{0}'.format(feature_paths[0]))
         df = pd.read_csv(feature_paths[0])
         for p in feature_paths[1:]:
             # logger.info('Reading features:{0}'.format(p))

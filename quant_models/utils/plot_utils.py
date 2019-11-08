@@ -5,9 +5,10 @@
 
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
+import seaborn as sns
 
 
-def plot_2D(values=[], styles=[],  x_label='', y_label='', saved_path=None,
+def plot_2D(values=[], styles=[], x_label='', y_label='', saved_path=None,
             title='', legends=[]):
     plt.rcParams['font.sans-serif'] = ['SimHei']
     for idx, value in enumerate(values):
@@ -44,10 +45,19 @@ def plot_3D(values=[], legends=[], labels=[], saved_path=None, title=''):
         plt.show()
 
 
+def plot_heapmap():
+    np.random.seed(20180316)
+    x = np.random.randn(4, 4)
+    f, (ax1, ax2) = plt.subplots(figsize=(6, 6), nrows=2)
+    sns.heatmap(x, annot=True, ax=ax1)
+    sns.heatmap(x, annot=True, ax=ax2, annot_kws={'size': 9, 'weight': 'bold', 'color': 'blue'})
+
+
 if __name__ == '__main__':
     import numpy as np
+
     x = list(range(10))
-    y = [item*2 for item in x]
+    y = [item * 2 for item in x]
     plt.plot(y, label=u'', linestyle='-')
     plt.xticks([])
     plt.show()
