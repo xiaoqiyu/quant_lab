@@ -48,17 +48,22 @@ def plot_3D(values=[], legends=[], labels=[], saved_path=None, title=''):
 def plot_heapmap():
     np.random.seed(20180316)
     x = np.random.randn(4, 4)
-    f, (ax1, ax2) = plt.subplots(figsize=(6, 6), nrows=2)
-    sns.heatmap(x, annot=True, ax=ax1)
-    sns.heatmap(x, annot=True, ax=ax2, annot_kws={'size': 9, 'weight': 'bold', 'color': 'blue'})
+    x = [[1, 2, 3], [4, 5, 6]]
+    ax = sns.heatmap(x)
+
+    # f, (ax1, ax2) = plt.subplots(figsize=(6, 6), nrows=2)
+    # sns.heatmap(x, annot=True, ax=ax1)
+    # sns.heatmap(x, annot=True, ax=ax2, annot_kws={'size': 9, 'weight': 'bold', 'color': 'blue'})
+    plt.show()
 
 
 if __name__ == '__main__':
     import numpy as np
 
-    x = list(range(10))
-    y = [item * 2 for item in x]
-    plt.plot(y, label=u'', linestyle='-')
-    plt.xticks([])
-    plt.show()
+    # x = list(range(10))
+    # y = [item * 2 for item in x]
+    # plt.plot(y, label=u'', linestyle='-')
+    # plt.xticks([])
+    # plt.show()
     # plot_2D([[[1, 2], [2, 4]], [[1, 2], [2.4, 4.4]]])
+    plot_heapmap()

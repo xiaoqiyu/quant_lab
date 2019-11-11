@@ -12,7 +12,9 @@ import time
 import os
 import gc
 from WindPy import w
+import matplotlib.pyplot as plt
 import pandas as pd
+import seaborn as sns
 from quant_models.data_processing.features_calculation import get_equity_daily_features
 from quant_models.data_processing.features_calculation import get_equity_returns
 from quant_models.data_processing.features_calculation import get_idx_returns
@@ -123,7 +125,7 @@ def retrieve_features(start_date='20181101', end_date='20181131', data_source=0,
                     _next_date = _next_trading_date(tdays, str(date))
                     s_label = ret_labels.get(sec_id).get(str(_next_date))
                     i_label = idx_labels.get(str(_next_date))
-                    label = s_label*100 - i_label
+                    label = s_label * 100 - i_label
                 except Exception as ex:
                     label = np.nan
                     logger.error('Fail to calculate the label with error:{0}'.format(ex))
@@ -202,6 +204,7 @@ def cache_features(start_date='20180101', end_date='20181231', data_source=0,
 
 @timeit
 def load_cache_features(start_date='', end_date='', bc='000300.XSHG'):
+    print('Loading features from :{0} to {1}'.format(start_date, end_date))
     _w_ret = w.tdays(start_date, end_date)
     # t_months = list(set([item.strftime('%Y%m') for item in _w_ret.Data[0]]))
     t_years = list(set([item.strftime('%y') for item in _w_ret.Data[0]]))
@@ -230,24 +233,67 @@ def train_features(start_date='', end_date='', bc='000300.XSHG'):
     cols = list(df.columns)[:-4]
     cols.append('LABEL')
     df_corr = df[cols].corr()
-    score_df = pd.DataFrame({'feature': list(df_corr.iloc[:,-1].index)[:-1], 'score': list(df_corr.iloc[:,-1].values)[:-1]})
+    score_df = pd.DataFrame(
+        {'feature': list(df_corr.iloc[:, -1].index)[:-1], 'score': list(df_corr.iloc[:, -1].values)[:-1]})
     score_path = os.path.join(os.path.realpath(root), 'data', 'features',
                               'score_{0}_{1}.csv'.format(start_date, end_date))
     score_df.to_csv(score_path, index=None)
     return df, score_df
 
 
+def get_feature_heatmap(dates=[],  bc='000300.XSHG'):
+    root = get_source_root()
+    source_path = os.path.join(os.path.realpath(root), 'data', 'features')
+    _files = os.listdir(source_path)
+    files = [item for item in _files if item.startswith('score')]
+    y_vvalues = [item.split('.')[-2].split('_')[1] for item in files]
+    f_mapping = get_source_feature_mappings()
+
+    ret_f_score = defaultdict(list)
+    for file in files:
+        f_type_score = defaultdict(list)
+        df = pd.read_csv(os.path.join(source_path, file))
+        for item in list(df.values):
+            for _type, _lst in f_mapping.items():
+                if item[0] in _lst:
+                    f_type_score[_type].append(item[1])
+        for k, v in f_type_score.items():
+            ret_f_score[k].append(sum(v) / len(v))
+    pprint.pprint(ret_f_score)
+    x = []
+    x_vvalues = list(ret_f_score.keys())
+    for k, v in ret_f_score.items():
+        x.append(v)
+
+    ax = sns.heatmap(pd.DataFrame(x, index=x_vvalues, columns=y_vvalues))
+    ax.set_yticklabels(ax.get_yticklabels(), fontsize=6)
+    ax.set_xticklabels(ax.get_xticklabels(), rotation=90)
+    print(x_vvalues)
+    # plt.show()
+    # print(df)
+
+    #
+    # scores = []
+    # for start_date, end_date in dates:
+    #     df, score_df = train_features(start_date=start_date, end_date=end_date)
+    #     scores.append(score_df['score'])
+    # scores = np.array(scores).transpose()
+    # ax = sns.heatmap(scores)
+    plt.savefig('heatmap300.jpg')
+    # plt.show()
+
+
 if __name__ == '__main__':
     import gc
 
-    cache_features(start_date='20160103', end_date='20161231', data_source=0,
-                   feature_types=[], bc='000300.XSHG', sufix='16')
-    gc.collect()
-    cache_features(start_date='20150103', end_date='20151231', data_source=0,
-                   feature_types=[], bc='000300.XSHG', sufix='15')
-    gc.collect()
-    # cache_features(start_date='20190103', end_date='20191031', data_source=0,
-    #                feature_types=[], bc='000300.XSHG', sufix='19')
+    # cache_features(start_date='20160103', end_date='20161231', data_source=0,
+    #                feature_types=[], bc='000300.XSHG', sufix='16')
+    # gc.collect()
     # train_features(start_date='20190103', end_date='20190531', bc='000300.XSHG')
     # ret = load_cache_features(start_date='20170103', end_date='20180630')
     # print(ret.shape)
+    get_feature_heatmap([('20150103', '20150531'), ('20150601', '20151231'),
+                         ('20160103', '20160531'), ('20160601', '20161231'),
+                         ('20170103', '20170531'), ('20170601', '20171231'),
+                         ('20180103', '20180531'), ('20180601', '20181231'),
+                         ('20190103', '20190531')])

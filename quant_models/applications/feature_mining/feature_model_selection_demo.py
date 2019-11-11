@@ -4,6 +4,7 @@
 # @file      : feature_model_selection_demo.py
 
 import time
+import matplotlib.pyplot as plt
 from quant_models.applications.feature_mining.feature_selection import cache_features
 from quant_models.applications.feature_mining.feature_selection import train_features
 from quant_models.applications.feature_mining.model_selection import train_models
@@ -15,11 +16,14 @@ def main():
     #                feature_types=[], bc='000300.XSHG')
 
     # calculate the features scores
-    train_features(start_date='20190103', end_date='20190531', bc='000300.XSHG')
+    df, score_df = train_features(start_date='20190103', end_date='20190531', bc='000300.XSHG')
+    plt.plot(score_df['score'])
+    plt.xlabel(score_df['feature'])
+    plt.show()
 
     # train ml model
-    train_models(model_name='linear', start_date='20150103', end_date='20190531',
-                 score_bound=(0.2, 0.1))
+    # train_models(model_name='linear', start_date='20150103', end_date='20190531',
+    #              score_bound=(0.2, 0.1))
 
 
 if __name__ == '__main__':
