@@ -140,6 +140,10 @@ def retrieve_features(start_date='20181101', end_date='20181131', data_source=0,
             try:
                 df_shape = date_features.shape
                 date_features = np.column_stack((date_features, list(val.keys()), [date] * df_shape[0]))
+                if isinstance(list(val.keys())[0], int):
+                    print('checking here')
+                if 'XS' in [date] * df_shape[0][0]:
+                    print('checking here')
                 all_features.extend(date_features)
                 all_labels.extend(date_labels)
             except Exception as ex:
@@ -218,7 +222,8 @@ def load_cache_features(start_date='', end_date='', bc='000300.XSHG'):
             # logger.info('Reading features:{0}'.format(p))
             # _df = pd.read_csv(p)
             # df = df.append(_df)
-            df = df.append(pd.read_csv(p))
+            _df = pd.read_csv(p)
+            df = df.append(_df)
     df = df[df.TRADE_DATE >= int(start_date.replace('-', ''))]
     df = df[df.TRADE_DATE < int(end_date.replace('-', ''))]
     return df
@@ -236,16 +241,17 @@ def train_features(start_date='', end_date='', bc='000300.XSHG'):
     score_df = pd.DataFrame(
         {'feature': list(df_corr.iloc[:, -1].index)[:-1], 'score': list(df_corr.iloc[:, -1].values)[:-1]})
     score_path = os.path.join(os.path.realpath(root), 'data', 'features',
-                              'score_{0}_{1}.csv'.format(start_date, end_date))
+                              'score{0}_{1}_{2}.csv'.format(bc.split('.')[0], start_date, end_date))
     score_df.to_csv(score_path, index=None)
     return df, score_df
 
 
-def get_feature_heatmap(dates=[],  bc='000300.XSHG'):
+def get_feature_heatmap(dates=[], bc='000300.XSHG'):
     root = get_source_root()
     source_path = os.path.join(os.path.realpath(root), 'data', 'features')
+    _bc = bc.split('.')[0]
     _files = os.listdir(source_path)
-    files = [item for item in _files if item.startswith('score')]
+    files = [item for item in _files if item.startswith('score') and _bc in item]
     y_vvalues = [item.split('.')[-2].split('_')[1] for item in files]
     f_mapping = get_source_feature_mappings()
 
@@ -268,27 +274,28 @@ def get_feature_heatmap(dates=[],  bc='000300.XSHG'):
     ax = sns.heatmap(pd.DataFrame(x, index=x_vvalues, columns=y_vvalues))
     ax.set_yticklabels(ax.get_yticklabels(), fontsize=6)
     ax.set_xticklabels(ax.get_xticklabels(), rotation=90)
-    print(x_vvalues)
-    # plt.show()
-    # print(df)
 
-    #
+    #generate the score
     # scores = []
     # for start_date, end_date in dates:
-    #     df, score_df = train_features(start_date=start_date, end_date=end_date)
+    #     df, score_df = train_features(start_date=start_date, end_date=end_date, bc=bc)
     #     scores.append(score_df['score'])
     # scores = np.array(scores).transpose()
     # ax = sns.heatmap(scores)
-    plt.savefig('heatmap300.jpg')
+    plt.savefig('feature_heatmap_{0}.jpg'.format(_bc))
     # plt.show()
 
 
 if __name__ == '__main__':
     import gc
 
-    # cache_features(start_date='20160103', end_date='20161231', data_source=0,
-    #                feature_types=[], bc='000300.XSHG', sufix='16')
-    # gc.collect()
+    # 000300.XSHG;000905.ZICN
+    # cache_features(start_date='20180103', end_date='20181231', data_source=0,
+    #                feature_types=[], bc='000905.ZICN', sufix='18')
+    # df = retrieve_features(start_date='20160103', end_date='20161231', data_source=0,
+    #                        feature_types=[], bc='000905.ZICN', )
+    # print(df)
+    gc.collect()
     # train_features(start_date='20190103', end_date='20190531', bc='000300.XSHG')
     # ret = load_cache_features(start_date='20170103', end_date='20180630')
     # print(ret.shape)
@@ -296,4 +303,4 @@ if __name__ == '__main__':
                          ('20160103', '20160531'), ('20160601', '20161231'),
                          ('20170103', '20170531'), ('20170601', '20171231'),
                          ('20180103', '20180531'), ('20180601', '20181231'),
-                         ('20190103', '20190531')])
+                         ('20190103', '20190531')], bc='000300.XSHG')

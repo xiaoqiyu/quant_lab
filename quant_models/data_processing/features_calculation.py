@@ -37,7 +37,12 @@ def get_idx_cons_dy(security_id='', index_date=None, source=0):
     if source == 1:
         ticker = security_id.split('.')[0]
         return _df.get_idx_cons_dy(ticker=ticker, index_date=index_date)
-    search_id_mapping = {'000001.XSHG': 1, '000300.XSHG': 1782, '000016.XSHG': 28, '399006.XSHE': 3326} or security_id
+    search_id_mapping = {'000001.XSHG': 1,  # 上证
+                         '000300.XSHG': 1782,  # 沪深300
+                         '000016.XSHG': 28,  # 上证50
+                         '399006.XSHE': 3326,  # 创业板
+                         '000905.ZICN': 2103,  # 中证500
+                         } or security_id
     rows, desc = _df.get_idx_cons_dy(idx_id=search_id_mapping.get(security_id), index_date=index_date)
     return ['{0}.{1}'.format(item[0], item[1]) for item in rows]
 
@@ -347,6 +352,11 @@ def get_idx_returns(security_ids=[], start_date='20181101', end_date='20181103',
     ret_label = defaultdict(dict)
     for item in rows:
         _exchange_cd = 'XSHG' if item[exchange_idx] == 83 else 'XSHE'
+        for sec_id in security_ids:
+            _ticker, _exgcd = sec_id.split('.')
+            if _ticker == item[ticker_idx]:
+                _exchange_cd = _exgcd
+                continue
         security_id = '{0}.{1}'.format(item[ticker_idx], _exchange_cd)
         trade_date = item[trade_date_idx].strftime('%Y%m%d')
         ret_label[security_id].update({trade_date: float(item[chg_pct_idx])})

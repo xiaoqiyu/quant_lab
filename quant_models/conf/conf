@@ -14,14 +14,14 @@ end_date = 20181231
 backtest_start_date = 2019-01-03
 backtest_end_date = 2019-06-30
 backtrack_period = 250
-model_names = gbdt
-feature_ratios = 0.6,0.9
-benchmark = 000300.XSHG
+model_names = linear,ridge,lasso
+feature_ratios = 0.9,0.6,0.3
+benchmark = 000905.ZICN
 holding_topk = 10
 best_model_names = linear_20150103_20181231_0.9
 best_feature_ratio = 0.9
-n_component = 300
-component_ratio = 0.9
+n_component = 500
+component_ratio = 1.0
 
 
 

@@ -58,7 +58,7 @@ def train_models(model_name='', start_date='20140603', end_date='20181231', feat
     :return:
     '''
     m = Ml_Reg_Model(model_name)
-    model_full_name = '{0}_{1}_{2}_{3}'.format(model_name, start_date, end_date, feature_ratio, bc)
+    model_full_name = '{0}_{1}_{2}_{3}_{4}'.format(model_name, start_date, end_date, feature_ratio, bc)
     if not m.load_model(model_full_name):
         m.build_model()
     root = get_source_root()

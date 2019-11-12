@@ -5,3 +5,23 @@
 	4. 技术指标
 	5. 行业选股策略
 
+
+
+TO DO：
+1. 500 linear,ringe,ridge train, feature score analysis
+2. consistency of params in linear trained model and IC
+3. 300+500 train linear model results
+4. 300/500 train nonlinear, more research on ensumble model, and apply grid search
+in model selection
+5. train linear with only feature types with top scores
+6. 500 backtesting results, improvement on 300 backtesting results
+7. backtesting result comparison for 5th-quantify line
+8. backtesting when iteratively train the model,e.g. every month end
+9. neutralised in strategy
+10. top feature types(mainly tech features) + intraday features(1min/tick) for
+timing model, torch gru/lstm
+11. tick hft algorithms/ smarket impact model
+12. 增加舆情因子
+
+Findings:
+1. best feature

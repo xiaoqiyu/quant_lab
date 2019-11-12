@@ -325,6 +325,7 @@ class DataFetcherDB(object):
         CONVERT(varchar(100), SecuCode,112)='{0}' AND A.InnerCode=B.InnerCode AND A.TradingDay>='{1}' and 
         A.TradingDay<'{2}' AND B.SecuMarket IN (83,90)
         """.format(_ticker, start_date, end_date)
+        print(sql_str)
         df = pd.read_sql(sql_str, con=self._jyobj)
         return list(df.values), list(df.columns)
 
