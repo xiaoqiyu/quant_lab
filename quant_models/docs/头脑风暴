@@ -22,6 +22,9 @@ in model selection
 timing model, torch gru/lstm
 11. tick hft algorithms/ smarket impact model
 12. 增加舆情因子
+15.模型的样本外胜率估计
+
+
 
 Findings:
 1. best feature

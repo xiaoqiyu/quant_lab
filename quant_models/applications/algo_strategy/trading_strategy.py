@@ -7,9 +7,7 @@ from WindPy import w
 import talib as ta
 import numpy as np
 import pandas as pd
-import pprint
 import matplotlib.pyplot as plt
-
 
 w.start()
 
@@ -91,8 +89,35 @@ def get_schedule(**kwargs):
     return df
 
 
-def main():
-    trade_history = pd.read_excel('data/trade_history.xlsx')
-    df = trade_history['002936']
-    print(df)
+def nasida():
+    # 高位：10-21-11.53;10-16:10.69; 中位：6-3：9.36；5-22：9.98；低位：1-31：23.12%；11-09：18.28;2-13;08-09:
+    # 中：6-4-7.45；10-21：11.53；低：1-4：
+    ret_vols5, ret_prices = get_trade_schedule(participant_rate=0.1, target_ratio=0.01, sec_code="002180.SZ",
+                                               end_date="2019-10-11", period=100, target_vol=None, target_period=10,
+                                               price_ratio=0.98)
+    ret_vols10, ret_prices = get_trade_schedule(participant_rate=0.1, target_ratio=0.01, sec_code="002180.SZ",
+                                                end_date="2018-06-04", period=100, target_vol=None, target_period=22,
+                                                price_ratio=0.98)
+    ret_vols15, ret_prices = get_trade_schedule(participant_rate=0.08, target_ratio=0.01, sec_code="002180.SZ",
+                                                end_date="2019-01-04", period=100, target_vol=None, target_period=None,
+                                                price_ratio=0.98)
+    ret_vols20, ret_prices = get_trade_schedule(participant_rate=0.05, target_ratio=0.01, sec_code="002180.SZ",
+                                                end_date="2019-01-04", period=100, target_vol=None, target_period=22,
+                                                price_ratio=0.98)
+    # 8-9
+    print(ret_vols5)
+    print(len(ret_vols15))
+    plt.plot([item / 100 for item in ret_vols5])
+    plt.plot([item / 100 for item in ret_vols10])
+    plt.plot([item / 100 for item in ret_vols15])
+    plt.plot([item / 100 for item in ret_vols20])
+    plt.rcParams['font.sans-serif'] = ['SimHei']
+    plt.legend(["情形1", "情形2", "情形3-a", "情形3-b"])
+    plt.xlabel("第i个交易日")
+    plt.ylabel("每日交易量（手）")
+    plt.title("纳思达减持1%股份交易路径模拟")
+    plt.show()
 
+
+if __name__ == '__main__':
+    nasida()

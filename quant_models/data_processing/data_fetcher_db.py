@@ -185,7 +185,7 @@ class DataFetcherDB(object):
         :return: rows, col_names; rows: list of tuple from the results; col_names: list of strings of the colume name of
                 the table
         '''
-        if not self.db_obj:
+        if not self._dyobj:
             logger.error("Fail in get_market_mins for empty db_obj")
         rows, col_names = self.get_dates_statics(startdate, enddate)
         all_trading_dates = [item[1].strftime('%Y%m%d') for item in rows if item[3] == 1]

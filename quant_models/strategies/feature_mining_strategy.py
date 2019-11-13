@@ -34,7 +34,7 @@ root = get_source_root()
 
 def init(context):
     # model_path = os.path.join(get_parent_dir(), 'data', 'models', 'stock_selection_{0}'.format(model_name))
-    model_path = os.path.join(get_parent_dir(), 'data', 'models', 'linear_20150103_20181231_0.9')
+    model_path = os.path.join(get_parent_dir(), 'data', 'models', 'ridge_20150103_20181231_0.9_000905.ZICN')
     feature_names = get_selected_features()
     context.features = load_cache_features(__config__['base']['start_date'], __config__['base']['end_date'],
                                            __config__['base']['benchmark'])
@@ -54,8 +54,11 @@ def handle_bar(context, bar_dict):
 
     selected_df = feature_df[context.feature_names]
     n_cols = selected_df.shape[1]
-    decom_ratio = float(config['defaults']['decom_ratio'])
-    pca = decomposition.PCA(n_components=int(n_cols * decom_ratio))
+    decom_ratio = float(config['feature_mining_strategy']['component_ratio'])
+    n_component = min(int(n_cols * decom_ratio), int(config['feature_mining_strategy']['n_component']))
+
+
+    pca = decomposition.PCA(n_components=n_component)
     train_X = pca.fit_transform(list(selected_df.values))
     pred_Y = context.model.predict(train_X)
     buy_lst = []
@@ -77,7 +80,7 @@ def handle_bar(context, bar_dict):
         buy_lst = list(set(buy_lst))
     else:
         sec_scores = sorted(list(zip(sec_ids, pred_Y)), key=lambda x: x[1], reverse=True)
-        buy_lst = [item[0] for item in sec_scores[:10]]
+        buy_lst = [item[0] for item in sec_scores[:20]]
     #TODO st filter and position control
     print('len of buy lst is:{0}'.format(len(buy_lst)))
     each_position = 1.0 / len(buy_lst)
@@ -105,7 +108,7 @@ __config__ = {
         "frequency": "1d",
         "matching_type": "current_bar",
         "data_bundle_path": "rqdata/bundle",
-        "benchmark": "000300.XSHG",
+        "benchmark": "000905.XSHG",
         "commission-multiplier": 1,
         "margin_multiplier": 1,
         "accounts": {

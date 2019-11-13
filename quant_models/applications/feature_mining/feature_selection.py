@@ -275,7 +275,7 @@ def get_feature_heatmap(dates=[], bc='000300.XSHG'):
     ax.set_yticklabels(ax.get_yticklabels(), fontsize=6)
     ax.set_xticklabels(ax.get_xticklabels(), rotation=90)
 
-    #generate the score
+    # generate the score
     # scores = []
     # for start_date, end_date in dates:
     #     df, score_df = train_features(start_date=start_date, end_date=end_date, bc=bc)

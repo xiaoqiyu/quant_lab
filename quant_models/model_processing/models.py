@@ -41,6 +41,14 @@ class Model(object):
     def build_model(self, **kwargs):
         logger.debug("this is the base build model method")
 
+    def get_grid_search_params(self, model_name):
+        _params = config[model_name]
+        ret = {}
+        if _params:
+            for k, v in _params.items():
+                ret[k] = [float(item) for item in v.split(',')]
+        return ret
+
     def eval_model(self, y_true, y_pred, metrics):
         '''
 

@@ -33,7 +33,8 @@ def get_selected_features():
     #     files[-1]
     # _path = files[0]
     _score_path = os.path.join(feature_source,
-                               'score_{0}_{1}.csv'.format(config['feature_mining_strategy']['start_date'],
+                               'score{0}_{1}_{2}.csv'.format(config['feature_mining_strategy']['benchmark'].split('.')[0],
+                                                          config['feature_mining_strategy']['start_date'],
                                                           config['feature_mining_strategy']['end_date']))
     # logger.info("Reading score from path:{0}".format(_score_path))
     score_df = pd.read_csv(_score_path)
