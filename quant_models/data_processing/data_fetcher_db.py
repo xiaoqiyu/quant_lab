@@ -8,11 +8,12 @@ import pyodbc
 from collections import defaultdict
 
 import pandas as pd
-
+from WindPy import w
 from quant_models.utils.logger import Logger
 from quant_models.utils.oracle_helper import OracleHelper
 
 logger = Logger(log_level='INFO', handler='ch').get_log()
+w.start()
 
 
 class DataFetcherDB(object):
@@ -187,28 +188,33 @@ class DataFetcherDB(object):
         '''
         if not self._dyobj:
             logger.error("Fail in get_market_mins for empty db_obj")
-        rows, col_names = self.get_dates_statics(startdate, enddate)
-        all_trading_dates = [item[1].strftime('%Y%m%d') for item in rows if item[3] == 1]
+        # rows, col_names = self.get_dates_statics(startdate, enddate)
+        # all_trading_dates = [item[1].strftime('%Y%m%d') for item in rows if item[3] == 1]
+        _w_ret = w.tdays(startdate, enddate)
+        # t_months = list(set([item.strftime('%Y%m') for item in _w_ret.Data[0]]))
+        all_trading_dates = list(set([item.strftime('%Y%m%d') for item in _w_ret.Data[0]]))
         grouped_dates = defaultdict(list)
 
-        for d in all_trading_dates:
+        for d in all_trading_dates[:-1]:
             yymm = d[:6]
             rows, columns = [], []
             grouped_dates[yymm].append(int(d))
         total_len = len(grouped_dates)
         cnt = 0
         logger.info("Start query data in get_market_mins for query_date:{0}".format(len(grouped_dates)))
+        tickers = [item.split('.')[0] for item in sec_codes]
+        ticker_str = ','.join(tickers)
         for k, v in grouped_dates.items():
             cnt += 1
             logger.debug("query the {0} th table {1} out of {2}".format(cnt, k, total_len))
             v = sorted(v)
-            sqlstr = self._get_sql_query(v[0], v[-1], sec_codes, filter, orderby,
-                                         groupby, table_name)
-            tmp_rows, desc = self.db_obj.execute_query(sqlstr)
-            columns = [item[0] for item in desc]
+            tab_name = '{0}{1}'.format('CUST.EQUITY_PRICEMIN', k)
+            sqlstr = '''SELECT * FROM {0} WHERE DATADATE >= {1} AND DATADATE <= {2} 
+            AND TICKER IN ({3}) AND  EXCHANGECD IN ('XSHG','XSHE')'''.format(tab_name, v[0], v[-1], ticker_str)
+            tmp_rows, desc = self._dyobj.execute_query(sqlstr)
             rows.extend(tmp_rows)
         logger.info("Done query data in get_market_mins for query_date:{0}".format(len(grouped_dates)))
-        return rows, columns
+        return rows, desc
 
     def get_report_contents(self):
         pass
@@ -334,7 +340,7 @@ class DataFetcherDB(object):
         if tickers:
             _ = '('
             for t in tickers:
-                _ = "{0}'{1}',".format(_,t)
+                _ = "{0}'{1}',".format(_, t)
             _ = _[:-1] + ')'
             sql_str = """SELECT * FROM JYDB.dbo.QT_DailyQuote A, JYDB.dbo.SecuMain B WHERE SecuCategory=1 AND
             CONVERT(varchar(100), SecuCode,112) IN {0} AND A.InnerCode=B.InnerCode AND A.TradingDay>='{1}' and A.TradingDay<'{2}'
@@ -343,5 +349,3 @@ class DataFetcherDB(object):
             print(sql_str)
             df = pd.read_sql(sql_str, con=self._jyobj)
             return list(df.values), list(df.columns)
-
-
