@@ -4,6 +4,7 @@
 # @file      : hf_features_calculation.py
 
 import os
+from WindPy import w
 import numpy as np
 from scipy import stats
 from collections import defaultdict
@@ -12,10 +13,54 @@ from quant_models.utils.helper import get_source_root
 from quant_models.data_processing.data_fetcher import DataFetcher
 
 g_db_fetcher = DataFetcher()
+w.start()
+
+
+class Market(object):
+    '''
+    This is the object to query and cache  the market in 1 min, and calculate some related features for stocks
+    '''
+
+    def __init__(self, security_ids=[]):
+        self.security_ids = security_ids
+        self.min_cache = None
+        self.q_cache = None
+
+    def initialize(self, start_date='', end_date='', source=0, tick_cache='qto'):
+        _df = g_db_fetcher.get_data_fetcher_obj(source)
+        _min_mkt = _df.get_mkt_mins(startdate=start_date, enddate=end_date, sec_codes=self.security_ids,
+                                    table_name='CUST.EQUITY_PRICEMIN')
+        df = pd.DataFrame(_min_mkt[0], columns=_min_mkt[1])
+        close_lst = list(df['CLOSEPRICE'])
+        close_lst.insert(0, close_lst[0])
+        return_lst = []
+        n_row = len(close_lst)
+        for idx in range(n_row - 1):
+            return_lst.append((close_lst[idx + 1] - close_lst[idx]) / close_lst[idx])
+        df['RETURN'] = return_lst
+        df['RET2VOL'] = df['RETURN'] / df['VOLUME']
+        self.min_cache = df
+        _w_ret = w.tdays(start_date, end_date)
+        t_dates = list(set([item.strftime('%Y%m%d') for item in _w_ret.Data[0]]))
+        if 'q' in tick_cache and self.security_ids and t_dates:
+            df_lst = []
+            # security_id = self.security_ids[0]
+            # trade_date = t_dates[0]
+            for security_id in self.security_ids:
+                for trade_date in t_dates:
+                    root = get_source_root()
+                    l2_path = os.path.join(os.path.realpath(root), 'data', 'features', 'level2', trade_date)
+                    tick_path = os.path.join(l2_path, 'l2tick',
+                                             '{0}_{1}.csv'.format(security_id.split('.')[0], trade_date))
+                    df_lst.append(pd.read_csv(tick_path))
+            if df_lst:
+                self.q_cache = df_lst
+                for _tmp in df_lst:
+                    self.q_cache.append(_tmp)
+            del df_lst
 
 
 # 使用峰度和偏度计算的因子，用1分钟的收益率序列
-
 def get_l2_features(security_id='', trade_date='', start_time='', end_time=''):
     root = get_source_root()
     l2_path = os.path.join(os.path.realpath(root), 'data', 'features', 'level2', trade_date)
@@ -47,15 +92,22 @@ def get_tick_l2_features(security_id='', trade_date='', start_time='', end_time=
     _tick_df[
         'acc_offer_volume5'] = _tick_df.OfferVolume1 + _tick_df.OfferVolume2 + _tick_df.OfferVolume3 + _tick_df.OfferVolume4 + _tick_df.OfferVolume5
     _tick_df['quote_imbalance5'] = _tick_df['acc_bid_volume5'] - _tick_df['acc_offer_volume5']
-    _tick_df['amplitude1'] = (_tick_df['High'] - _tick_df['Low'])/_tick_df['LastPrice']
-    print(_tick_df.shape)
-
+    _tick_df['amplitude1'] = (_tick_df['High'] - _tick_df['Low']) / _tick_df['LastPrice']
+    ret = cal_tick_l2_features(df=_tick_df, features=['quote_imbalance5', 'quote_imbalance5_std', 'ampl', 'ampl_std'])
+    return ret, _tick_df
 
 
 def cal_tick_l2_features(df=None, payloads=[], features=[]):
     feature_mappings = {
-        'quote_imbalance5': 'a'
+        'quote_imbalance5': lambda x: sum(x['quote_imbalance5']),
+        'quote_imbalance5_std': lambda x: x['quote_imbalance5'].std(),
+        'ampl': lambda x: sum(x['amplitude1']),
+        'ampl_std': lambda x: x['amplitude1'].std(),
     }
+    ret = {}
+    for f in features:
+        ret.update({f: feature_mappings.get(f)(df)})
+    return ret
 
 
 def cal_min_ts_features(df=None, payloads=[], features=[]):
@@ -115,8 +167,14 @@ def get_min_features(security_ids=[], start_date='', end_date='', start_time='09
 
 
 if __name__ == '__main__':
-    ret = get_tick_l2_features(security_id='000651.XSHE', trade_date='20191009', start_time='093000', end_time='100000')
-    # ret_features, df = get_min_features(security_ids=['603612.XSHG'], start_date='20191104', end_date='20191105')
+    # ret_features, df = get_tick_l2_features(security_id='000651.XSHE', trade_date='20191009', start_time='093000',
+    #                                         end_time='100000')
+    # # ret_features, df = get_min_features(security_ids=['603612.XSHG'], start_date='20191104', end_date='20191105')
     # import pprint
+    #
     # pprint.pprint(ret_features)
-    # print(df)
+    # # print(df)
+    mkt = Market(['000651.XSHE'])
+    # mkt.security_ids = ['000651.XSHE']
+    mkt.initialize(start_date='20191009', end_date='20191010', source=0, tick_cache='')
+    print(mkt.min_cache)
