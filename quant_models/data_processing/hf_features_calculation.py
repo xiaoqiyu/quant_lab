@@ -119,12 +119,18 @@ def cal_min_ts_features(df=None, payloads=[], features=[]):
         'amplitude1': lambda x: (max(x['CLOSEPRICE']) - min(x['CLOSEPRICE'])) / list(x['OPENPRICE'])[0]
     }
     ret = {}
+
     for f in features:
-        ret.update({f: feature_mappings.get(f)(df)})
+        try:
+            ret.update({f: feature_mappings.get(f)(df)})
+        except Exception as ex:
+            print(f)
+            print(df)
     return ret
 
 
-def get_min_features(security_ids=[], start_date='', end_date='', start_time='09:40', end_time='10:30', source=0):
+def get_min_features(security_ids=[], start_date='', end_date='', start_time='09:40', end_time='10:30', mkt_cache=None,
+                     features=['ret_var', 'total_vol', 'amplitude1']):
     '''
 
     :param security_ids:
@@ -135,10 +141,11 @@ def get_min_features(security_ids=[], start_date='', end_date='', start_time='09
     :param source:
     :return:
     '''
-    _df = g_db_fetcher.get_data_fetcher_obj(source)
-    _min_mkt = _df.get_mkt_mins(startdate=start_date, enddate=end_date, sec_codes=security_ids,
-                                table_name='CUST.EQUITY_PRICEMIN')
-    df = pd.DataFrame(_min_mkt[0], columns=_min_mkt[1])
+    # _df = g_db_fetcher.get_data_fetcher_obj(source)
+    # _min_mkt = _df.get_mkt_mins(startdate=start_date, enddate=end_date, sec_codes=security_ids,
+    #                             table_name='CUST.EQUITY_PRICEMIN')
+    # df = pd.DataFrame(_min_mkt[0], columns=_min_mkt[1])
+    df = mkt_cache.min_cache
     if start_time:
         df = df[df.BARTIME >= start_time]
     if end_time:
@@ -152,18 +159,20 @@ def get_min_features(security_ids=[], start_date='', end_date='', start_time='09
     n_row = len(close_lst)
     for idx in range(n_row - 1):
         return_lst.append((close_lst[idx + 1] - close_lst[idx]) / close_lst[idx])
-    df['RETURN'] = return_lst
-    df['RET2VOL'] = df['RETURN'] / df['VOLUME']
+    # df['RETURN'] = return_lst
+    # df['RET2VOL'] = df['RETURN'] / df['VOLUME']
     for d in all_dates:
         _df = df[df.DATADATE == d]
         _date_dict = ret.get(d) or {}
         for sec_id in security_ids:
             ticker, exchangecd = sec_id.split('.')
-            _df = _df[_df.TICKER == int(ticker)]
-            _ret = cal_min_ts_features(df=_df, features=['ret_var', 'total_vol', 'amplitude1'])
-            _date_dict.update(_ret)
+            _sec_df = _df[_df.TICKER == int(ticker)]
+            if _sec_df.shape[0] == 0:
+                print('check')
+            _ret = cal_min_ts_features(df=_sec_df, features=features)
+            _date_dict.update({sec_id: _ret})
         ret[d] = _date_dict
-    return ret, df
+    return ret
 
 
 if __name__ == '__main__':
@@ -174,7 +183,13 @@ if __name__ == '__main__':
     #
     # pprint.pprint(ret_features)
     # # print(df)
-    mkt = Market(['000651.XSHE'])
+    security_ids = ['000651.XSHE', '603612.XSHG']
+    mkt = Market(security_ids)
     # mkt.security_ids = ['000651.XSHE']
-    mkt.initialize(start_date='20191009', end_date='20191010', source=0, tick_cache='')
-    print(mkt.min_cache)
+    mkt.initialize(start_date='20191104', end_date='20191106', source=0, tick_cache='')
+    # print(mkt.min_cache)
+    ret = get_min_features(security_ids=security_ids, start_date='20191104', end_date='20191105', start_time=None,
+                           end_time=None, mkt_cache=mkt, features=['ret_var', 'ret_skew', 'ret_kurtosis'])
+    import pprint
+
+    pprint.pprint(ret)

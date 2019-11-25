@@ -162,7 +162,6 @@ def retrieve_features(start_date='20181101', end_date='20181131', data_source=0,
     del ret_features
     del ret_labels
     gc.collect()
-
     return df
 
 
