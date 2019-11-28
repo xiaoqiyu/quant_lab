@@ -152,7 +152,7 @@ def trading_schedules(*args, **kwargs):
     r = _price_intercept * math.sqrt(250) / math.sqrt(target_period)
     T = 0.04
     I = 10000
-    target_vol = target_vol or total_shares * target_ratio
+    target_vol = int(target_vol or total_shares * target_ratio)
     for idx in range(10):
         _path = []
         S0 = curr_price
@@ -171,20 +171,26 @@ def trading_schedules(*args, **kwargs):
         vol_ma5 = sum(_mock_vols[idx: idx + 5])
         close = _mean_prices[idx]
         _participant_ratio = low_ratio if close < low else high_ratio if close > high else mid_ratio
-        _vol = int(vol_ma5 * _participant_ratio/100)*100
+        _vol = int(vol_ma5 / 5 * _participant_ratio / 100) * 100
         print(_vol)
         if target_vol - total_vol <= 100:
-            _mock_vols.append(target_vol-total_vol)
-            break
+            _mock_vols.append(target_vol - total_vol)
+            total_vol = target_vol
+            print(target_vol, total_shares)
+            print('branch 1', target_vol - total_vol)
         elif target_vol > total_vol:
             _real_vol = int(min(_vol, target_vol - total_vol))
-            #FIXME add 90 days total vol
+            # FIXME add 90 days total vol
             _mock_vols.append(_real_vol)
             total_vol += _real_vol
+            print('branch 2', _real_vol)
         else:
             _mock_vols.append(0)
+            print('branch 3', 0)
     import pprint
-    pprint.pprint(_mock_vols)
+    print(sum(_mock_vols))
+    print(target_vol)
+    # pprint.pprint(sum(_mock_vols), target_vol)
 
 
 if __name__ == '__main__':
