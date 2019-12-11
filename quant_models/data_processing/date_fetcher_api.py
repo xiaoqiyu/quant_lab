@@ -12,17 +12,8 @@ logger = Logger(log_level='DEBUG', handler='ch').get_log()
 
 
 class DataFetcherAPI(object):
-    def __init__(self, source=0):
-        '''
-
-        :param source: 0 for uqer, 1 for rq
-        '''
-        self.source = source
-        if source == 0:
-            self._uqer_client = uqer.Client(token="26356c6121e2766186977ec49253bf1ec4550ee901c983d9a9bff32f59e6a6fb")
-        else:
-            # TODO this is not supported in the forllowing data applications now
-            self._rq_client = rqdatac.init('user3zszq@ricequant.com', '_admin123@qq.com')
+    def __init__(self):
+        self._uqer_client = uqer.Client(token="26356c6121e2766186977ec49253bf1ec4550ee901c983d9a9bff32f59e6a6fb")
 
     def get_equ_factor(self, factor_type='', security_ids=(), fields=None, start_date=None, end_date=None):
         '''
@@ -80,6 +71,9 @@ class DataFetcherAPI(object):
             ret = DataAPI.SocialThemeGbByDateGet(tradeDate=i_date, field=u"", pandas="1")
 
 
+
+
+
 if __name__ == '__main__':
     df = DataFetcherAPI(0)
     # ret = df.get_mkt_equd()
@@ -89,4 +83,3 @@ if __name__ == '__main__':
     # df.to_csv('stock_id.csv')
     # print(ret)
     df_idx = DataAPI.IdxConsGet(secID=u"", ticker=u"000300", isNew=u"", intoDate=u"20141231", field=u"", pandas="1")
-

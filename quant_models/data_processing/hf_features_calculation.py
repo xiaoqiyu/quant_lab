@@ -40,6 +40,8 @@ class Market(object):
         df['RETURN'] = return_lst
         df['RET2VOL'] = df['RETURN'] / df['VOLUME']
         self.min_cache = df
+
+        #retrieve data from
         _w_ret = w.tdays(start_date, end_date)
         t_dates = list(set([item.strftime('%Y%m%d') for item in _w_ret.Data[0]]))
         if 'q' in tick_cache and self.security_ids and t_dates:
@@ -58,6 +60,10 @@ class Market(object):
                 for _tmp in df_lst:
                     self.q_cache.append(_tmp)
             del df_lst
+
+
+
+
 
 
 # 使用峰度和偏度计算的因子，用1分钟的收益率序列
