@@ -2,12 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="2fcb8905-90be-493e-9565-981ed27d1881" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/quant_models/applications/hft_strategies/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/quant_models/applications/hft_strategies/tick_feature_calculation.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/quant_models/model_processing/torch_reg_models.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/quant_models/data_processing/date_fetcher_api.py" beforeDir="false" afterPath="$PROJECT_DIR$/quant_models/data_processing/date_fetcher_api.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/quant_models/data_processing/hf_features_calculation.py" beforeDir="false" afterPath="$PROJECT_DIR$/quant_models/data_processing/hf_features_calculation.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/quant_models/model_processing/torch_reg_models.py" beforeDir="false" afterPath="$PROJECT_DIR$/quant_models/model_processing/torch_reg_models.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -18,23 +14,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="hf_features_calculation.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/quant_models/data_processing/hf_features_calculation.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1469">
-              <caret line="61" column="22" selection-start-line="61" selection-start-column="22" selection-end-line="61" selection-end-column="22" />
-              <folding>
-                <element signature="e#131#140#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="tick_feature_calculation.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/quant_models/applications/hft_strategies/tick_feature_calculation.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="525">
-              <caret line="21" lean-forward="true" selection-start-line="21" selection-end-line="21" />
+              <caret line="21" selection-start-line="21" selection-end-line="21" />
               <folding>
                 <element signature="e#132#143#0" expanded="true" />
               </folding>
@@ -42,11 +26,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="torch_notes.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="torch_notes.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/quant_models/playground/kiki/torch_notes.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="609">
-              <caret line="144" column="45" selection-start-line="144" selection-start-column="45" selection-end-line="144" selection-end-column="45" />
+            <state relative-caret-position="519">
+              <caret line="52" lean-forward="true" selection-start-line="52" selection-end-line="52" />
               <folding>
                 <element signature="e#119#131#0" expanded="true" />
               </folding>
@@ -54,10 +38,28 @@
           </provider>
         </entry>
       </file>
+      <file leaf-file-name="functional.py" pinned="false" current-in-tab="false">
+        <entry file="file://D:/anaconda3/Lib/site-packages/torch/nn/functional.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="625">
+              <caret line="38" lean-forward="true" selection-start-line="38" selection-end-line="38" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="linear.py" pinned="false" current-in-tab="false">
+        <entry file="file://D:/anaconda3/Lib/site-packages/torch/nn/modules/linear.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="227">
+              <caret line="22" lean-forward="true" selection-start-line="22" selection-end-line="22" />
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="rnn.py" pinned="false" current-in-tab="false">
         <entry file="file://D:/anaconda3/Lib/site-packages/torch/nn/_functions/rnn.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-7">
+            <state relative-caret-position="25">
               <caret line="242" selection-start-line="242" selection-end-line="242" />
             </state>
           </provider>
@@ -72,14 +74,23 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="torch_reg_models.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="torch_reg_models.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/quant_models/model_processing/torch_reg_models.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="325">
-              <caret line="13" column="20" lean-forward="true" selection-start-line="13" selection-start-column="20" selection-end-line="13" selection-end-column="20" />
+            <state relative-caret-position="275">
+              <caret line="11" column="2" selection-start-line="11" selection-start-column="2" selection-end-line="11" selection-end-column="2" />
               <folding>
                 <element signature="e#125#137#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="loss.py" pinned="false" current-in-tab="false">
+        <entry file="file://D:/anaconda3/Lib/site-packages/torch/nn/modules/loss.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="900">
+              <caret line="347" column="48" selection-start-line="347" selection-start-column="44" selection-end-line="347" selection-end-column="48" />
             </state>
           </provider>
         </entry>
@@ -88,16 +99,7 @@
         <entry file="file://$PROJECT_DIR$/quant_models/model_processing/dataset.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="325">
-              <caret line="13" column="44" lean-forward="true" selection-start-line="13" selection-start-column="44" selection-end-line="13" selection-end-column="44" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="lstm_models.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/quant_models/model_processing/lstm_models.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="252">
-              <caret line="182" column="25" selection-start-line="182" selection-start-column="25" selection-end-line="182" selection-end-column="25" />
+              <caret line="13" column="44" selection-start-line="13" selection-start-column="44" selection-end-line="13" selection-end-column="44" />
             </state>
           </provider>
         </entry>
@@ -107,18 +109,6 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="200">
               <caret line="8" column="41" selection-start-line="8" selection-start-column="41" selection-end-line="8" selection-end-column="41" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="date_fetcher_api.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/quant_models/data_processing/date_fetcher_api.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="400">
-              <caret line="16" selection-start-line="15" selection-start-column="13" selection-end-line="16" />
-              <folding>
-                <element signature="e#122#136#0" expanded="true" />
-              </folding>
             </state>
           </provider>
         </entry>
@@ -222,22 +212,23 @@
         <option value="$PROJECT_DIR$/quant_models/data_processing/date_fetcher_api.py" />
         <option value="$PROJECT_DIR$/quant_models/data_processing/hf_features_calculation.py" />
         <option value="$PROJECT_DIR$/quant_models/applications/hft_strategies/tick_feature_calculation.py" />
-        <option value="$PROJECT_DIR$/quant_models/model_processing/torch_reg_models.py" />
         <option value="$PROJECT_DIR$/quant_models/playground/kiki/torch_notes.py" />
+        <option value="$PROJECT_DIR$/quant_models/model_processing/torch_reg_models.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="-101" />
-    <option name="y" value="616" />
-    <option name="width" value="1080" />
-    <option name="height" value="860" />
+    <option name="x" value="-8" />
+    <option name="y" value="-8" />
+    <option name="width" value="1616" />
+    <option name="height" value="876" />
   </component>
   <component name="ProjectView">
     <navigator proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -279,6 +270,13 @@
               <item name="quant_geek" type="b2602c69:ProjectViewProjectNode" />
               <item name="quant_geek" type="462c0819:PsiDirectoryNode" />
               <item name="quant_models" type="462c0819:PsiDirectoryNode" />
+              <item name="model_processing" type="462c0819:PsiDirectoryNode" />
+              <item name="torch_reg_models.py" type="8704e2dd:PyFileNode" />
+            </path>
+            <path>
+              <item name="quant_geek" type="b2602c69:ProjectViewProjectNode" />
+              <item name="quant_geek" type="462c0819:PsiDirectoryNode" />
+              <item name="quant_models" type="462c0819:PsiDirectoryNode" />
               <item name="playground" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -294,11 +292,70 @@
               <item name="quant_models" type="462c0819:PsiDirectoryNode" />
               <item name="utils" type="462c0819:PsiDirectoryNode" />
             </path>
+            <path>
+              <item name="quant_geek" type="b2602c69:ProjectViewProjectNode" />
+              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
+            </path>
+            <path>
+              <item name="quant_geek" type="b2602c69:ProjectViewProjectNode" />
+              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
+              <item name="&lt; Python 3.6 (quant) (1) &gt;" type="70bed36:NamedLibraryElementNode" />
+            </path>
+            <path>
+              <item name="quant_geek" type="b2602c69:ProjectViewProjectNode" />
+              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
+              <item name="&lt; Python 3.6 (quant) (1) &gt;" type="70bed36:NamedLibraryElementNode" />
+              <item name="anaconda3" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="quant_geek" type="b2602c69:ProjectViewProjectNode" />
+              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
+              <item name="&lt; Python 3.6 (quant) (1) &gt;" type="70bed36:NamedLibraryElementNode" />
+              <item name="anaconda3" type="462c0819:PsiDirectoryNode" />
+              <item name="Lib" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="quant_geek" type="b2602c69:ProjectViewProjectNode" />
+              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
+              <item name="&lt; Python 3.6 (quant) (1) &gt;" type="70bed36:NamedLibraryElementNode" />
+              <item name="anaconda3" type="462c0819:PsiDirectoryNode" />
+              <item name="Lib" type="462c0819:PsiDirectoryNode" />
+              <item name="site-packages" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="quant_geek" type="b2602c69:ProjectViewProjectNode" />
+              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
+              <item name="&lt; Python 3.6 (quant) (1) &gt;" type="70bed36:NamedLibraryElementNode" />
+              <item name="anaconda3" type="462c0819:PsiDirectoryNode" />
+              <item name="Lib" type="462c0819:PsiDirectoryNode" />
+              <item name="site-packages" type="462c0819:PsiDirectoryNode" />
+              <item name="torch" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="quant_geek" type="b2602c69:ProjectViewProjectNode" />
+              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
+              <item name="&lt; Python 3.6 (quant) (1) &gt;" type="70bed36:NamedLibraryElementNode" />
+              <item name="anaconda3" type="462c0819:PsiDirectoryNode" />
+              <item name="Lib" type="462c0819:PsiDirectoryNode" />
+              <item name="site-packages" type="462c0819:PsiDirectoryNode" />
+              <item name="torch" type="462c0819:PsiDirectoryNode" />
+              <item name="nn" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="quant_geek" type="b2602c69:ProjectViewProjectNode" />
+              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
+              <item name="&lt; Python 3.6 (quant) (1) &gt;" type="70bed36:NamedLibraryElementNode" />
+              <item name="anaconda3" type="462c0819:PsiDirectoryNode" />
+              <item name="Lib" type="462c0819:PsiDirectoryNode" />
+              <item name="site-packages" type="462c0819:PsiDirectoryNode" />
+              <item name="torch" type="462c0819:PsiDirectoryNode" />
+              <item name="nn" type="462c0819:PsiDirectoryNode" />
+              <item name="functional.py" type="8704e2dd:PyFileNode" />
+            </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -324,7 +381,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.torch_notes">
+  <component name="RunManager" selected="Python.torch_reg_models">
     <configuration name="algo_trading_strategy_testing" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="testing" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -338,24 +395,6 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/quant_models/playground/kiki/algo_trading_strategy_testing.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-    </configuration>
-    <configuration name="hurst" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <module name="testing" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/quant_models/applications/timing_strategies" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/quant_models/applications/timing_strategies/hurst.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -397,6 +436,24 @@
       <option name="EMULATE_TERMINAL" value="false" />
       <option name="MODULE_MODE" value="false" />
     </configuration>
+    <configuration name="torch_reg_models" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="testing" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/quant_models/model_processing" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/quant_models/model_processing/torch_reg_models.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+    </configuration>
     <configuration name="uqer_tick_testing" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="testing" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -417,18 +474,18 @@
     </configuration>
     <list>
       <item itemvalue="Python.algo_trading_strategy_testing" />
-      <item itemvalue="Python.hurst" />
       <item itemvalue="Python.uqer_tick_testing" />
       <item itemvalue="Python.tick_feature_calculation" />
       <item itemvalue="Python.torch_notes" />
+      <item itemvalue="Python.torch_reg_models" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.torch_reg_models" />
         <item itemvalue="Python.torch_notes" />
         <item itemvalue="Python.tick_feature_calculation" />
         <item itemvalue="Python.uqer_tick_testing" />
         <item itemvalue="Python.algo_trading_strategy_testing" />
-        <item itemvalue="Python.hurst" />
       </list>
     </recent_temporary>
   </component>
@@ -456,15 +513,13 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1096" height="1896" extended-state="6" />
-    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.06332703" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.21550095" />
       <window_info anchor="bottom" id="TODO" order="7" weight="0.329539" />
       <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
-      <window_info anchor="bottom" id="Find" order="1" weight="0.2538418" />
       <window_info anchor="bottom" id="Version Control" order="9" weight="0.329539" />
       <window_info anchor="bottom" id="Python Console" order="6" weight="0.21969266" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.3414912" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.30620375" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info anchor="bottom" id="Terminal" order="8" weight="0.18995929" />
       <window_info id="Favorites" order="2" side_tool="true" />
@@ -475,25 +530,26 @@
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.2538418" />
     </layout>
     <layout-to-restore>
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.14177693" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.329539" />
-      <window_info anchor="bottom" id="Version Control" order="9" />
       <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.25042686" />
-      <window_info anchor="bottom" id="Python Console" order="7" weight="0.3875925" />
-      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.33124644" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.35458168" />
       <window_info anchor="bottom" id="Terminal" order="8" weight="0.18995929" />
       <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
-      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
-      <window_info anchor="bottom" id="Find" order="1" weight="0.33124644" />
+      <window_info anchor="bottom" id="Version Control" order="9" />
       <window_info id="Favorites" order="2" side_tool="true" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Python Console" order="7" weight="0.3875925" />
     </layout-to-restore>
   </component>
   <component name="VcsContentAnnotationSettings">
@@ -543,11 +599,31 @@
           </properties>
         </breakpoint>
       </default-breakpoints>
-      <option name="time" value="612" />
+      <option name="time" value="614" />
     </breakpoint-manager>
   </component>
   <component name="debuggerHistoryManager">
     <expressions id="evaluateExpression">
+      <expression>
+        <expression-string>h_state[-1,:,:]</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>h_state.shape[-1,:,:]</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>h_state.shape</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>h_state</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
       <expression>
         <expression-string>prediction</expression-string>
         <language-id>Python</language-id>
@@ -578,40 +654,9 @@
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
-      <expression>
-        <expression-string>out1.shape</expression-string>
-        <language-id>Python</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>torch.stack(outs, dim=1)[:,:,0]</expression-string>
-        <language-id>Python</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>torch.stack(outs, dim=1)</expression-string>
-        <language-id>Python</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
     </expressions>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/quant_models/applications/feature_mining/heatmap300.png" />
-    <entry file="file://$PROJECT_DIR$/quant_models/strategies/feature_mining_strategy_case1.png">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/quant_models/applications/feature_mining/log.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="350">
-          <caret line="14" column="48" lean-forward="true" selection-start-line="14" selection-start-column="48" selection-end-line="14" selection-end-column="48" />
-        </state>
-      </provider>
-      <provider editor-type-id="LargeFileEditor">
-        <state relative-caret-position="325">
-          <caret line="76" column="64" lean-forward="true" selection-start-line="76" selection-start-column="64" selection-end-line="76" selection-end-column="64" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/quant_models/utils/decorators.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="325">
@@ -816,9 +861,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1200">
           <caret line="55" column="41" selection-start-line="55" selection-start-column="41" selection-end-line="55" selection-end-column="41" />
-          <folding>
-            <element signature="e#91#123#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -826,9 +868,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1325">
           <caret line="58" selection-start-line="58" selection-end-line="59" />
-          <folding>
-            <element signature="e#91#106#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -836,9 +875,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2925">
           <caret line="129" column="20" selection-start-line="129" selection-start-column="20" selection-end-line="129" selection-end-column="20" />
-          <folding>
-            <element signature="e#128#172#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -892,7 +928,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/quant_models/data_processing/hf_features_calculation.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1469">
+        <state relative-caret-position="1350">
           <caret line="61" column="22" selection-start-line="61" selection-start-column="22" selection-end-line="61" selection-end-column="22" />
           <folding>
             <element signature="e#131#140#0" expanded="true" />
@@ -902,11 +938,18 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/quant_models/data_processing/date_fetcher_api.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="400">
+        <state relative-caret-position="325">
           <caret line="16" selection-start-line="15" selection-start-column="13" selection-end-line="16" />
           <folding>
             <element signature="e#122#136#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/quant_models/model_processing/lstm_models.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="4300">
+          <caret line="182" column="25" selection-start-line="182" selection-start-column="25" selection-end-line="182" selection-end-column="25" />
         </state>
       </provider>
     </entry>
@@ -917,27 +960,44 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/quant_models/model_processing/lstm_models.py">
+    <entry file="file://$PROJECT_DIR$/quant_models/applications/hft_strategies/tick_feature_calculation.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="252">
-          <caret line="182" column="25" selection-start-line="182" selection-start-column="25" selection-end-line="182" selection-end-column="25" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/quant_models/model_processing/dataset.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="325">
-          <caret line="13" column="44" lean-forward="true" selection-start-line="13" selection-start-column="44" selection-end-line="13" selection-end-column="44" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/quant_models/model_processing/torch_reg_models.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="325">
-          <caret line="13" column="20" lean-forward="true" selection-start-line="13" selection-start-column="20" selection-end-line="13" selection-end-column="20" />
+        <state relative-caret-position="525">
+          <caret line="21" selection-start-line="21" selection-end-line="21" />
           <folding>
-            <element signature="e#125#137#0" expanded="true" />
+            <element signature="e#132#143#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/quant_models/playground/kiki/torch_notes.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="519">
+          <caret line="52" lean-forward="true" selection-start-line="52" selection-end-line="52" />
+          <folding>
+            <element signature="e#119#131#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://D:/anaconda3/Lib/site-packages/torch/nn/functional.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="625">
+          <caret line="38" lean-forward="true" selection-start-line="38" selection-end-line="38" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://D:/anaconda3/Lib/site-packages/torch/nn/modules/linear.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="227">
+          <caret line="22" lean-forward="true" selection-start-line="22" selection-end-line="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://D:/anaconda3/Lib/site-packages/torch/nn/_functions/rnn.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="25">
+          <caret line="242" selection-start-line="242" selection-end-line="242" />
         </state>
       </provider>
     </entry>
@@ -948,29 +1008,26 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/quant_models/applications/hft_strategies/tick_feature_calculation.py">
+    <entry file="file://$PROJECT_DIR$/quant_models/model_processing/dataset.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="525">
-          <caret line="21" lean-forward="true" selection-start-line="21" selection-end-line="21" />
-          <folding>
-            <element signature="e#132#143#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="325">
+          <caret line="13" column="44" selection-start-line="13" selection-start-column="44" selection-end-line="13" selection-end-column="44" />
         </state>
       </provider>
     </entry>
-    <entry file="file://D:/anaconda3/Lib/site-packages/torch/nn/_functions/rnn.py">
+    <entry file="file://D:/anaconda3/Lib/site-packages/torch/nn/modules/loss.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-7">
-          <caret line="242" selection-start-line="242" selection-end-line="242" />
+        <state relative-caret-position="900">
+          <caret line="347" column="48" selection-start-line="347" selection-start-column="44" selection-end-line="347" selection-end-column="48" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/quant_models/playground/kiki/torch_notes.py">
+    <entry file="file://$PROJECT_DIR$/quant_models/model_processing/torch_reg_models.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="609">
-          <caret line="144" column="45" selection-start-line="144" selection-start-column="45" selection-end-line="144" selection-end-column="45" />
+        <state relative-caret-position="275">
+          <caret line="11" column="2" selection-start-line="11" selection-start-column="2" selection-end-line="11" selection-end-column="2" />
           <folding>
-            <element signature="e#119#131#0" expanded="true" />
+            <element signature="e#125#137#0" expanded="true" />
           </folding>
         </state>
       </provider>
