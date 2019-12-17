@@ -21,6 +21,7 @@ DOENLOAD_MINST = False
 BATCH_SIZE = 10
 HIDDEN_SIZE = 32
 NUM_LAYER = 2
+MAX_LEN = 100
 uqer_client = uqer.Client(token="26356c6121e2766186977ec49253bf1ec4550ee901c983d9a9bff32f59e6a6fb")
 
 
@@ -61,30 +62,35 @@ def get_features(security_id=u"300634.XSHE", date='20191122'):
     columns.remove('dataDate')
     columns.remove('exchangeCD')
     columns.remove('ticker')
-    # columns.remove('dataTime')
-    # columns.remove('dataMin')
+    columns.remove('dataTime')
+    columns.remove('dataMin')
+    columns.remove('shortNM')
+    columns.remove('currencyCD')
     df.sort_values(by='dataTime', ascending=True, inplace=True)
     data_min = list(df['dataMin'])
     df = df[columns]
     rows = list(df.values)
     train_x = []
+    train_y = []
     _start, _end = 0, 0
     n_row = len(rows)
     for idx, val in enumerate(rows):
         hh, mm = data_min[idx].split(':')
         if int(hh) == 9 and int(mm) <= 30:
             continue
-        _start = idx
-        if idx == n_row-1:
-            pass
+            _start = idx
+        if idx == n_row - 1:
+            train_x.append(rows[_start: idx])
+            _start = idx
+            train_y.append(dict_min_ret.get('{0}:{1}'.format(hh, mm)))
         else:
-            hh_, mm_ = data_min[idx+1].split(':')
+            hh_, mm_ = data_min[idx + 1].split(':')
             if int(mm) % 5 == 0 and int(mm_) != int(mm):
                 print(data_min[_start], data_min[idx])
-                train_x.append(rows[_start: idx])
-                _start = idx
-    return train_x
-
+                train_x.append(rows[_start: idx + 1])
+                _start = idx + 1
+                train_y.append(dict_min_ret.get('{0}:{1}'.format(hh, mm)))
+    return train_x, train_y
 
 
 class RNN(torch.nn.Module):
@@ -140,4 +146,19 @@ def rnn_reg_training():
 
 if __name__ == '__main__':
     # rnn_reg_training()
-    get_features()
+    import numpy as np
+
+    train_x, train_y = get_features()
+    len_seqs = []
+    for item in train_x:
+        _ts_len = len(item)
+        len_seqs.append(_ts_len)
+        _feature_len = len()
+        for idx, _item in enumerate(item):
+            _feature_len = len(_item)
+            _tmp = list(_item)
+            _tmp.extend([0.0] * (MAX_LEN - _feature_len))
+            item[idx] = _tmp
+    tensor_in = torch.FloatTensor(train_x)
+    tensor_out = torch.FloatTensor(train_y)
+    print(tensor_in.size())
