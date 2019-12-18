@@ -7,6 +7,7 @@
 import torch
 import numpy as np
 import torch.nn.functional as F
+from torch.nn import utils as nn_utils
 import matplotlib.pyplot as plt
 
 import uqer
@@ -15,10 +16,10 @@ from uqer import DataAPI
 torch.manual_seed(1)
 # HYPER Parameters
 TIME_STEP = 10  # rnn time step/image height
-INPUT_SIZE = 2
+INPUT_SIZE = 42
 LR = 0.2
 DOENLOAD_MINST = False
-BATCH_SIZE = 10
+BATCH_SIZE = 47
 HIDDEN_SIZE = 32
 NUM_LAYER = 2
 MAX_LEN = 100
@@ -80,17 +81,48 @@ def get_features(security_id=u"300634.XSHE", date='20191122'):
             continue
             _start = idx
         if idx == n_row - 1:
-            train_x.append(rows[_start: idx])
+
+            if dict_min_ret.get('{0}:{1}'.format(hh, mm)):
+                train_y.append([dict_min_ret.get('{0}:{1}'.format(hh, mm))])
+                train_x.append(list(rows[_start: idx]))
             _start = idx
-            train_y.append(dict_min_ret.get('{0}:{1}'.format(hh, mm)))
         else:
             hh_, mm_ = data_min[idx + 1].split(':')
             if int(mm) % 5 == 0 and int(mm_) != int(mm):
                 print(data_min[_start], data_min[idx])
-                train_x.append(rows[_start: idx + 1])
+                if dict_min_ret.get('{0}:{1}'.format(hh, mm)):
+                    train_y.append([dict_min_ret.get('{0}:{1}'.format(hh, mm))])
+                    train_x.append(list(rows[_start: idx + 1]))
                 _start = idx + 1
-                train_y.append(dict_min_ret.get('{0}:{1}'.format(hh, mm)))
     return train_x, train_y
+
+
+def get_data_loader():
+    train_x, train_y = get_features()
+    seq_lengths = []
+    for _i, item in enumerate(train_x):
+        _ts_len = len(item)
+        seq_lengths.append(_ts_len)
+        _feature_len = len(item[0])
+        # _tmp = []
+        for idx in range(MAX_LEN - _ts_len):
+            item.append([0.0] * _feature_len)
+    sorted_seq_len = sorted(list(zip(range(len(seq_lengths)), seq_lengths)), key=lambda x: x[1], reverse=True)
+    perm_idx = [item[0] for item in sorted_seq_len]
+    sorted_train_x = []
+    sorted_train_y = []
+    for idx in perm_idx:
+        sorted_train_x.append(train_x[idx])
+        sorted_train_y.append(train_y[idx])
+    del train_x
+    del train_y
+    tensor_in = torch.FloatTensor(sorted_train_x)
+    # tensor_out = torch.FloatTensor(train_y)
+    print(tensor_in.size())
+    train_x_pack = nn_utils.rnn.pack_padded_sequence(tensor_in, [item[1] for item in sorted_seq_len], batch_first=True)
+    train_y_tensor = torch.from_numpy(np.array(sorted_train_y)).float()
+    del sorted_train_y
+    return train_x_pack, train_y_tensor, seq_lengths
 
 
 class RNN(torch.nn.Module):
@@ -121,44 +153,29 @@ def rnn_reg_training():
     h_state = None  # 要使用初始hidden state, 可以设成None
     plt.ion()
     plt.show()
-    for step in range(100):
+    train_x_pack, train_y, seq_lengths = get_data_loader()
+    for step in range(3):
         # FIXME generate random test case
-        x_np = np.random.random(BATCH_SIZE * TIME_STEP * INPUT_SIZE).reshape(BATCH_SIZE, TIME_STEP, INPUT_SIZE)
-        y_np = np.random.random(BATCH_SIZE).reshape(BATCH_SIZE, 1)
-
-        x = torch.from_numpy(x_np).float()
-        y = torch.from_numpy(y_np).float()
-
-        prediction, outputs, h_state = rnn(x, h_state)  # rnn对于每一个step的prediction, 还有最后一个step的h_state
+        # x_np = np.random.random(BATCH_SIZE * TIME_STEP * INPUT_SIZE).reshape(BATCH_SIZE, TIME_STEP, INPUT_SIZE)
+        # y_np = np.random.random(BATCH_SIZE).reshape(BATCH_SIZE, 1)
+        #
+        # x = torch.from_numpy(x_np).float()
+        # y = torch.from_numpy(y_np).float()
+        prediction, outputs, h_state = rnn(train_x_pack, h_state)  # rnn对于每一个step的prediction, 还有最后一个step的h_state
         h_state = h_state.data  # 要把h_state 重新包装一下才能放入下一个iteration,不然会报错
-        loss = loss_func(outputs, y)
-        # loss = loss_func(prediction, y)  # cross entropy loss
+        loss = loss_func(outputs, train_y)  # cross entropy loss
         optimizer.zero_grad()  # clear gradients for this training step
         loss.backward()  # backprogation, compute gradients
         optimizer.step()  # apply gradients
-        if step % 5 == 0:
-            plt.cla()
-            plt.scatter(range(x.shape[0]), y[:, 0].data.numpy())
-            plt.plot(range(x.shape[0]), outputs[:, 0].data.numpy(), 'r-', lw=5)
-            plt.text(0.5, 0, 'loss=%.4f' % loss.data.numpy(), fontdict={'size': 20, 'color': 'red'})
-            plt.pause(1.5)
+        # if step % 5 == 0:
+        plt.cla()
+        plt.scatter(range(len(seq_lengths)), train_y[:, 0].data.numpy())
+        plt.plot(range(len(seq_lengths)), outputs[:, 0].data.numpy(), 'r-', lw=5)
+        plt.text(0.5, 0, 'loss={0},step={1}'.format(loss.data.numpy(), step), fontdict={'size': 20, 'color': 'red'})
+        plt.pause(2.5)
 
 
 if __name__ == '__main__':
-    # rnn_reg_training()
-    import numpy as np
-
-    train_x, train_y = get_features()
-    len_seqs = []
-    for item in train_x:
-        _ts_len = len(item)
-        len_seqs.append(_ts_len)
-        _feature_len = len()
-        for idx, _item in enumerate(item):
-            _feature_len = len(_item)
-            _tmp = list(_item)
-            _tmp.extend([0.0] * (MAX_LEN - _feature_len))
-            item[idx] = _tmp
-    tensor_in = torch.FloatTensor(train_x)
-    tensor_out = torch.FloatTensor(train_y)
-    print(tensor_in.size())
+    rnn_reg_training()
+    # train_x, train_y, seq_length = get_data_loader()
+    # print(len(seq_length))
