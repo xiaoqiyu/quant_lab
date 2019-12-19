@@ -9,6 +9,7 @@ import numpy as np
 import torch.nn.functional as F
 from torch.nn import utils as nn_utils
 import matplotlib.pyplot as plt
+from WindPy import w
 
 import uqer
 from uqer import DataAPI
@@ -19,11 +20,13 @@ TIME_STEP = 10  # rnn time step/image height
 INPUT_SIZE = 42
 LR = 0.2
 DOENLOAD_MINST = False
-BATCH_SIZE = 47
+BATCH_SIZE = 40
 HIDDEN_SIZE = 32
 NUM_LAYER = 2
 MAX_LEN = 100
 uqer_client = uqer.Client(token="26356c6121e2766186977ec49253bf1ec4550ee901c983d9a9bff32f59e6a6fb")
+
+w.start()
 
 
 def get_features(security_id=u"300634.XSHE", date='20191122'):
@@ -70,35 +73,44 @@ def get_features(security_id=u"300634.XSHE", date='20191122'):
     df.sort_values(by='dataTime', ascending=True, inplace=True)
     data_min = list(df['dataMin'])
     df = df[columns]
+    # df.fillna(method='ffill', inplace=True)
+    # df = df.apply(lambda x: (x - np.mean(x)) / np.std(x))
     rows = list(df.values)
     train_x = []
     train_y = []
     _start, _end = 0, 0
     n_row = len(rows)
+    total_row = 0
     for idx, val in enumerate(rows):
         hh, mm = data_min[idx].split(':')
+        if int(hh) == 14 and int(mm) == 57:
+            break
         if int(hh) == 9 and int(mm) <= 30:
-            continue
             _start = idx
-        if idx == n_row - 1:
+            continue
+        if total_row >= 40:
+            break
 
+        if idx == n_row - 1:
             if dict_min_ret.get('{0}:{1}'.format(hh, mm)):
                 train_y.append([dict_min_ret.get('{0}:{1}'.format(hh, mm))])
                 train_x.append(list(rows[_start: idx]))
+                total_row += 1
             _start = idx
         else:
             hh_, mm_ = data_min[idx + 1].split(':')
             if int(mm) % 5 == 0 and int(mm_) != int(mm):
-                print(data_min[_start], data_min[idx])
+                # print(data_min[_start], data_min[idx])
                 if dict_min_ret.get('{0}:{1}'.format(hh, mm)):
                     train_y.append([dict_min_ret.get('{0}:{1}'.format(hh, mm))])
                     train_x.append(list(rows[_start: idx + 1]))
+                    total_row += 1
                 _start = idx + 1
     return train_x, train_y
 
 
-def get_data_loader():
-    train_x, train_y = get_features()
+def get_data_loader(security_id=u"300634.XSHE", date='20191122'):
+    train_x, train_y = get_features(security_id=security_id, date=date)
     seq_lengths = []
     for _i, item in enumerate(train_x):
         _ts_len = len(item)
@@ -116,6 +128,7 @@ def get_data_loader():
         sorted_train_y.append(train_y[idx])
     del train_x
     del train_y
+    print(date)
     tensor_in = torch.FloatTensor(sorted_train_x)
     # tensor_out = torch.FloatTensor(train_y)
     print(tensor_in.size())
@@ -144,38 +157,45 @@ class RNN(torch.nn.Module):
         return r_out, outs, h_state
 
 
-def rnn_reg_training():
-    rnn = RNN()
+def rnn_reg_training(start_date='', end_date='', security_id=''):
+    _t_days = w.tdays(start_date, end_date)
+    t_days = [item.strftime('%Y%m%d') for item in _t_days.Data[0]]
+    try:
+        rnn = torch.load('rnn_5min')
+    except Exception as ex:
+        print('No saved model:{0}'.format(ex))
+        rnn = RNN()
     print(rnn)
     optimizer = torch.optim.Adam(rnn.parameters(), lr=LR)
     loss_func = torch.nn.MSELoss()
-
     h_state = None  # 要使用初始hidden state, 可以设成None
     plt.ion()
     plt.show()
-    train_x_pack, train_y, seq_lengths = get_data_loader()
-    for step in range(3):
-        # FIXME generate random test case
-        # x_np = np.random.random(BATCH_SIZE * TIME_STEP * INPUT_SIZE).reshape(BATCH_SIZE, TIME_STEP, INPUT_SIZE)
-        # y_np = np.random.random(BATCH_SIZE).reshape(BATCH_SIZE, 1)
-        #
-        # x = torch.from_numpy(x_np).float()
-        # y = torch.from_numpy(y_np).float()
+    best_loss = 100
+    n_steps = len(t_days)
+    for step in range(n_steps):
+        train_x_pack, train_y, seq_lengths = get_data_loader(security_id=security_id, date=t_days[step])
         prediction, outputs, h_state = rnn(train_x_pack, h_state)  # rnn对于每一个step的prediction, 还有最后一个step的h_state
         h_state = h_state.data  # 要把h_state 重新包装一下才能放入下一个iteration,不然会报错
         loss = loss_func(outputs, train_y)  # cross entropy loss
         optimizer.zero_grad()  # clear gradients for this training step
         loss.backward()  # backprogation, compute gradients
         optimizer.step()  # apply gradients
-        # if step % 5 == 0:
-        plt.cla()
-        plt.scatter(range(len(seq_lengths)), train_y[:, 0].data.numpy())
-        plt.plot(range(len(seq_lengths)), outputs[:, 0].data.numpy(), 'r-', lw=5)
-        plt.text(0.5, 0, 'loss={0},step={1}'.format(loss.data.numpy(), step), fontdict={'size': 20, 'color': 'red'})
-        plt.pause(2.5)
+        if loss < best_loss:
+            print('Update loss from {0} to {1}'.format(best_loss, loss))
+            best_loss = loss
+            torch.save(rnn, '{0}_rnn_5min'.format(security_id))
+        if step % 3 == 0:
+            plt.cla()
+            plt.scatter(range(len(seq_lengths)), train_y[:, 0].data.numpy())
+            plt.plot(range(len(seq_lengths)), outputs[:, 0].data.numpy(), 'r-', lw=5)
+            plt.text(0.5, 0, 'loss={0},step={1}'.format(loss.data.numpy(), step), fontdict={'size': 20, 'color': 'red'})
+            plt.pause(0.5)
 
 
 if __name__ == '__main__':
-    rnn_reg_training()
+    rnn_reg_training(start_date='20191203', end_date='20191218', security_id='603612.XSHG')
     # train_x, train_y, seq_length = get_data_loader()
     # print(len(seq_length))
+    # train_x, train_y = get_features(security_id='603612.XSHG', date='20191216')
+    # print(len(train_x))
