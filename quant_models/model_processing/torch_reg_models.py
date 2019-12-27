@@ -23,7 +23,7 @@ DOENLOAD_MINST = False
 BATCH_SIZE = 40
 HIDDEN_SIZE = 32
 NUM_LAYER = 2
-MAX_LEN = 100
+MAX_LEN = 105
 uqer_client = uqer.Client(token="26356c6121e2766186977ec49253bf1ec4550ee901c983d9a9bff32f59e6a6fb")
 
 w.start()
@@ -75,6 +75,7 @@ def get_features(security_id=u"300634.XSHE", date='20191122'):
     df = df[columns]
     # df.fillna(method='ffill', inplace=True)
     # df = df.apply(lambda x: (x - np.mean(x)) / np.std(x))
+
     rows = list(df.values)
     train_x = []
     train_y = []
@@ -109,7 +110,7 @@ def get_features(security_id=u"300634.XSHE", date='20191122'):
     return train_x, train_y
 
 
-def get_data_loader(security_id=u"300634.XSHE", date='20191122'):
+def get_data_loader(security_id=u"000001.XSHE", date='20191122'):
     train_x, train_y = get_features(security_id=security_id, date=date)
     seq_lengths = []
     for _i, item in enumerate(train_x):
@@ -194,7 +195,7 @@ def rnn_reg_training(start_date='', end_date='', security_id=''):
 
 
 if __name__ == '__main__':
-    rnn_reg_training(start_date='20191203', end_date='20191218', security_id='603612.XSHG')
+    rnn_reg_training(start_date='20191203', end_date='20191218', security_id='000001.XSHE')
     # train_x, train_y, seq_length = get_data_loader()
     # print(len(seq_length))
     # train_x, train_y = get_features(security_id='603612.XSHG', date='20191216')

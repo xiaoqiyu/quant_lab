@@ -41,7 +41,7 @@ class OracleHelper(object):
 
 
 if __name__ == '__main__':
-    db_config = {"user": "gfangm", "pwd": "GfangM123_cms2019", "host": "10.200.40.170", "dbname": "clouddb",
+    db_config = {"user": "gfangm", "pwd": "Gfangm1023_cms2019", "host": "10.200.40.170", "dbname": "clouddb",
                  "mincached": 0, "maxcached": 2, "port": 1521}
     jy_config = {"user": "yfeb", "pwd": "yfeb", "host": "172.21.6.196", "dbname": "JYDB",
                  "mincached": 0, "maxcached": 2, "port": 1433}
